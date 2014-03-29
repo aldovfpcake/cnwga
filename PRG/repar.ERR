@@ -1,0 +1,18 @@
+WHERE OBJECTTYPE = 'Table'  
+Error in line 5: Unrecognized command verb.
+INTO CURSOR TABLAS
+Error in line 6: Unrecognized command verb.
+WAIT WINDOWS 'Tabla ' + ALLTRIM(TABLA1) + ' (' + TRANSFORM(RECNO('TABLAS')) +  
+Error in line 25: Missing operand.
+'/' + TRANSFORM(RECCOUNT('TABLAS')) + ')' NOWAIT
+Error in line 26: Unrecognized command verb.
+Versión imprimible  
+Error in line 67: Unrecognized command verb.
+Regenerar Indices de las Tablas de un DBC | Entrar/Crear una cuenta | 0 Comentarios
+Error in line 68: Unrecognized command verb.
+Mostrar Orden
+Error in line 69: Unrecognized command verb.
+Los comentarios son propiedad de sus respectivos autores.
+Error in line 70: Unrecognized command verb.
+No somos responsables de su contenido.
+Error in line 71: Unrecognized command verb.

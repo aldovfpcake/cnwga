@@ -1,0 +1,32 @@
+PARAMETERS vvempresa
+*LOCAL vvempresa
+*SET STEP ON 
+*vvempresa = 1
+LOCAL unidad,ubiarch as Character 
+
+unidad= " "
+unidad = "f:\"
+
+DO case
+   CASE vvempresa = 1
+        SET PATH TO &unidad\sueldos\empre1;&unidad\nwga\forms;&unidad\nwga\datos;&unidad\nwga\prg;c:\cnwga\forms
+        ubiarch =  unidad+ "sueldos\empre1;&unidad\nwga\forms;" + unidad +" nwga\datos;" + unidad + "nwga\prg;c:\cnwga\forms"
+    CASE vvempresa = 2
+        SET PATH TO &unidad\sueldos\empre2;&unidad\nwga\forms;&unidad\nwga\datos;&unidad\nwga\prg;c:\cnwga\forms
+        ubiarch =   unidad+ "sueldos\empre2;&unidad\nwga\forms;" + unidad +" nwga\datos;" + unidad + "nwga\prg;c:\cnwga\forms"
+
+ENDCASE
+
+SET TALK OFF
+SET EXCLUSIVE off
+SET REPROCESS TO AUTOMATIC
+OPEN DATABASE f:\sueldos\nwga\datos\ganancias VALIDATE
+SET PROCEDURE TO c:\cnwga\prg\clasfg
+
+SELECT LEGAJO,NOMBRE FROM PERSONAL WHERE ACTIVO = "A";
+ORDER BY NOMBRE INTO CURSOR LPERSONAL
+SELECT personal
+use
+vvlogin = 1
+USE gancias NODATA
+DO FORM pp WITH vvempresa,vvlogin,ubiarch

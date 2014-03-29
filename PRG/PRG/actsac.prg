@@ -1,0 +1,17 @@
+SELECT LEGAJO,ENERO,FEBRERO,MARZO,ABRIL,MAYO,JUNIO FROM NLEGAJO WHERE CONCEPTO = 4;
+INTO CURSOR UPSAC
+
+SELECT UPSAC
+SCAN
+  UPDATE NLEGAJO SET ENERO    = 0,;
+                     FEBRERO  = 0,;
+                     MARZO    = 0,;
+                     ABRIL    = 0,;
+                     MAYO     = 0,;
+                     JUNIO    = 0 ;
+                     WHERE NLEGAJO.ANO = 2011 .AND. NLEGAJO.LEGAJO = UPSAC.LEGAJO             
+ENDSCAN  
+SELECT LEGAJO,ENERO,FEBRERO,MARZO,ABRIL,MAYO,JUNIO FROM NLEGAJO WHERE CONCEPTO = 4 .AND. ANO = 2011;
+ORDER BY LEGAJO INTO CURSOR UPSAC                                        
+BROWSE
+CLOSE TABLES

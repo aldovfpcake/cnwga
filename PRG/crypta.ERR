@@ -1,0 +1,2 @@
+DODEFAULT(DecryptSessionStreamString WITH (this.dstrwing, this.codg,this.@stream))
+Error en la línea 50: Falta ) en el nombre de la función.

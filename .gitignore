@@ -1,0 +1,6 @@
+$cat .gitignore
+*.[bakencryptfxp]
+*~
+*.bak
+*.fxp
+*.encrypt

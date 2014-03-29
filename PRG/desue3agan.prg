@@ -1,0 +1,11 @@
+SELECT 0
+USE C:\SUERUT\EMPRE1\SUE3
+SCAN
+   	
+   	UPDATE f:\sueldos\nwga\export\marzo;
+          SET RET = SUE3.SNACION + RET;
+          WHERE LEGAJO = SUE3.CHAPA
+
+  SELECT SUE3
+
+ENDSCAN
