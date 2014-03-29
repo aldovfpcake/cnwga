@@ -1,6 +1,6 @@
-*PARMETERS vvempresa,vvprocesos
-vvempresa = 1
-vvprocesos = 1
+PARAMETERS vvempresa,vvprocesos
+*vvempresa = 1
+*vvprocesos = 1
 *LOCAL vvempresa
 *SET STEP ON 
 *vvempresa = 1
