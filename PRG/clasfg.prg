@@ -5,7 +5,12 @@ DEFINE CLASS ofamilia as Custom
 		olegajo    = 0
 		oempresa   = 0
         oexsite    = 0 
-
+        
+        
+        
+        
+        
+         
         PROCEDURE existe
      	   SELECT * FROM nlegajo WHERE legajo = this.olegajo .and. empresa = this.olegajo;
      	   INTO CURSOR existe
@@ -20,6 +25,7 @@ DEFINE CLASS ofamilia as Custom
     	PROCEDURE busco
             SET DATE ITALIAN
             SET CENTURY ON
+            SET DELETED ON
             IF this.olegajo = 0
                WAIT WINDOW "Error Nº legajo en 0"
             ELSE
@@ -159,13 +165,21 @@ DEFINE CLASS CALCULORET as custom
        mes      = 0
        sjtoaret = 0
        filio    = 0 
-       cancelar = .f.  
+       legajo   = 0
+       cancelar = .f.
+         
+         
+         
          
        * ORDEN DE LLAMADA
        * CALCURET -------->(CALCRET METODO PROTEGIDO) 
        * DEDUPER : deducciones personales  
        * CALCUGNETA :-------------->(CLGN METODO PROTEGIDO)
        * CALCURETEN CALCULA EL IMPUESTO Y LLAMA A (CLCGN METODO PROTEGIDO)
+          
+       
+       
+       
        PROCEDURE CALCURET   
        MESANTERIOR = "  " 
        DO  CASE  
@@ -556,7 +570,7 @@ DEFINE CLASS CALCULORET as custom
                         nomes   = "ABRIL"
                         nomante = "MARZO"
                         this.clcgn(nomes,nomante) 
-                         
+                        this.topectamed(nomes)          
                                                  
                 CASE this.mes = 5  
                          nomes   = "MAYO "
@@ -568,12 +582,13 @@ DEFINE CLASS CALCULORET as custom
                          nomes = "JUNIO "
                          nomante = "MAYO"
                          this.clcgn(nomes,nomante) 
+                         this.topectamed(nomes) 
                         
             	CASE this.mes = 7  
                           nomes = "JULIO "
                           nomante = "JUNIO"
                           this.clcgn(nomes,nomante) 
-                        
+                           
             	CASE this.mes = 8     
                           nomes = "AGOSTO"
                           nomante = "JULIO"
@@ -631,10 +646,56 @@ DEFINE CLASS CALCULORET as custom
         
         ENDPROC
         
-         
+        PROCEDURE TOPECTAMED
+        Parameters nomes
+
+           vvctamed = 0
+           SUM &nomes to vvctamed FOR CONCEPTO = 362
+           if vvctamed = 0    		   
+              RETURN  
+              
+              
+           endif 
+		
+           vvtope   = 0		
+           vvneta   = 0  
+           vvctamed = 0
+		   SUM &nomes to vvneta FOR CONCEPTO = 210
+		   vvtope = vvneta * 0.05
+		   SUM &nomes to vvctamed
+           if vvctamed > vvtope
+              UPDATE GANCIAS SET &nomes = vvtope ;
+              WHERE CONCEPTO = 362			  
+           endif 
+		    
+		   this.actulog  
+           SELECT GANCIAS  
+		        
+             
+        ENDPROC		
         
         
         
+        
+        PROCEDURE ACTULOG
+           
+            vlegajo  = this.legajo
+            vempresa = 1
+            vmes     = this.mes 
+            vano     = 2014
+            SELECT legajo,empresa,mes,ano FROM log WHERE legajo = vlegajo .and. empresa = vempresa ;
+            AND ano = vano .and. mes = vmes INTO CURSOR existe
+            IF EOF()
+			   
+               INSERT INTO LOG(legajo,empresa,mes,ano,observ) VALUES (vlegajo,vempresa,vmes,vano,"Aplicando Tope Cta Medico Asistencial")
+            ELSE 
+               
+			   UPDATE LOG SET observ = "Aplicando Tope Cta Medico Asistencial m";
+               WHERE legajo = vlegajo .and. empresa = vempresa .and. mes = vmes .and. ano = vano        
+            ENDIF  
+            SELECT GANCIAS 
+        
+        ENDPROC
         
         
         
@@ -818,7 +879,7 @@ DEFINE CLASS CARGOSUE as custom
             
             IF ISNULL(this.sueldo) = .F.
             
-            	WAIT WINDOW STR(SUELDO.SU,7) + "TRABAJANDO EN LEGAJO : " + STR(GANCIAS.LEGAJO,4)  NOWAIT
+            	
             	SELECT GANCIAS   
             	TRY
                 	UPDATE GANCIAS SET &campo2 = THIS.SUELDO       WHERE CONCEPTO = 1  .AND. ISNULL(DIRLEG)
