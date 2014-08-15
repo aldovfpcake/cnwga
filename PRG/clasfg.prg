@@ -592,29 +592,33 @@ DEFINE CLASS CALCULORET as custom
             	CASE this.mes = 8     
                           nomes = "AGOSTO"
                           nomante = "JULIO"
-                          this.clcgn(nomes,nomante)   
+                          this.clcgn(nomes,nomante)
+                          this.topectamed(nomes) 
             	CASE this.mes = 9     
                           nomes = "SETIEMBRE"
                           nomante = "AGOSTO"
                           this.clcgn(nomes,nomante)             
-               
+                          this.topectamed(nomes)  
             	CASE this.mes = 10      
                
                           nomes = "OCTUBRE"
                           nomante = "SETIEMBRE"
-                          this.clcgn(nomes,nomante)             
+                          this.clcgn(nomes,nomante)
+                          this.topectamed(nomes) 
+                                       
                
            CASE this.mes = 11    
                           nomes = "NOVIEMBRE"
                           nomante = "OCTUBRE"
-                          this.clcgn(nomes,nomante)             
+                          this.clcgn(nomes,nomante)  
+                          this.topectamed(nomes)           
                
            CASE this.mes = 12                  
                            
                           nomes = "DICIEMBRE"
                           nomante = "NOVIEMBRE"
                           this.clcgn(nomes,nomante)             
-                  
+                          this.topectamed(nomes) 
                
                
             ENDCASE        
@@ -883,7 +887,7 @@ DEFINE CLASS CARGOSUE as custom
             	SELECT GANCIAS   
             	TRY
                 	UPDATE GANCIAS SET &campo2 = THIS.SUELDO       WHERE CONCEPTO = 1  .AND. ISNULL(DIRLEG)
-               		UPDATE GANCIAS SET &campo2 = THIS.SAC          WHERE CONCEPTO = 4  .AND. ISNULL(DIRLEG)        
+               		*UPDATE GANCIAS SET &campo2 = THIS.SAC          WHERE CONCEPTO = 4  .AND. ISNULL(DIRLEG)        
                 	UPDATE GANCIAS SET &campo2 =  VIATICOS.VIAT    WHERE CONCEPTO = 40  .AND. ISNULL(DIRLEG)  
                     UPDATE GANCIAS SET &campo2 = THIS.SUELDO       WHERE CONCEPTO = 3   .AND.  .NOT.ISNULL(DIRLEG)       
             	CATCH TO OEXCEP
