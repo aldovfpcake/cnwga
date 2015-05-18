@@ -848,7 +848,8 @@ DEFINE CLASS CARGOSUE as custom
             existe = 0
             TRY
             	SELECT 0
-            	USE "c:\suerut\empre1\" +(this.archivo) ALIAS liquida
+            	*USE "c:\suerut\empre1\" +(this.archivo) ALIAS liquida
+         	     USE (this.archivo) ALIAS liquida
          	CATCH TO oException
          	     IF oException.ErrorNo = 1
          	        MESSAGEBOX("ARCHIVO DE LIQUIDACION INEXSTENTE" ,0, "ERROR")   
@@ -1396,6 +1397,144 @@ DEFINE CLASS CARGENERAL AS CARGOSUE
 
 
 
+
+
+
+ENDDEFINE
+
+DEFINE CLASS DECLAJANUAL AS CALCULORET
+   empresa      = 0 
+   año          = 0  
+   impbruto     = 0
+   aportejubila = 0
+   segurodevida = 0
+   aporteobsoc  = 0
+   otrasdedu    = 0
+   donaciones   = 0
+   deduespecial = 0
+   ganancianoim = 0
+   conyuge      = 0
+   
+   
+   
+   
+   PROCEDURE INIT 
+   PARAMETERS legajo,empresa,ano
+      cancelar = 0 
+      TRY 
+          IF legajo = 0 .or. empresa = 0 .or. ano = 0
+            this.mensaje("Parametros Insuficientes")
+            return 
+          ENDIF
+      CATCH TO e
+          WAIT WINDOW "Parametros Insuficientes No Se Puede Instanciar la Clase "
+          cancelar = 1
+
+      FINALLY      
+      ENDTRY
+      if cancelar = 1
+         RETURN
+      ENDIF
+      
+      parempresa  = empresa
+      parlegajo   = legajo
+      parno       = ano
+      USE gancias
+      this.legajo  = legajo
+      this.empresa = empresa
+      this.año     = ano 
+      this.importebruto
+      this.impjub  
+      this.impobsoc
+      this.muestra
+   ENDPROC
+
+
+
+
+   PROCEDURE IMPORTEBRUTO
+     SELECT SUM(ENERO+FEBRERO+MARZO+ABRIL+MAYO+JUNIO+JULIO+AGOSTO+SETIEMBRE+OCTUBRE+NOVIEMBRE+DICIEMBRE)AS IPB FROM GANCIAS WHERE CLASE =1 .OR. CLASE =8 INTO CURSOR GBRUTO
+     this.impbruto = gbruto.ipb
+     
+   ENDPROC
+   
+   
+   PROCEDURE IMPJUB
+     SELECT SUM(ENERO+FEBRERO+MARZO+ABRIL+MAYO+JUNIO+JULIO+AGOSTO+SETIEMBRE+OCTUBRE+NOVIEMBRE+DICIEMBRE)AS IPJUB FROM GANCIAS WHERE;
+     CONCEPTO = 100  INTO CURSOR CURBJ
+     this.aportejubila = CURBJ.IPJUB
+       
+     USE
+   ENDPROC
+   
+   PROCEDURE IMPOBSOC
+     SELECT SUM(ENERO+FEBRERO+MARZO+ABRIL+MAYO+JUNIO+JULIO+AGOSTO+SETIEMBRE+OCTUBRE+NOVIEMBRE+DICIEMBRE)AS IPOBS FROM GANCIAS WHERE;
+     CONCEPTO = 120 .OR. CONCEPTO = 362  INTO CURSOR CUROBJ
+     this.aporteobsoc = CUROBJ.IPOBS    
+     use
+     SELECT SUM(ENERO+FEBRERO+MARZO+ABRIL+MAYO+JUNIO+JULIO+AGOSTO+SETIEMBRE+OCTUBRE+NOVIEMBRE+DICIEMBRE)AS IPSG FROM GANCIAS WHERE;
+     CONCEPTO = 361  INTO CURSOR SEGV
+     this.segurodevida = SEGV.IPSG
+     USE
+     SELECT SUM(ENERO+FEBRERO+MARZO+ABRIL+MAYO+JUNIO+JULIO+AGOSTO+SETIEMBRE+OCTUBRE+NOVIEMBRE+DICIEMBRE)AS IPOTR FROM GANCIAS WHERE;
+     CONCEPTO = 130 .OR. CONCEPTO = 140 .OR. CONCEPTO =145 .OR.CONCEPTO = 362  INTO CURSOR CUROBJ
+     this.otrasdedu = curobj.ipotr
+     
+     USE
+     SELECT SUM(ENERO+FEBRERO+MARZO+ABRIL+MAYO+JUNIO+JULIO+AGOSTO+SETIEMBRE+OCTUBRE+NOVIEMBRE+DICIEMBRE)AS IPDONA FROM GANCIAS WHERE;
+     CONCEPTO = 363  INTO CURSOR DONC
+     this.donaciones = donc.ipdona
+     USE
+     SELECT SUM(ENERO+FEBRERO+MARZO+ABRIL+MAYO+JUNIO+JULIO+AGOSTO+SETIEMBRE+OCTUBRE+NOVIEMBRE+DICIEMBRE)AS IPOTRO FROM GANCIAS WHERE;
+     CONCEPTO = 300 INTO CURSOR OTROS
+     this.deduespecial = OTROS.IPOTRO
+     USE
+     SELECT SUM(ENERO+FEBRERO+MARZO+ABRIL+MAYO+JUNIO+JULIO+AGOSTO+SETIEMBRE+OCTUBRE+NOVIEMBRE+DICIEMBRE)AS IPNOG FROM GANCIAS WHERE;
+     CONCEPTO = 310 INTO CURSOR OTROS
+     this.ganancianoim = otros.ipnog
+     
+     
+     
+   
+   
+   ENDPROC
+
+
+
+
+
+   Procedure mensaje
+		Parameters elmensaje
+		Messagebox(elmensaje,16,"Error")
+	Endproc 
+ 
+    
+    PROCEDURE Muestra
+    
+      x = NEWOBJECT('form')
+      x.Visible = .t.
+      x.AddObject('label1','label')
+      x.label1.caption = "Importe Bruto de Ganancias"
+      x.label1.width = 260
+      x.label1.visible = .t.
+      x.AddObject('text1','textbox')
+      x.visible = .t.
+    
+    
+    
+    
+    
+    Endproc
+
+
+    PROCEDURE ver
+
+
+
+
+
+
+    ENDPROC
 
 
 

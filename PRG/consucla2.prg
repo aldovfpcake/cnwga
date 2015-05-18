@@ -8,8 +8,12 @@ SELECT 0
 IF USED("VPERSO")
    SELECT VPERSO 
 ELSE   
-   SELECT 0
-   USE F:\SUELDOS\EMPRE1\PERSONAL ALIAS VPERSO
+   IF USED("PERSONAL")
+      SELECT PERSONAL 
+   ELSE
+      SELECT 0
+      USE F:\SUELDOS\EMPRE1\PERSONAL ALIAS VPERSO
+  ENDIF 
 ENDIF   
  
 *USE c:\suerut\empre1\personal ALIAS vperso
@@ -18,23 +22,23 @@ ENDIF
 local mes as string
 LOCAL vempre as Integer
 LOCAL vvfecha as date 
- mes = "JULIO"
+ mes = "ABRIL"
  vempre = 1
-vvfecha = CTOD("27/07/2014")
+vvfecha = CTOD("28/04/2015")
 SELECT legajo,SUM(IIF(CLASE= 1 .OR. CLASE = 8,&MES,0))AS BASELQ,SUM(IIF(CONCEPTO = 500 ,&mes,0))as &mes ,SUM(IIF(CONCEPTO = 600 ,&mes,0)) as ret  FROM nlegajo;
-WHERE ano = 2014 .AND. EMPRESA = vempre  GROUP BY legajo INTO CURSOR RETCUA
+WHERE ano = 2015 .AND. EMPRESA = vempre  GROUP BY legajo INTO CURSOR RETCUA
  
 SELECT R.LEGAJO,P.NOMBRE,P.CUIL,P.CALLE,;
 P.NRO,P.LOCALIDAD,P.PROVINCIA, R.BASELQ,R.RET FROM VPERSO AS P  INNER JOIN RETCUA  AS R ON p.legajo = r.legajo ORDER BY r.legajo INTO CURSOR INFR
  
 SELECT  n.legajo as legajo, n.concepto,&mes,c.clase,n.empresa  FROM nlegajo as n INNER JOIN nconceptos;
-as c ON c.concepto = n.concepto WHERE N.ANO = 2013 .AND. C.CLASE = 1 .AND. n.EMPRESA = vempre ORDER BY n.legajo INTO CURSOR HABER   
+as c ON c.concepto = n.concepto WHERE N.ANO = 2015 .AND. C.CLASE = 1 .AND. n.EMPRESA = vempre ORDER BY n.legajo INTO CURSOR HABER   
 BROWSE 
 SELECT legajo,SUM(&mes) AS HABER FROM HABER WHERE clase = 1 GROUP BY  legajo INTO CURSOR BASE 
 
 
 SELECT  n.legajo, n.concepto,&mes,c.clase,n.empresa  FROM nlegajo as n INNER JOIN nconceptos;
-as c ON c.concepto = n.concepto WHERE N.ANO = 2013 .AND. EMPRESA= vempre .AND. C.CLASE = 8 ORDER BY n.legajo INTO CURSOR SINAPORTE
+as c ON c.concepto = n.concepto WHERE N.ANO = 2015 .AND. EMPRESA= vempre .AND. C.CLASE = 8 ORDER BY n.legajo INTO CURSOR SINAPORTE
 
 
 SELECT legajo,SUM(&mes)AS HSAP FROM SINAPORTE WHERE clase = 8   GROUP BY  legajo INTO CURSOR SINAP 
@@ -52,13 +56,13 @@ FROM INFR INNER JOIN SUELDO  ON SUELDO.LEGAJO = INFR.LEGAJO INTO CURSOR INFOFIN 
 SET FILTER TO RET <> 0
 SUM RET TO VV
 WAIT WINDOW STR(VV,10,2)
-SET FILTER TO 
-*TRY
-*      COPY TO GETFILE('XLS', 'Guardar archivo .XLS:',   'Guardar', 1, 'Guardar reporte en...') type XL5 
-*CATCH TO excepc
-*       WAIT WINDOW "Error " + excepc.Message        
+SET FILTER TO ret <>0
+TRY
+      COPY TO GETFILE('XLS', 'Guardar archivo .XLS:',   'Guardar', 1, 'Guardar reporte en...') type XL5 
+CATCH TO excepc
+       WAIT WINDOW "Error " + excepc.Message        
 
-*ENDTRY
+ENDTRY
 exporta(vvfecha) 
 *CLOSE TABLES ALL
 RETURN
@@ -110,7 +114,7 @@ DO WHILE .NOT. EOF()
    @LIN,12 SAY WCOMPRO
    *            123456798-123456    
    @LIN,28  SAY "0000000000000.00"
-   @LIN,44  SAY "217"
+   @LIN,44  SAY "787"
    @LIN,47  SAY "160"
    @LIN,50  SAY "1"
    *BASE DE CALCULO
