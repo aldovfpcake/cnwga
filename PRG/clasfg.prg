@@ -167,7 +167,7 @@ DEFINE CLASS CALCULORET as custom
        filio    = 0 
        legajo   = 0
        cancelar = .f.
-         
+       nivel    =  1  
          
          
          
@@ -295,8 +295,85 @@ DEFINE CLASS CALCULORET as custom
         
         ENDPROC
         
-        
         PROCEDURE DEDUPER
+             		
+			SELECT gancias
+			VarPtje = 0
+			DO case
+				  case  this.nivel = 1
+						VarPtje = 0.25	
+				  case  this.nivel = 2
+						VarPtje = 0.20
+				  case  this.nivel = 3
+						VarPtje = 0.15				
+				  case  this.nivel = 4		
+						VarPtje = 0.10
+				  case  this.nivel = 5		
+						VarPtje = 0.075
+				  case  this.nivel = 6		
+						VarPtje = 0.05			
+				  Otherwise
+						VarPtje = 0.05
+			EndCase			
+			
+			
+			FOR m= 5 TO 16
+			  
+			   campo = FIELD(m)
+			   
+			   GO top
+			   FOR i = 1 TO RECCOUNT()
+				   IF concepto = 300 .or. concepto = 310 .or. concepto = 320 .or. concepto = 330 .or. concepto = 350
+					  valor = &campo*VarPtje + &campo
+					  * actualizar(campo,concepto,valor)
+					 replace &campo WITH valor                     
+				   ENDIF      
+				   IF .not.eof()
+				      SKIP
+				   ENDIF     
+			   next
+             next 
+        ENDPROC
+        
+        
+        
+        PROCEDURE DIFERENCIA
+			SELECT GANCIAS
+			CLEAR
+			VarPjte = 0.25
+			FOR m= 5 TO 16
+			   campo = FIELD(m)
+			   GO top
+			   FOR i = 1 TO RECCOUNT()
+				   IF concepto = 600
+					  var600 =0
+					  var600 = &campo
+				   ENDIF  
+				   IF CONCEPTO = 605
+					   var605 = 0
+					   var605 = &campo 
+				   ENDIF   
+				   IF CONCEPTO = 607
+					  replace &campo WITH var605 - var600
+				   ENDIF    
+				   IF .NOT. EOF()
+					  SKIP
+				   ENDIF   
+			   next
+			next  
+        ENDPROC
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        PROCEDURE DEDUPEROLD
             SELECT * FROM DEDUCCIONES WHERE CONCEPTO = 310;
             INTO CURSOR LISTADE
             
@@ -316,7 +393,7 @@ DEFINE CLASS CALCULORET as custom
                            WHERE GANCIAS.CONCEPTO = 310                                 
          
                                  
- SELECT * FROM DEDUCCIONES WHERE CONCEPTO = 300;
+            SELECT * FROM DEDUCCIONES WHERE CONCEPTO = 300;
             INTO CURSOR LISTIMPO
             
            
@@ -334,6 +411,10 @@ DEFINE CLASS CALCULORET as custom
                            DICIEMBRE = LISTIMPO.DICIEMBRE;
                            WHERE GANCIAS.CONCEPTO = 300
            
+           
+           
+            
+           
         
         
         ENDPROC
@@ -342,6 +423,14 @@ DEFINE CLASS CALCULORET as custom
         * ACTUALIZA IMPORTE FAMILIARES A CARGO 
           SELECT * FROM DEDUCCIONES WHERE CONCEPTO = 350;
           INTO CURSOR LISTDEDU
+          varpor = 0
+          DO case
+             CASE this.nivel = 1
+                   varpor = 0.25
+          ENDCASE          
+          
+          
+          
           
           UPDATE GANCIAS SET ENERO = LISTDEDU.ENERO,; 
                              FEBRERO = LISTDEDU.FEBRERO*GANCIAS.UNIDADES,;
@@ -351,11 +440,11 @@ DEFINE CLASS CALCULORET as custom
                              JUNIO   = LISTDEDU.JUNIO*GANCIAS.UNIDADES,;
                              JULIO   = LISTDEDU.JULIO*GANCIAS.UNIDADES,;
                              AGOSTO  = LISTDEDU.AGOSTO*GANCIAS.UNIDADES,;
-                           SETIEMBRE = LISTDEDU.SETIEMBRE*GANCIAS.UNIDADES,;
-                           OCTUBRE   = LISTDEDU.OCTUBRE*GANCIAS.UNIDADES,;         
-                           NOVIEMBRE = LISTDEDU.NOVIEMBRE*GANCIAS.UNIDADES,;
-                           DICIEMBRE = LISTDEDU.DICIEMBRE*GANCIAS.UNIDADES;
-                           WHERE GANCIAS.CONCEPTO = 350 .AND. UNIDADES <> 0 
+                             SETIEMBRE = LISTDEDU.SETIEMBRE*GANCIAS.UNIDADES,;
+                             OCTUBRE   = LISTDEDU.OCTUBRE*GANCIAS.UNIDADES,;         
+                             NOVIEMBRE = LISTDEDU.NOVIEMBRE*GANCIAS.UNIDADES,;
+                             DICIEMBRE = LISTDEDU.DICIEMBRE*GANCIAS.UNIDADES;
+                             WHERE GANCIAS.CONCEPTO = 350 .AND. UNIDADES <> 0 
         
            SELECT LISTDEDU
            USE
@@ -1053,7 +1142,7 @@ DEFINE CLASS CONCEPTOS as custom
                VALUES (this.legajo,this.codigo,this.ano,this.empresa,this.aid)  
             
           CATCH TO e
-             WAIT WINDOW "Error en Inserción de Concepto en legajo : " + STR(this.legajo,4) + " " + STR(this.concepto,4)
+             WAIT WINDOW "Error en Inserción de Concepto en legajo : " + STR(this.legajo,4) + " " + STR(this.codigo,4)
    
           FINALLY
           ENDTRY
