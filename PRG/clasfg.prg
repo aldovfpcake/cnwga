@@ -749,7 +749,7 @@ DEFINE CLASS CALCULORET as custom
               
               
            endif 
-		
+		  
            vvtope   = 0		
            vvneta   = 0  
            vvctamed = 0
