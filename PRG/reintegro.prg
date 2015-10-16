@@ -5,7 +5,7 @@ SET TEXTMERGE ON
 USE reintegro2 ALIAS re 
 SET FILTER TO Desc <> 0
 SELECT 0
-USE F:\SUELDOS\EMPRE1\82015 ALIAS LIQ
+USE F:\SUELDOS\EMPRE1\92015 ALIAS LIQ
 *STORE FCREATE('c:\suerut\consultas\names.txt') TO _TEXT   
 SELECT RE
 GO TOP
@@ -16,7 +16,7 @@ SCAN
     ?RE.LEGAJO    
     IF RECCOUNT() =0
          *TEXT        
-          INSERT INTO LIQ (LEGAJO,CONCEPTO,DESCRIP,LIQUIDA,SINAPORTE ) VALUES( re.legajo,175,"Reit.Gan. Cta 3 ", 3,(re.desc/5))
+          INSERT INTO LIQ (LEGAJO,CONCEPTO,DESCRIP,LIQUIDA,SINAPORTE ) VALUES( re.legajo,175,"Reit.Gan.Cta 4 ", 3,(re.desc/5))
          ?"Insertando----->"+ str(RE.LEGAJO,4)
         * ENDTEXT
     

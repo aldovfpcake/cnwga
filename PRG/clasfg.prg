@@ -683,6 +683,8 @@ DEFINE CLASS CALCULORET as custom
                           nomante = "JULIO"
                           this.clcgn(nomes,nomante)
                           this.topectamed(nomes) 
+                          this.clcgn(nomes,nomante)
+            	
             	CASE this.mes = 9     
                           nomes = "SETIEMBRE"
                           nomante = "AGOSTO"

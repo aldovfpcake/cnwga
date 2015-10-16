@@ -40,7 +40,12 @@ DO case
       
    CASE vvprocesos = 3  
         DO FORM calcugral WITH vvempresa
-
+   
    CASE vvprocesos = 4
+        USE vistaperso
+        DO FORM legfm     
+        
+
+   CASE vvprocesos = 5
       *  DO c:\cnwga\prg\acercade
 ENDCASE 

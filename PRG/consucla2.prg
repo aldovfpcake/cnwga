@@ -21,9 +21,9 @@ ENDIF
 local mes as string
 LOCAL vempre as Integer
 LOCAL vvfecha as date 
- mes = "JULIO"
+ mes = "SETIEMBRE"
  vempre = 1
-vvfecha = CTOD("28/07/2015")
+vvfecha = CTOD("28/09/2015")
 SELECT legajo,SUM(IIF(CLASE= 1 .OR. CLASE = 8,&MES,0))AS BASELQ,SUM(IIF(CONCEPTO = 500 ,&mes,0))as &mes ,SUM(IIF(CONCEPTO = 600 ,&mes,0)) as ret  FROM nlegajo;
 WHERE ano = 2015 .AND. EMPRESA = vempre  GROUP BY legajo INTO CURSOR RETCUA
  
@@ -191,25 +191,28 @@ RETURN N
 *************************
 FUNCTION DEVOLU
 ************************
-SELECT LEGAJO,SINAPORTE AS D FROM 72015 WHERE CONCEPTO = 175;
+SELECT LEGAJO,SINAPORTE AS D FROM 92015 WHERE CONCEPTO = 175;
 INTO CURSOR DESCU
 SCAN
     SELECT RET FROM INFOFIN WHERE LEGAJO = DESCU.LEGAJO;
     INTO CURSOR GAN
+        
     VVIMPORTE = 0    
     VVIMPORTE = GAN.RET  
     IF VVIMPORTE  > 0
         VVIMPORTE = GAN.RET - DESCU.D
     ELSE
+       
         IF VVIMPORTE < -1
            VVIMPORTE = GAN.RET + DESCU.D - (DESCU.D*2)  
         ELSE
-            VVIMPORTE = DESCU.D - (DESCU.D*2)
+            VVIMPORTE = DESCU.D -(DESCU.D * 2)  
         ENDIF
     ENDIF
     UPDATE INFOFIN SET RET = VVIMPORTE WHERE LEGAJO = DESCU.LEGAJO
    
 ENDSCAN
-
+SELECT INFOFIN
+BROWSE FOR RET < 0
 
 

@@ -1,6 +1,7 @@
 *SET DEFAULT TO E:\NWGA\DATOS
 SET EXCLUSIVE OFF
 SET DELETED ON
+SET DATE ITALIAN
 _screen.visible = .f.
 LOCAL unidad
 unidad = " "
