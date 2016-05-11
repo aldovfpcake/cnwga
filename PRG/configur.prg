@@ -19,12 +19,18 @@ DO case
         ubiarch =   unidad+ "sueldos\empre2;&unidad\nwga\forms;" + unidad +" nwga\datos;" + unidad + "nwga\prg;c:\cnwga\forms;c:\cnwga\prg"
 
 ENDCASE
+TRY
+	SET TALK OFF
+	SET EXCLUSIVE off
+	SET REPROCESS TO AUTOMATIC
+	OPEN DATABASE f:\sueldos\nwga\datos\ganancias SHARED VALIDATE
+	SET PROCEDURE TO c:\cnwga\prg\clasfg
+CATCH TO E 
+    WAIT WINDOW "No se Puede Abrir la base de datos"
+    CLEAR EVENTS
+    QUIT
+ENDTRY   
 
-SET TALK OFF
-SET EXCLUSIVE off
-SET REPROCESS TO AUTOMATIC
-OPEN DATABASE f:\sueldos\nwga\datos\ganancias SHARED VALIDATE
-SET PROCEDURE TO c:\cnwga\prg\clasfg
 
 SELECT LEGAJO,NOMBRE,PS261,NIVELGCIA FROM PERSONAL WHERE ACTIVO = "A";
 ORDER BY NOMBRE INTO CURSOR LPERSONAL

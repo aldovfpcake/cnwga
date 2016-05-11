@@ -14,31 +14,31 @@ ELSE
       USE F:\SUELDOS\EMPRE1\PERSONAL ALIAS VPERSO
   ENDIF 
 ENDIF   
- 
+ CLEAR
 *USE c:\suerut\empre1\personal ALIAS vperso
 *SELECT personal
 *use
 local mes as string
 LOCAL vempre as Integer
 LOCAL vvfecha as date 
- mes = "SETIEMBRE"
- vempre = 1
-vvfecha = CTOD("28/09/2015")
+ mes = "ABRIL"
+ vempre =1
+vvfecha = CTOD("28/04/2016")
 SELECT legajo,SUM(IIF(CLASE= 1 .OR. CLASE = 8,&MES,0))AS BASELQ,SUM(IIF(CONCEPTO = 500 ,&mes,0))as &mes ,SUM(IIF(CONCEPTO = 600 ,&mes,0)) as ret  FROM nlegajo;
-WHERE ano = 2015 .AND. EMPRESA = vempre  GROUP BY legajo INTO CURSOR RETCUA
+WHERE ano = 2016 .AND. EMPRESA = vempre  GROUP BY legajo INTO CURSOR RETCUA
  
 SELECT R.LEGAJO,P.NOMBRE,P.CUIL,P.CALLE,;
 P.NRO,P.LOCALIDAD,P.PROVINCIA, R.BASELQ,R.RET FROM VPERSO AS P  INNER JOIN RETCUA  AS R ON p.legajo = r.legajo ORDER BY r.legajo INTO CURSOR INFR
  
  
 SELECT  n.legajo as legajo, n.concepto,&mes,c.clase,n.empresa  FROM nlegajo as n INNER JOIN nconceptos;
-as c ON c.concepto = n.concepto WHERE N.ANO = 2015 .AND. C.CLASE = 1 .AND. n.EMPRESA = vempre ORDER BY n.legajo INTO CURSOR HABER   
+as c ON c.concepto = n.concepto WHERE N.ANO = 2016 .AND. C.CLASE = 1 .AND. n.EMPRESA = vempre ORDER BY n.legajo INTO CURSOR HABER   
 
 SELECT legajo,SUM(&mes) AS HABER FROM HABER WHERE clase = 1 GROUP BY  legajo INTO CURSOR BASE 
 
 
 SELECT  n.legajo, n.concepto,&mes,c.clase,n.empresa  FROM nlegajo as n INNER JOIN nconceptos;
-as c ON c.concepto = n.concepto WHERE N.ANO = 2015 .AND. EMPRESA= vempre .AND. C.CLASE = 8 ORDER BY n.legajo INTO CURSOR SINAPORTE
+as c ON c.concepto = n.concepto WHERE N.ANO = 2016 .AND. EMPRESA= vempre .AND. C.CLASE = 8 ORDER BY n.legajo INTO CURSOR SINAPORTE
 
 
 SELECT legajo,SUM(&mes)AS HSAP FROM SINAPORTE WHERE clase = 8   GROUP BY  legajo INTO CURSOR SINAP 
@@ -52,9 +52,8 @@ SELECT INFR.LEGAJO,INFR.NOMBRE,INFR.CUIL AS CUIL,INFR.CALLE,;
 INFR.NRO,INFR.LOCALIDAD,INFR.PROVINCIA, INFR.RET,SUELDO.HABER,SUELDO.VIATICO;
 FROM INFR INNER JOIN SUELDO  ON SUELDO.LEGAJO = INFR.LEGAJO INTO CURSOR INFOFIN READWRITE
 GO TOP
-BROWSE
-devolu()
-BROWSE
+*devolu()
+*BROWSE
 
 SELECT INFOFIN
 SCAN
@@ -63,15 +62,15 @@ SCAN
    ?VARCUIL   
 ENDSCAN
 GO TOP
+SET FILTER TO ret <>0
 BROWSE
-SET FILTER TO RET <> 0
 SUM RET TO VV
 WAIT WINDOW STR(VV,10,2)
-SET FILTER TO ret <>0
+SET FILTER TO ret >0
 *TRY
-*      COPY TO GETFILE('XLS', 'Guardar archivo .XLS:',   'Guardar', 1, 'Guardar reporte en...') type XL5 
+*      COPY TO GETFILE('XLS', 'Guardar archivo .XLS:',   'Guardar', 1, 'Guardar reporte en...') type XL5 *
 *CATCH TO excepc
-*       WAIT WINDOW "Error " + excepc.Message        
+*       WAIT WINDOW "Error " + excepc.Message        *
 
 *ENDTRY
 BROWSE TITLE "LISTO"
@@ -191,10 +190,10 @@ RETURN N
 *************************
 FUNCTION DEVOLU
 ************************
-SELECT LEGAJO,SINAPORTE AS D FROM 92015 WHERE CONCEPTO = 175;
+SELECT LEGAJO,SINAPORTE AS D FROM 102015 WHERE CONCEPTO = 175;
 INTO CURSOR DESCU
 SCAN
-    SELECT RET FROM INFOFIN WHERE LEGAJO = DESCU.LEGAJO;
+    SELECT NOMBRE,RET FROM INFOFIN WHERE LEGAJO = DESCU.LEGAJO;
     INTO CURSOR GAN
         
     VVIMPORTE = 0    
@@ -202,9 +201,9 @@ SCAN
     IF VVIMPORTE  > 0
         VVIMPORTE = GAN.RET - DESCU.D
     ELSE
-       
+        *SET STEP ON ON
         IF VVIMPORTE < -1
-           VVIMPORTE = GAN.RET + DESCU.D - (DESCU.D*2)  
+             VVIMPORTE = GAN.RET + DESCU.D - (DESCU.D*2)  
         ELSE
             VVIMPORTE = DESCU.D -(DESCU.D * 2)  
         ENDIF

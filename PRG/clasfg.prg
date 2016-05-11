@@ -295,7 +295,7 @@ DEFINE CLASS CALCULORET as custom
         
         ENDPROC
         
-        PROCEDURE DEDUPER
+        PROCEDURE DEDUPEROLD2
              		
 			SELECT gancias
 			VarPtje = 0
@@ -373,7 +373,7 @@ DEFINE CLASS CALCULORET as custom
         
         
         
-        PROCEDURE DEDUPEROLD
+        PROCEDURE DEDUPER
             SELECT * FROM DEDUCCIONES WHERE CONCEPTO = 310;
             INTO CURSOR LISTADE
             
@@ -642,19 +642,18 @@ DEFINE CLASS CALCULORET as custom
                CASE this.mes = 1
                         nomes  = "ENERO"
                         nomante = "    "  
-                        this.clcgn(nomes,nomante)    
+                        this.clcgn(nomes,nomante)
+                        this.topectamed(nomes)       
                 CASE this.mes = 2  
                         nomes   = "FEBRERO"
                         nomante = "ENERO"
-                        this.clcgn(nomes,nomante) 
-                                            
-                        
-                                 
+                        this.clcgn(nomes,nomante)
+                        this.topectamed(nomes)    
                  CASE this.mes = 3  
                         nomes   = "MARZO"
                         nomante = "FEBRERO"
                         this.clcgn(nomes,nomante) 
-                        
+                        this.topectamed(nomes)    
                  CASE this.mes = 4  
                         nomes   = "ABRIL"
                         nomante = "MARZO"
@@ -664,7 +663,8 @@ DEFINE CLASS CALCULORET as custom
                 CASE this.mes = 5  
                          nomes   = "MAYO "
                          nomante = "ABRIL"
-                         this.clcgn(nomes,nomante) 
+                         this.clcgn(nomes,nomante)
+                         this.topectamed(nomes)    
                                               
                                   
               	CASE this.mes = 6  
@@ -743,21 +743,36 @@ DEFINE CLASS CALCULORET as custom
         
         PROCEDURE TOPECTAMED
         Parameters nomes
-
+           
+          
            vvctamed = 0
-           SUM &nomes to vvctamed FOR CONCEPTO = 362
+        
+           SCAN
+           
+               IF CONCEPTO = 362
+                  vvctamed = &nomes
+               ENDIF
+           
+           ENDSCAN
+        
+        
+        
+        *   IF this.mes = 1
+        *      SUM &nomes to vvctamed FOR CONCEPTO = 200
+        *   ELSE   
+        *      SUM &nomes to vvctamed FOR CONCEPTO = 362
+        *   ENDIF   
            if vvctamed = 0    		   
               RETURN  
-              
-              
            endif 
 		  
+		   
            vvtope   = 0		
            vvneta   = 0  
-           vvctamed = 0
+         *  vvctamed = 0
 		   SUM &nomes to vvneta FOR CONCEPTO = 210
 		   vvtope = vvneta * 0.05
-		   SUM &nomes to vvctamed
+		   
            if vvctamed > vvtope
               UPDATE GANCIAS SET &nomes = vvtope ;
               WHERE CONCEPTO = 362			  
@@ -1071,7 +1086,7 @@ DEFINE CLASS VISUREC AS Custom
          use
     CATCH TO e
          
-         MESSAGEBOX ("Error",0,"NO SE ENENCUENTRA EL ARCHIVO ERROR Nº" + " " + CURDIR()+ STR(ERROR(),4) )
+         MESSAGEBOX ("NO SE ENENCUENTRA EL ARCHIVO ERROR Nº" + " " + CURDIR()+ STR(ERROR(),4),0,"Error")
          this.cancelar = .f.
       
     ENDTRY
@@ -1080,7 +1095,13 @@ DEFINE CLASS VISUREC AS Custom
    ENDPROC   
 
   
-
+   PROCEDURE destroy
+   
+  *  SELECT RECIBO
+   * USE
+   
+   
+   ENDPROC
 
 
 
@@ -1635,7 +1656,67 @@ ENDDEFINE
 
 
 
+DEFINE CLASS CARGOBASE AS Custom
+	wlegajo   = 0
+	wempresa  = 0
+	wconcepto = 0
+	waño	  = 0
+	wañoant   = 0
+	
+	PROCEDURE Carga
+	     
+		DECLARE concep[9]
+		
+		concep[1] = 300
+	    concep[2] = 310
+        concep[3] = 320
+        concep[4] = 330
+        concep[5] = 350
+        concep[6] = 360
+        concep[7] = 361
+        concep[8] = 362
+        concep[9] = 363
+        
+        FOR i = 1 TO 9
+        	SELECT  diciembre FROM nlegajo WHERE legajo = this.wlegajo .and. empresa = this.wempresa .and. concepto = concep[i];
+        	.and. ano = this.wañoant INTO CURSOR ctabla
+            ?STR(concep[i],4) + " " + STR(ctabla.diciembre,12,2)
+            this.
+	    NEXT
+	
+	ENDPROC	
+	
+ 	
+    PROCEDURE insertar
+      PARAMETERS Parconcepto,Parimporte
+      
+      SELECT legajo,diciembre FROM nlegajo WHERE ano =  this.waño .and. this.wempresa = empresa .and. concepto = Parconcepto;
+      INTO CURSOR existe  
+      IF EOF()  
+         INSERT INTO nlegajo(empresa,legajo,concepto,ano) VALUES (this.wempresa,this.wlegajo,parconcepto,this.waño)
+      ENDIF
+      UPDATE nlegajo SET enero     = (Parimporte)/12,;
+                         febrero   = (Parimporte)/12,;     
+                         marzo     = (Parimporte)/12,;     
+                         abril     = (Parimporte)/12,;  
+                         mayo      = (Parimporte)/12,;        
+                         junio     = (Parimporte)/12,;
+                         julio     = (Parimporte)/12,;        
+                         agosto    = (Parimporte)/12,;     
+                         setiembre = (Parimporte)/12,; 
+                         octubre   = (Parimporte)/12,;     
+                         noviembre = (Parimporte)/12,;  
+                         diciembre = (Parimporte)/12;
+                         WHERE legajo = this.wlegajo .and. empresa = this.wempresa .and. concepto = parconcepto .and. ano = this.waño
+                            
+    
+    ENDPROC
 
+
+
+
+
+ENDDEFINE
 
 
 
