@@ -21,11 +21,11 @@ ENDIF
 local mes as string
 LOCAL vempre as Integer
 LOCAL vvfecha as date 
- mes = "JULIO"
+ mes = "FEBRERO"
  vempre =1
-vvfecha = CTOD("28/07/2016")
+vvfecha = CTOD("28/02/2017")
 SELECT legajo,SUM(IIF(CLASE= 1 .OR. CLASE = 8,&MES,0))AS BASELQ,SUM(IIF(CONCEPTO = 500 ,&mes,0))as &mes ,SUM(IIF(CONCEPTO = 600 ,&mes,0)) as ret  FROM nlegajo;
-WHERE ano = 2016 .AND. EMPRESA = vempre  GROUP BY legajo INTO CURSOR RETCUA
+WHERE ano = 2017 .AND. EMPRESA = vempre  GROUP BY legajo INTO CURSOR RETCUA
  
 SELECT R.LEGAJO,P.NOMBRE,P.CUIL,P.CALLE,;
 P.NRO,P.LOCALIDAD,P.PROVINCIA, R.BASELQ,R.RET FROM VPERSO AS P  INNER JOIN RETCUA  AS R ON p.legajo = r.legajo ORDER BY r.legajo INTO CURSOR INFR

@@ -176,7 +176,9 @@ DEFINE CLASS CALCULORET as custom
        * DEDUPER : deducciones personales  
        * CALCUGNETA :-------------->(CLGN METODO PROTEGIDO)
        * CALCURETEN CALCULA EL IMPUESTO Y LLAMA A (CLCGN METODO PROTEGIDO)
-          
+       PROCEDURE INIT
+         * this.CalculoDoceavaParte
+       ENDPROC	   
        
        
        
@@ -198,7 +200,7 @@ DEFINE CLASS CALCULORET as custom
                      NOMBREMES = "MARZO" 
                      MESANTERIOR = "FEBRERO"
                      this.calcret(nombremes,mesanterior)
-                      
+                       
               CASE this.mes = 4
                      NOMBREMES = "ABRIL" 
                      MESANTERIOR = "MARZO"
@@ -730,8 +732,7 @@ DEFINE CLASS CALCULORET as custom
 						   UPDATE GANCIAS SET  &nomes = vvganacu ;
 						   WHERE CONCEPTO = 210
 					   	   this.sjtoaret = ((vbr- vvdesc)-vvdedui)+ vvganacu 
-                           UPDATE GANCIAS SET &nomes = this.sjtoaret ; 
-						   WHERE CONCEPTO = 400        
+                          SUM &nomes  TO vbr FOR clase = 1 .or. clase = 8        
                        ELSE
                            this.sjtoaret = (vbr- vvdesc)-vvdedui 
                            UPDATE GANCIAS SET &nomes = this.sjtoaret ; 
@@ -740,6 +741,18 @@ DEFINE CLASS CALCULORET as custom
         
         
         ENDPROC
+        
+        PROTECTED PROCEDURE CalculoDoceavaParte
+             PARAMETERS nomes
+             SELECT GANCIAS
+             SUM &nomes  TO vbr FOR clase = 1 .or. clase = 8
+             UPDATE GANCIAS SET &nomes = vbr/12 ; 
+						   WHERE CONCEPTO = 6 
+        
+        
+        ENDPROC
+        
+        
         
         PROCEDURE TOPECTAMED
         Parameters nomes
@@ -977,13 +990,17 @@ DEFINE CLASS CARGOSUE as custom
         	SELECT SUM(SINAPORTE) AS VIAT FROM liquida WHERE LEGAJO = THIS.LEGAJO INTO CURSOR VIATICOS
             select legajo,sum(aporte) AS APORTE,sum(iif(CONCEPTO=18,aporte,0)) AS SAC from liquida where legajo = this.legajo GROUP BY legajo;
             INTO CURSOR SAC
+            SELECT SAC
+            
         	IF .NOT. ISNULL (SAC.SAC)
             	this.sueldo = sueldo.su - sac.sac
     	    	this.sac  = sac.sac
             ELSE
         	    this.sueldo = su.sueldo    
         	ENDIF
-        	 wait window  STR(this.legajo,4) + " " + STR(this.sac,6)
+        	
+        	 *wait window  STR(this.legajo,4) + " " + STR(this.sac,6)
+        
         	fcampo = this.mes + 4
             campo2 = (FIELD(fcampo,"GANCIAS",1))
             
@@ -993,10 +1010,11 @@ DEFINE CLASS CARGOSUE as custom
             	
             	SELECT GANCIAS   
             	TRY
-                	UPDATE GANCIAS SET &campo2 = THIS.SUELDO       WHERE CONCEPTO = 1  .AND. ISNULL(DIRLEG)
-               		UPDATE GANCIAS SET &campo2 = THIS.SAC          WHERE CONCEPTO = 4  .AND. ISNULL(DIRLEG)        
-                	UPDATE GANCIAS SET &campo2 =  VIATICOS.VIAT    WHERE CONCEPTO = 40  .AND. ISNULL(DIRLEG)  
-                    UPDATE GANCIAS SET &campo2 = THIS.SUELDO       WHERE CONCEPTO = 3   .AND.  .NOT.ISNULL(DIRLEG)       
+                	UPDATE GANCIAS   SET &campo2 = THIS.SUELDO      WHERE CONCEPTO = 1  .AND. ISNULL(DIRLEG)
+               		UPDATE GANCIAS   SET &campo2 = (THIS.SUELDO/12) WHERE CONCEPTO = 6  .AND. ISNULL(DIRLEG)
+					*UPDATE GANCIAS SET &campo2 = THIS.SAC          WHERE CONCEPTO = 5  .AND. ISNULL(DIRLEG)        
+                	UPDATE GANCIAS SET &campo2 =  VIATICOS.VIAT     WHERE CONCEPTO = 40  .AND. ISNULL(DIRLEG)  
+                    UPDATE GANCIAS SET &campo2 = THIS.SUELDO        WHERE CONCEPTO = 3   .AND.  .NOT.ISNULL(DIRLEG)       
             	CATCH TO OEXCEP
                 	WAIT WINDOW oexcep.message + STR(GANCIAS.LEGAJO,4)
                 
