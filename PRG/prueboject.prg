@@ -13,7 +13,7 @@ SET PROCEDURE TO c:\cnwga\PRG\clanual
 *x.codigo = 600
 *x.agregar
 clear
-legajo = 370
+legajo = 419
 x = CREATEOBJECT("liquianual",legajo,2016,1)
 fso = CreateObject('Scripting.FileSystemObject')
 tf = fso.CreateTextFile('c:\testfile.txt', .t.)

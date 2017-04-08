@@ -6,7 +6,6 @@ vvprocesos = 1
 *vvempresa = 1
 LOCAL unidad,ubiarch as Character 
 
-
 unidad= " "
 unidad = "f:\"
 

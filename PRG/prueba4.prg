@@ -3,8 +3,8 @@ SET DELETED ON
 SET PATH TO F:\SUELDOS\EMPRE1;c:\CNWGA\FORMS
 OPEN DATABASE f:\sueldos\nwga\datos\ganancias SHARED VALIDATE
 ***********************
-WNUMES = 2
-VVARCHIVO = "22017"    
+WNUMES = 3
+VVARCHIVO = "32017"    
 *************************    
 WCAMP = RET(WNUMES)
 WAIT WINDOW WCAMP
@@ -24,7 +24,7 @@ SCAN
  
 
 ENDSCAN
-descuento()
+*descuento()
 WAIT WINDOW "Proceso Terminado"
 
 

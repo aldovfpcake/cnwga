@@ -732,8 +732,11 @@ DEFINE CLASS CALCULORET as custom
 						   UPDATE GANCIAS SET  &nomes = vvganacu ;
 						   WHERE CONCEPTO = 210
 					   	   this.sjtoaret = ((vbr- vvdesc)-vvdedui)+ vvganacu 
-                          SUM &nomes  TO vbr FOR clase = 1 .or. clase = 8        
-                       ELSE
+                           *SUM &nomes  TO vbr FOR clase = 1 .or. clase = 8   
+                           UPDATE GANCIAS SET &nomes = this.sjtoaret ; 
+                           WHERE CONCEPTO = 400   						   
+                       
+					   ELSE
                            this.sjtoaret = (vbr- vvdesc)-vvdedui 
                            UPDATE GANCIAS SET &nomes = this.sjtoaret ; 
 						   WHERE CONCEPTO = 400 
@@ -923,15 +926,24 @@ DEFINE CLASS CALCULORET as custom
 
         PROTEC PROCEDURE CLCRETN
         PARAMETERS  RNOMBREMS,RMESANTE 
-        	    TRY
+        	    retean       = 0
+				retenefec    = 0 
+				retenidoreal = 0
+				TRY
         	       
         	       SELECT gancias
-           		   SUM  &RMESANTE  TO retean FOR concepto =500
+           		   SUM  &RMESANTE  TO retean        FOR concepto =510
+                   SUM  &RMESANTE  TO retenefec     FOR concepto =600
+           		   *SUM  &RMESANTE  TO retenidoreal  FOR concepto =600
+
            		   UPDATE GANCIAS SET  &RNOMBREMS = retencion ; 
 				   WHERE CONCEPTO = 500  
-                   UPDATE GANCIAS SET &RNOMBREMS = retean ; 
+				   IF retean < 0
+				      retean = 0
+				   ENDIF   
+				   UPDATE GANCIAS SET &RNOMBREMS = retean + retenefec ; 
 				   WHERE CONCEPTO = 510
-                   UPDATE GANCIAS SET &RNOMBREMS =  retencion - retean;
+                   UPDATE GANCIAS SET &RNOMBREMS =  retencion - (retean+retenefec);
                    WHERE CONCEPTO = 600
                                 
                CATCH TO e
@@ -999,22 +1011,53 @@ DEFINE CLASS CARGOSUE as custom
         	    this.sueldo = su.sueldo    
         	ENDIF
         	
-        	 *wait window  STR(this.legajo,4) + " " + STR(this.sac,6)
-        
+            select legajo, sum(iif(CONCEPTO=6,aporte,0)) AS FERI,;
+			sum(iif(CONCEPTO=6.or. CONCEPTO =9,cantidad,0)) AS cant from liquida where legajo = this.legajo GROUP BY legajo;
+			into cursor feriado
+            horasfe = 0
+  			 					
+  			
+  			
+			if feriado.feri <> 0
+			   horas = (FERIADO.FERI/FERIADO.CANT)*8
+               horasfe = horas - (horas*2) 			   
+        	endif
+			
+			select legajo, sum(iif(CONCEPTO=17,aporte,0)) AS kilom;
+			from liquida where legajo = this.legajo GROUP BY legajo;
+			into cursor ld
+			
+			ViaticosExentos =0
+			
+			IF ld.kilom <> 0 
+			   ViaticosExentos = -4330.58
+			ELSE   
+			   ViaticosExentos = -1732.23
+			ENDIF
+			
+			
+			
+			
+			
         	fcampo = this.mes + 4
             campo2 = (FIELD(fcampo,"GANCIAS",1))
             
-            
             IF ISNULL(this.sueldo) = .F.
-            
-            	
+                        	
             	SELECT GANCIAS   
             	TRY
-                	UPDATE GANCIAS   SET &campo2 = THIS.SUELDO      WHERE CONCEPTO = 1  .AND. ISNULL(DIRLEG)
-               		UPDATE GANCIAS   SET &campo2 = (THIS.SUELDO/12) WHERE CONCEPTO = 6  .AND. ISNULL(DIRLEG)
-					*UPDATE GANCIAS SET &campo2 = THIS.SAC          WHERE CONCEPTO = 5  .AND. ISNULL(DIRLEG)        
-                	UPDATE GANCIAS SET &campo2 =  VIATICOS.VIAT     WHERE CONCEPTO = 40  .AND. ISNULL(DIRLEG)  
-                    UPDATE GANCIAS SET &campo2 = THIS.SUELDO        WHERE CONCEPTO = 3   .AND.  .NOT.ISNULL(DIRLEG)       
+                	UPDATE GANCIAS   SET &campo2 = THIS.SUELDO        WHERE CONCEPTO = 1   .AND. ISNULL(DIRLEG)
+               		UPDATE GANCIAS   SET &campo2 = (THIS.SUELDO/12)   WHERE CONCEPTO = 6   .AND. ISNULL(DIRLEG)
+					UPDATE GANCIAS   SET &campo2 =  horasfe           WHERE CONCEPTO = 7   .AND. ISNULL(DIRLEG)        
+                	UPDATE GANCIAS   SET &campo2 =  VIATICOS.VIAT     WHERE CONCEPTO = 40  .AND. ISNULL(DIRLEG)  
+                    UPDATE GANCIAS   SET &campo2 = THIS.SUELDO        WHERE CONCEPTO = 3   .AND.  .NOT.ISNULL(DIRLEG) 
+                     
+                    VarExiste =  INLIST(this.legajo,385,382,384,657,600)
+                    IF VarExiste = .f. 
+                       UPDATE GANCIAS   SET &campo2 = ViaticosExentos  WHERE CONCEPTO = 41   .AND. ISNULL(DIRLEG)
+                    ENDIF
+                    
+                          
             	CATCH TO OEXCEP
                 	WAIT WINDOW oexcep.message + STR(GANCIAS.LEGAJO,4)
                 
