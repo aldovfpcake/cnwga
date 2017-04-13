@@ -731,7 +731,7 @@ DEFINE CLASS CALCULORET as custom
 						   SUM &nomante  TO vvganacu FOR concepto = 200 .or. concepto = 210 
 						   UPDATE GANCIAS SET  &nomes = vvganacu ;
 						   WHERE CONCEPTO = 210
-					   	   this.sjtoaret = ((vbr- vvdesc)-vvdedui)+ vvganacu 
+						   this.sjtoaret = ((vbr- vvdesc)-vvdedui)+ vvganacu 
                            *SUM &nomes  TO vbr FOR clase = 1 .or. clase = 8   
                            UPDATE GANCIAS SET &nomes = this.sjtoaret ; 
                            WHERE CONCEPTO = 400   						   
@@ -933,18 +933,30 @@ DEFINE CLASS CALCULORET as custom
         	       
         	       SELECT gancias
            		   SUM  &RMESANTE  TO retean        FOR concepto =510
-                   SUM  &RMESANTE  TO retenefec     FOR concepto =600
-           		   *SUM  &RMESANTE  TO retenidoreal  FOR concepto =600
+                   SUM  &RMESANTE  TO retenefec     FOR concepto =500
+           		   SUM  &RMESANTE  TO retenidoreal  FOR concepto =600
 
            		   UPDATE GANCIAS SET  &RNOMBREMS = retencion ; 
 				   WHERE CONCEPTO = 500  
+				   *SET STEP ON 
 				   IF retean < 0
 				      retean = 0
 				   ENDIF   
-				   UPDATE GANCIAS SET &RNOMBREMS = retean + retenefec ; 
-				   WHERE CONCEPTO = 510
-                   UPDATE GANCIAS SET &RNOMBREMS =  retencion - (retean+retenefec);
-                   WHERE CONCEPTO = 600
+				   
+				   IF retenidoreal < 0
+				      retean = retenefec
+				      UPDATE GANCIAS SET &RNOMBREMS = retean; 
+				      WHERE CONCEPTO = 510
+				      UPDATE GANCIAS SET &RNOMBREMS =  retencion - retean;
+                      WHERE CONCEPTO = 600
+				   ELSE
+				      UPDATE GANCIAS SET &RNOMBREMS = retean + retenidoreal ;
+                      WHERE CONCEPTO = 510
+				      UPDATE GANCIAS SET &RNOMBREMS =  retencion - (retean+retenidoreal);
+                      WHERE CONCEPTO = 600
+                    ENDIF
+				    
+				   
                                 
                CATCH TO e
                       WAIT WINDOW "ERROR EN ACTUALIZACION DE CONCEPTO 510,500" + " " + STR(e.Errorno,4)
@@ -1742,7 +1754,7 @@ DEFINE CLASS CARGOBASE AS Custom
         	SELECT  diciembre FROM nlegajo WHERE legajo = this.wlegajo .and. empresa = this.wempresa .and. concepto = concep[i];
         	.and. ano = this.wañoant INTO CURSOR ctabla
             ?STR(concep[i],4) + " " + STR(ctabla.diciembre,12,2)
-            this.
+            
 	    NEXT
 	
 	ENDPROC	

@@ -5,7 +5,11 @@ SET PATH TO  C:\CNWGA\FORMS;F:\SUELDOS\EMPRE1
 SET DEVICE TO FILE C:\SUERUT\LISTADOS\GNA.TXT
 CLEAR
 
-SELECT SUM(DESCUENTO)as des ,LEGAJO FROM 32017 WHERE CONCEPTO = 130  GROUP BY LEGAJO  INTO CURSOR RET ;
+ARCHIVO = '32017'
+CAMPO   = 'MARZO'
+SELECT 0
+USE (ARCHIVO) ALIAS LQ
+SELECT SUM(DESCUENTO)as des ,LEGAJO FROM LQ WHERE CONCEPTO = 130  GROUP BY LEGAJO  INTO CURSOR RET ;
 
 vtotal = 0
 
@@ -19,6 +23,7 @@ ENDSCAN
 
 ?"Total Retenido x Vac..............:"+ STR(vtotal,10,2)
 
+CLOSE TABLES ALL
 
 
 
@@ -26,14 +31,14 @@ ENDSCAN
 
 
 FUNCTION ACTUALIZAR()
-    SELECT MARZO FROM nlegajo WHERE empresa = 1 .and. ano = 2017 .and. legajo = ret.legajo .and. concepto = 500;
+    *SELECT MARZO FROM nlegajo WHERE empresa = 1 .and. ano = 2017 .and. legajo = ret.legajo .and. concepto = 500;
     INTO CURSOR VER
    * IF ver.FEBRERO <> ret.des
        @ROW()+1,1 SAY "Actualizando :" + STR(ret.legajo,4)
       * UPDATE NLEGAJO SET FEBRERO = ret.des;
        WHERE EMPRESA =1 .AND. ANO = 2017 .AND. LEGAJO = ret.legajo .and. concepto =500
-       UPDATE NLEGAJO SET MARZO = ret.des;
-       WHERE EMPRESA =1 .AND. ANO = 2017 .AND. LEGAJO = ret.legajo .and. concepto =600
+       UPDATE NLEGAJO SET &CAMPO = ret.des;
+       WHERE EMPRESA =1 .AND. ANO = 2017 .AND. LEGAJO = ret.legajo .and. concepto =605
        
    * ENDIF   
      
