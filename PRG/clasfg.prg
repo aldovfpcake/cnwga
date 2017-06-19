@@ -786,7 +786,7 @@ DEFINE CLASS CALCULORET as custom
            vvtope   = 0		
            vvneta   = 0  
          *  vvctamed = 0
-		   SUM &nomes to vvneta FOR CONCEPTO = 210
+		   SUM &nomes to vvneta FOR CONCEPTO = 210 OR CONCEPTO = 200
 		   vvtope = vvneta * 0.05
 		   
            if vvctamed > vvtope
