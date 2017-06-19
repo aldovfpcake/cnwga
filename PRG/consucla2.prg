@@ -21,9 +21,9 @@ ENDIF
 local mes as string
 LOCAL vempre as Integer
 LOCAL vvfecha as date 
- mes = "MARZO"
+ mes = "MAYO"
  vempre =1
-vvfecha = CTOD("28/03/2017")
+vvfecha = CTOD("28/05/2017")
 SELECT legajo,SUM(IIF(CLASE= 1 .OR. CLASE = 8,&MES,0))AS BASELQ,SUM(IIF(CONCEPTO = 500 ,&mes,0))as &mes ,SUM(IIF(CONCEPTO = 600 ,&mes,0)) as ret  FROM nlegajo;
 WHERE ano = 2017 .AND. EMPRESA = vempre  GROUP BY legajo INTO CURSOR RETCUA
  
@@ -55,12 +55,38 @@ GO TOP
 *devolu()
 *BROWSE
 
+
+SELECT legajo,concepto,&mes FROM nlegajo WHERE concepto = 605;
+AND ano = 2017 .and. empresa =1 ORDER BY legajo INTO CURSOR two
+clear
+SUM &mes TO vv
+WAIT WINDOW "two " + STR(vv,12,2)
+? "two ="
+?  vv
+
+
+
+
+
+
+
+
+
 SELECT INFOFIN
 SCAN
    VARCUIL =PASOCUIL(INFOFIN.CUIL)
    REPLACE INFOFIN.CUIL WITH VARCUIL
-   ?VARCUIL   
+   SELECT  LEGAJO,&MES FROM TWO WHERE INFOFIN.LEGAJO = TWO.LEGAJO INTO CURSOR EXISTE
+   IF .NOT.EOF()
+      ? STR(EXISTE.LEGAJO,4) + " "+ STR(EXISTE.&MES,12,2)
+      REPLACE INFOFIN.RET WITH EXISTE.&MES
+   ELSE
+      WAIT WINDOW "NO ENCONTRADO " +STR(TWO.LEGAJO,4)
+   ENDIF   
+   SELECT INFOFIN   
+      
 ENDSCAN
+SELECT INFOFIN
 GO TOP
 SET FILTER TO ret <>0
 BROWSE

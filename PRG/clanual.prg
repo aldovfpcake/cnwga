@@ -26,6 +26,8 @@ DEFINE CLASS liquianual as Custom
 	 Saldo = 0
 	 TotalDeducciones = 0
 	 TotalDeduccionesArt = 0
+	 nombre = " "
+	 Cuil   = " "
 	 
 	 legajo =0 
 	 Año = 0 
@@ -34,6 +36,7 @@ DEFINE CLASS liquianual as Custom
 	   This.Año = ParmAno   
 	   This.legajo = Parmlegajo
 	   This.Empresa = ParmEmpresa   
+	   this.busconombre
 	   this.TotalRemubruta  
 	   this.TotalObrasocial
 	   this.TotalSindical
@@ -374,6 +377,19 @@ DEFINE CLASS liquianual as Custom
 	ENDPROC 
 	 
 	
+	PROCEDURE BUSCONOMBRE
+	  
+	 SELECT NOMBRE,CUIL FROM PERSONAL WHERE LEGAJO = this.legajo INTO CURSOR existe 
+	
+	 This.nombre = existe.nombre
+	 this.cuil   = existe.cuil
+	 return
+	ENDPROC 
+	 
+	 
+	 
+	 
+	 
 	 
 	 
 	 

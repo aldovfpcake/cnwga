@@ -1,0 +1,18 @@
+
+PARAMETERS WLEGAJO,WUNIDADES
+
+ 
+WIMPORTE  = 24432
+WCONCEPTO = 330
+
+
+UPDATE NLEGAJO SET MAYO      = ((WIMPORTE/12)*5)  *WUNIDADES,;
+			       JUNIO     = ((WIMPORTE/12)*6)  *WUNIDADES,;
+                   JULIO     = ((WIMPORTE/12)*7)  *WUNIDADES,;
+                   AGOSTO    = ((WIMPORTE/12)*8)  *WUNIDADES,;
+                   SETIEMBRE = ((WIMPORTE/12)*9)  *WUNIDADES,;
+                   OCTUBRE   = ((WIMPORTE/12)*10) *WUNIDADES,;
+                   NOVIEMBRE = ((WIMPORTE/12)*11) *WUNIDADES,;
+                   DICIEMBRE =  WIMPORTE*WUNIDADES;
+                   WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2017 AND CONCEPTO = WCONCEPTO
+ return                  
