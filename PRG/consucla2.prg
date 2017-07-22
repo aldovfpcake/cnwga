@@ -21,24 +21,26 @@ ENDIF
 local mes as string
 LOCAL vempre as Integer
 LOCAL vvfecha as date 
- mes = "MAYO"
+ mes = "JUNIO"
  vempre =1
-vvfecha = CTOD("28/05/2017")
+vvfecha = CTOD("28/06/2017")
 SELECT legajo,SUM(IIF(CLASE= 1 .OR. CLASE = 8,&MES,0))AS BASELQ,SUM(IIF(CONCEPTO = 500 ,&mes,0))as &mes ,SUM(IIF(CONCEPTO = 600 ,&mes,0)) as ret  FROM nlegajo;
 WHERE ano = 2017 .AND. EMPRESA = vempre  GROUP BY legajo INTO CURSOR RETCUA
+ SUM RET TO VV
+ ?"eS reT" + STR(VV,12,2)
  
 SELECT R.LEGAJO,P.NOMBRE,P.CUIL,P.CALLE,;
 P.NRO,P.LOCALIDAD,P.PROVINCIA, R.BASELQ,R.RET FROM VPERSO AS P  INNER JOIN RETCUA  AS R ON p.legajo = r.legajo ORDER BY r.legajo INTO CURSOR INFR
  
  
 SELECT  n.legajo as legajo, n.concepto,&mes,c.clase,n.empresa  FROM nlegajo as n INNER JOIN nconceptos;
-as c ON c.concepto = n.concepto WHERE N.ANO = 2016 .AND. C.CLASE = 1 .AND. n.EMPRESA = vempre ORDER BY n.legajo INTO CURSOR HABER   
+as c ON c.concepto = n.concepto WHERE N.ANO = 2017 .AND. C.CLASE = 1 .AND. n.EMPRESA = vempre ORDER BY n.legajo INTO CURSOR HABER   
 
 SELECT legajo,SUM(&mes) AS HABER FROM HABER WHERE clase = 1 GROUP BY  legajo INTO CURSOR BASE 
 
 
 SELECT  n.legajo, n.concepto,&mes,c.clase,n.empresa  FROM nlegajo as n INNER JOIN nconceptos;
-as c ON c.concepto = n.concepto WHERE N.ANO = 2016 .AND. EMPRESA= vempre .AND. C.CLASE = 8 ORDER BY n.legajo INTO CURSOR SINAPORTE
+as c ON c.concepto = n.concepto WHERE N.ANO = 2017 .AND. EMPRESA= vempre .AND. C.CLASE = 8 ORDER BY n.legajo INTO CURSOR SINAPORTE
 
 
 SELECT legajo,SUM(&mes)AS HSAP FROM SINAPORTE WHERE clase = 8   GROUP BY  legajo INTO CURSOR SINAP 
@@ -56,40 +58,32 @@ GO TOP
 *BROWSE
 
 
-SELECT legajo,concepto,&mes FROM nlegajo WHERE concepto = 605;
+*SELECT legajo,concepto,&mes FROM nlegajo WHERE concepto = 605;
 AND ano = 2017 .and. empresa =1 ORDER BY legajo INTO CURSOR two
-clear
-SUM &mes TO vv
-WAIT WINDOW "two " + STR(vv,12,2)
-? "two ="
-?  vv
-
-
-
-
-
-
-
+*clear
+*SUM &mes TO vv
+*WAIT WINDOW "two " + STR(vv,12,2)
+*? "two ="
+*?  vv
 
 
 SELECT INFOFIN
 SCAN
    VARCUIL =PASOCUIL(INFOFIN.CUIL)
    REPLACE INFOFIN.CUIL WITH VARCUIL
-   SELECT  LEGAJO,&MES FROM TWO WHERE INFOFIN.LEGAJO = TWO.LEGAJO INTO CURSOR EXISTE
-   IF .NOT.EOF()
-      ? STR(EXISTE.LEGAJO,4) + " "+ STR(EXISTE.&MES,12,2)
-      REPLACE INFOFIN.RET WITH EXISTE.&MES
-   ELSE
-      WAIT WINDOW "NO ENCONTRADO " +STR(TWO.LEGAJO,4)
-   ENDIF   
-   SELECT INFOFIN   
+*   SELECT  LEGAJO,&MES FROM TWO WHERE INFOFIN.LEGAJO = TWO.LEGAJO INTO CURSOR EXISTE
+*   IF .NOT.EOF()
+*      ? STR(EXISTE.LEGAJO,4) + " "+ STR(EXISTE.&MES,12,2)
+*      REPLACE INFOFIN.RET WITH EXISTE.&MES
+*   ELSE
+*      WAIT WINDOW "NO ENCONTRADO " +STR(TWO.LEGAJO,4)
+*   ENDIF   
+*   SELECT INFOFIN   
       
 ENDSCAN
 SELECT INFOFIN
 GO TOP
 SET FILTER TO ret <>0
-BROWSE
 SUM RET TO VV
 WAIT WINDOW STR(VV,10,2)
 SET FILTER TO ret >0
