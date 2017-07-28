@@ -32,7 +32,7 @@ public class xlm {
     String sDirectorio = "C:\\suerut\\listados\\resultadosXML";
     File f = new File(sDirectorio);
     String RutaArch;    
-    RutaArch = "C:\\suerut\\listados\\resultadosXML";
+    RutaArch = "C:\\suerut\\listados\\resultadosXML\\";
     String Arch; 
     File[] ficheros = f.listFiles();
           for (int x=0;x<ficheros.length;x++){

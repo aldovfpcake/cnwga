@@ -13,7 +13,7 @@ EsposaImporte = 48447
 CLegajo =0 
 CLano = 2017
 Clmes = FIELD(9)
-
+Ccuil = "  "
      
   
 
@@ -28,13 +28,13 @@ Clmes = FIELD(9)
 
  	 PROCEDURE ActualizarEsposa
            PARAMETERS tf
-           SELECT concepto, mayo FROM nlegajo WHERE legajo = this.Clegajo;
+           SELECT concepto, julio FROM nlegajo WHERE legajo = this.Clegajo;
            AND empresa = 1 AND ano = this.Clano AND Concepto =this.Esposa;
            INTO CURSOR verifi
-            ? STR(verifi.concepto,4)+ " "+ STR(verifi.mayo,10,2)
-            linea = STR(this.Clegajo,4)+" "+ STR(verifi.concepto,4)+ " "+ STR(verifi.mayo,10,2)
+            ? STR(verifi.concepto,4)+ " "+ STR(verifi.julio,10,2)
+            linea = STR(this.Clegajo,4)+" "+ STR(verifi.concepto,4)+ " "+ STR(verifi.julio,10,2)
             
-           IF  verifi.mayo = 0 .and. this.ClcargaEsposa <> 0
+           IF  verifi.julio = 0 .and. this.ClcargaEsposa <> 0
               WAIT WINDOW "Error Esposa No Cargada" + STR(this.CLegajo,4)    
               tf.WriteLine(linea)
             ENDIF    
@@ -47,12 +47,12 @@ Clmes = FIELD(9)
 
      PROCEDURE ActualizarHijo
            PARAMETERS tf
-           SELECT concepto, mayo FROM nlegajo WHERE legajo = this.Clegajo;
+           SELECT concepto, julio FROM nlegajo WHERE legajo = this.Clegajo;
            AND empresa = 1 AND ano = this.Clano AND Concepto =this.Hijo;
            INTO CURSOR verifi
-            linea = STR(this.Clegajo,4)+" "+ STR(verifi.concepto,4)+ " "+ STR(verifi.mayo,10,2)
+            linea = STR(this.Clegajo,4)+" "+ STR(verifi.concepto,4)+ " "+ STR(verifi.julio,10,2)+ " "+ this.Ccuil
            ?linea
-           IF  verifi.mayo = 0 
+           IF  verifi.julio = 0 
               WAIT WINDOW "Error Hijo no Cargado" + STR(this.CLegajo,4)    
               tf.WriteLine(linea)
           ENDIF  
@@ -62,12 +62,12 @@ Clmes = FIELD(9)
 
      PROCEDURE ActCtamed
            PARAMETERS tf
-           SELECT concepto, mayo FROM nlegajo WHERE legajo = this.Clegajo;
+           SELECT concepto, julio FROM nlegajo WHERE legajo = this.Clegajo;
            AND empresa = 1 AND ano = this.Clano AND Concepto =this.Ctamedica;
            INTO CURSOR verifi
-            linea = STR(this.Clegajo,4)+" "+ STR(verifi.concepto,4)+ " "+ STR(verifi.mayo,10,2)
+            linea = STR(this.Clegajo,4)+" "+ STR(verifi.concepto,4)+ " "+ STR(verifi.julio,10,2)
            ?linea
-           IF  verifi.mayo = 0 
+           IF  verifi.julio = 0 
               WAIT WINDOW "Cta.Medica No Cargada" + STR(this.CLegajo,4)    
               tf.WriteLine(linea)
           ENDIF  
@@ -76,12 +76,12 @@ Clmes = FIELD(9)
 
     PROCEDURE ActDonacio
           PARAMETERS tf
-           SELECT concepto, mayo FROM nlegajo WHERE legajo = this.Clegajo;
+           SELECT concepto, julio FROM nlegajo WHERE legajo = this.Clegajo;
            AND empresa = 1 AND ano = this.Clano AND Concepto =this.Donaciones;
            INTO CURSOR verifi
-            linea = STR(this.Clegajo,4)+" "+ STR(verifi.concepto,4)+ " "+ STR(verifi.mayo,10,2)
+            linea = STR(this.Clegajo,4)+" "+ STR(verifi.concepto,4)+ " "+ STR(verifi.julio,10,2)
            ?linea
-           IF  verifi.mayo = 0 
+           IF  verifi.julio = 0 
               WAIT WINDOW "Donaciones No Cargada" + STR(this.CLegajo,4)    
               tf.WriteLine(linea)
           ENDIF  
@@ -90,19 +90,19 @@ Clmes = FIELD(9)
     
     PROCEDURE ActCreditoHipo
           PARAMETERS tf,importe
-           SELECT concepto, mayo FROM nlegajo WHERE legajo = this.Clegajo;
+           SELECT concepto, julio FROM nlegajo WHERE legajo = this.Clegajo;
            AND empresa = 1 AND ano = this.Clano AND Concepto =this.credithipo;
            INTO CURSOR verifi
-            linea = STR(this.Clegajo,4)+" "+ STR(verifi.concepto,4)+ " "+ STR(verifi.mayo,10,2)
+            linea = STR(this.Clegajo,4)+" "+ STR(verifi.concepto,4)+ " "+ STR(verifi.julio,10,2)+ " "+ this.Ccuil
            ?linea
-           IF  verifi.mayo = 0 
+           IF  verifi.julio = 0 
               WAIT WINDOW "Credito hipot No Cargado" + STR(this.CLegajo,4)    
               tf.WriteLine(linea)
           ENDIF  
           
-          IF importe <> verifi.mayo
+          IF importe <> verifi.julio
              WAIT WINDOW "Credito Impotecario Difiere del Cargado" + STR(this.Clegajo,4)
-             linea = "Credito Impotecario Difiere del Cargado" + STR(this.Clegajo,4)
+             linea = "Credito Impotecario Difiere del Cargado" + STR(this.Clegajo,4)+" "+ this.Ccuil
              tf.WriteLine(linea)
           ENDIF   
           

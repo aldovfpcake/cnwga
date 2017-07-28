@@ -8,6 +8,7 @@ X = CREATEOBJECT("actualizarleg")
 clear
 SELECT 0
 USE importac AGAIN
+SET FILTER TO EMPTY(FECHAIMPORT)
 
 CLEAR
 
@@ -17,13 +18,14 @@ SCAN
   IF  importac.credith <> 0
      ?STR(legajo,4) + " -hijos = "+ STR(hijos,1)
       x.CLegajo = importac.legajo
+      x.Ccuil   = importac.cuil
      *x.ClcargaEsposa = 1
      *x.ActualizarHijo(tf)
      * x.ActDonacio(tf)
-      x.ActCreditohipo(tf,importac.credith)
+      *x.ActCreditohipo(tf,importac.credith)
      *DO actuhijo WITH importac.legajo,importac.hijos
      * DO actamedico with importac.legajo,importac.ctamed 
-      *DO actacredito with importac.legajo,importac.credith
+      DO actacredito with importac.legajo,importac.credith
       *DO actdonacio with importac.legajo,importac.donacio
 
   ENDIF

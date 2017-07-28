@@ -6,9 +6,7 @@ PARAMETERS WLEGAJO,WIMPORTE
 WCONCEPTO = 360
 
 
-UPDATE NLEGAJO SET MAYO      = WIMPORTE,;
-			       JUNIO     = WIMPORTE,;
-                   JULIO     = WIMPORTE,;
+UPDATE NLEGAJO SET JULIO     = WIMPORTE,;
                    AGOSTO    = WIMPORTE,;
                    SETIEMBRE = WIMPORTE,;
                    OCTUBRE   = WIMPORTE,;
@@ -16,3 +14,8 @@ UPDATE NLEGAJO SET MAYO      = WIMPORTE,;
                    DICIEMBRE = WIMPORTE;
                    WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2017 AND CONCEPTO = WCONCEPTO
  return                  
+ 
+ 
+ 
+* UPDATE NLEGAJO SET JULIO = 1666.67;
+*WHERE CONCEPTO = 360 .AND. ANO =2017 .AND. JULIO <>0
