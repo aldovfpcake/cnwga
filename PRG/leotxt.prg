@@ -1,6 +1,7 @@
 SET PATH TO f:\sueldos\empre1
 SET TALK OFF
 CLEAR
+SET DELETED ON
 SET EXCLUSIVE OFF
 USE importac AGAIN
 scan
@@ -25,7 +26,7 @@ endscan
 
 FUNCTION buscarperso
 PARAMETERS vcuil
-SELECT legajo,nombre FROM personal WHERE cuil = vcuil;
+SELECT legajo,nombre FROM personal WHERE cuil = vcuil .and. activo = "A";
 into cursor perso
 
 

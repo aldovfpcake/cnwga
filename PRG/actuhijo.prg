@@ -6,9 +6,7 @@ WIMPORTE  = 24432
 WCONCEPTO = 330
 
 
-UPDATE NLEGAJO SET MAYO      = ((WIMPORTE/12)*5)  *WUNIDADES,;
-			       JUNIO     = ((WIMPORTE/12)*6)  *WUNIDADES,;
-                   JULIO     = ((WIMPORTE/12)*7)  *WUNIDADES,;
+UPDATE NLEGAJO SET JULIO     = ((WIMPORTE/12)*7)  *WUNIDADES,;
                    AGOSTO    = ((WIMPORTE/12)*8)  *WUNIDADES,;
                    SETIEMBRE = ((WIMPORTE/12)*9)  *WUNIDADES,;
                    OCTUBRE   = ((WIMPORTE/12)*10) *WUNIDADES,;

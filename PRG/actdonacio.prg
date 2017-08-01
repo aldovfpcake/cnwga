@@ -6,9 +6,7 @@ PARAMETERS WLEGAJO,WIMPORTE
 WCONCEPTO = 363
 
 
-UPDATE NLEGAJO SET MAYO      = WIMPORTE,;
-			       JUNIO     = WIMPORTE,;
-                   JULIO     = WIMPORTE,;
+UPDATE NLEGAJO SET JULIO     = WIMPORTE,;
                    AGOSTO    = WIMPORTE,;
                    SETIEMBRE = WIMPORTE,;
                    OCTUBRE   = WIMPORTE,;

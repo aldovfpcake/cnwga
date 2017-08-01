@@ -1,6 +1,7 @@
 
 SET PATH TO c:\cnwga\prg 
 SET EXCLUSIVE OFF
+SET DELETED ON
 OPEN DATABASE f:\sueldos\nwga\datos\GANANCIAS.DBC SHARED
 SET PROCEDURE TO c:\cnwga\prg\actualizarleg
 X = CREATEOBJECT("actualizarleg")
@@ -14,23 +15,31 @@ CLEAR
 
 fso = CreateObject('Scripting.FileSystemObject')
 tf = fso.CreateTextFile('c:\testfile.txt', .t.)
-SCAN
-  IF  importac.credith <> 0
-     ?STR(legajo,4) + " -hijos = "+ STR(hijos,1)
+*SCAN 
+ DO WHILE .NOT. EOF() 
+  IF  importac.gastosmed <> 0
       x.CLegajo = importac.legajo
       x.Ccuil   = importac.cuil
-     *x.ClcargaEsposa = 1
-     *x.ActualizarHijo(tf)
+      x.ClcargaEsposa = 1
+      x.cnombre = importac.nombre
+      ?importac.nombre + "-------------------> " + STR(importac.gastosmed,12,2)
+      x.Actgastosmedicos(tf,importac.gastosmed)
+      * x.actctamed(tf)
+     * x.actualizaresposa(tf) 
+     *  x.ActualizarHijo(tf)
      * x.ActDonacio(tf)
       *x.ActCreditohipo(tf,importac.credith)
-     *DO actuhijo WITH importac.legajo,importac.hijos
-     * DO actamedico with importac.legajo,importac.ctamed 
-      DO actacredito with importac.legajo,importac.credith
+      *DO actuhijo WITH importac.legajo,importac.hijos
+      * DO actamedico with importac.legajo,importac.ctamed 
+      *DO actacredito with importac.legajo,importac.credith
       *DO actdonacio with importac.legajo,importac.donacio
-
+      * DO ACTUESPOSA WITH IMPORTAC.LEGAJO,tf 
+      *DO actgastosmedicos WITH importac.legajo,importac.gastosmed
   ENDIF
    SELECT IMPORTAC
-ENDSCAN
+   SKIP 
+*ENDSCAN
+ENDDO
 tf.close
 CLOSE TABLES all
 

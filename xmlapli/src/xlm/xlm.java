@@ -24,6 +24,7 @@ public class xlm {
     public static float Tdnaciones =0;
     public static float Creditohipo=0;
     public  static int EmpleadoEsposa=0; 
+    public static float GastosMedicos =0;
     public static String EmpleadoNombre = " ";
     public static String EmpleadoCuil = " ";
     private String Snom;
@@ -36,7 +37,7 @@ public class xlm {
     String Arch; 
     File[] ficheros = f.listFiles();
           for (int x=0;x<ficheros.length;x++){
-          System.out.println( RutaArch +ficheros[x].getName());
+          System.out.println( RutaArch +ficheros[x].getName()+" "+x);
          
           Arch =  RutaArch+ficheros[x].getName();           
         
@@ -68,11 +69,12 @@ public class xlm {
 		if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 
 			Element eElement = (Element) nNode;
-                        String CtaMedico,Donaciones,StrCreditohipo;
+                        String CtaMedico,Donaciones,StrCreditohipo,StrGastosMedicos;
                         
                         CtaMedico = "1";
                         Donaciones = "3";
                         StrCreditohipo = "4";
+                        StrGastosMedicos = "7";
                         String Elem = new String();
                         String Cta  = new String();
                         
@@ -100,6 +102,13 @@ public class xlm {
                            Credihip = eElement.getElementsByTagName("montoTotal").item(0).getTextContent();
                            Creditohipo= Float.parseFloat(Credihip);
                         
+                        }
+                        GastosMedicos =0;
+                        String Gastosmed = new String();
+                        if(StrGastosMedicos.equalsIgnoreCase(Elem))
+                        {
+                         Gastosmed = eElement.getElementsByTagName("montoTotal").item(0).getTextContent();
+                         GastosMedicos = Float.parseFloat(Gastosmed);
                         }
 			System.out.println("tipodoc : " + eElement.getAttribute("tipo"));
 			
@@ -211,24 +220,8 @@ private static void CargaEmpleado(){
    System.out.println("--------->"+Canthijos);
    es.grabar(hc);
 }
-
-
  
  
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
-
 } 
     
     
