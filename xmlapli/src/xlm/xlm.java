@@ -27,8 +27,8 @@ public class xlm {
     public static float GastosMedicos =0;
     public static String EmpleadoNombre = " ";
     public static String EmpleadoCuil = " ";
-    private String Snom;
-    
+    public static short Nropre = 0;
+    public static String Fechapre= " ";
     public static void main(String argv[]) {
     String sDirectorio = "C:\\suerut\\listados\\resultadosXML";
     File f = new File(sDirectorio);
@@ -164,6 +164,7 @@ public class xlm {
     System.out.println("----------------");
     System.out.println("Esposa  ="+EmpleadoEsposa+ " Importe="  + Float.toString(EmpleadoEsposa*4037));
     CargaFamilia();
+    fechap();
       escritura();
           }
     }
@@ -220,6 +221,69 @@ private static void CargaEmpleado(){
    System.out.println("--------->"+Canthijos);
    es.grabar(hc);
 }
+ 
+ 
+ private static void fechap(){
+     
+                      try {
+                           DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+                           DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+                           Document doc = dBuilder.parse(FXmlFile);
+                           doc.getDocumentElement().normalize();
+                           NodeList nList = doc.getElementsByTagName("nroPresentacion");
+                           NodeList bList = doc.getElementsByTagName("fechaPresentacion");
+                                      
+                           String nropre = " ";
+                           String fecha = " ";
+                           for (int temp = 0; temp < nList.getLength(); temp++) {
+		                Node nNode = nList.item(temp);
+                                System.out.println("\nCurrent Element :" + nNode.getNodeName()+" ___" + nNode.getTextContent());
+                                nropre =nNode.getTextContent();
+                                Nropre = Short.parseShort(nropre);
+                                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                                    Element eElement = (Element) nNode;
+                                   /* System.out.println("periodo  : "+eElement.getAttribute("nroPresentacion" )  );*/
+                                   
+                                   
+                                }
+                           
+                           for ( temp = 0; temp < bList.getLength(); temp++) {
+		                Node bNode = bList.item(temp);
+                                System.out.println("\nCurrent Element :" + bNode.getNodeName()+" ___" + bNode.getTextContent());
+                                Fechapre= bNode.getTextContent();
+                                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                                    Element eElement = (Element) nNode;
+                                   /* System.out.println("periodo  : "+eElement.getAttribute("nroPresentacion" )  );*/
+                                   
+                                   
+                                }
+                                
+                           }     
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                           
+                           }    
+                           
+                          
+                      } catch (Exception e){
+                         e.printStackTrace();
+                     }   
+ 
+ 
+ 
+ 
+ }
+ 
+ 
+ 
  
  
 } 

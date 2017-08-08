@@ -27,7 +27,7 @@ public class escribir {
                String S = new String();
                S= "SADASDF";
                System.out.println("hijos:::"+hijos);
-               bfwriter.write(xlm.EmpleadoCuil +','+xlm.EmpleadoNombre +','+datos.EmpleadoEsposa +','+hijos + ','+datos.TctaMedico +','+ datos.Tdnaciones + ','+datos.Creditohipo+','+datos.GastosMedicos+ "\n");
+               bfwriter.write(xlm.EmpleadoCuil +','+xlm.EmpleadoNombre +','+datos.EmpleadoEsposa +','+hijos + ','+datos.TctaMedico +','+ datos.Tdnaciones + ','+datos.Creditohipo+','+datos.GastosMedicos+','+xlm.Nropre +","+xlm.Fechapre+"\n");
                bfwriter.close();
            }catch(IOException e) {
 			e.printStackTrace();
@@ -41,6 +41,7 @@ public class escribir {
 			}
 		}
            
+           
            System.out.println("Grabando a Disco");
            datos.Canthijos = 0;
            datos.TctaMedico=0;
@@ -48,6 +49,8 @@ public class escribir {
            datos.Creditohipo=0;
            datos.EmpleadoEsposa=0;
            xlm.GastosMedicos =0;
+           xlm.Nropre =0;
+           xlm.Fechapre = " ";
     }
     
 }

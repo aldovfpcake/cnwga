@@ -2,7 +2,9 @@ SET EXCLUSIVE OFF
 SET PATH TO F:\SUELDOS\EMPRE1
 
 SELECT LEGAJO,NOMBRE FROM PERSONAL WHERE ACTIVO = "A" ORDER BY LEGAJO INTO CURSOR LISTA 
-
+tot = 0
+fso = CreateObject('Scripting.FileSystemObject')
+tf = fso.CreateTextFile('c:\testfile.txt', .t.)
 SCAN
 
  VarLegajo = lista.legajo
@@ -12,20 +14,21 @@ SCAN
  SELECT personaL
 
 ENDSCAN
+linea = "Total............:" + STR(tot,12,2)
 
-
-
+tf.WriteLine(linea)
+tf.Close
 
 
 ***********************
 FUNCTION SUMAR
 **********************
- SELECT (ENERO + FEBRERO + MARZO) AS Totreten;
- FROM NLEGAJO WHERE EMPRESA = 1 .AND. ANO = 2017 .AND. LEGAJO = VarLegajo .AND. CONCEPTO = 605;
+ SELECT JULIO AS Totreten;
+ FROM NLEGAJO WHERE EMPRESA = 1 .AND. ANO = 2017 .AND. LEGAJO = VarLegajo .AND. CONCEPTO = 600;
  INTO CURSOR INFTOT
  
- SELECT (ENERO + FEBRERO + MARZO) AS Ttaren;
- FROM NLEGAJO WHERE EMPRESA = 1 .AND. ANO = 2017 .AND. LEGAJO = VarLegajo .AND. CONCEPTO = 600;
+ SELECT JULIO AS Ttaren;
+ FROM NLEGAJO WHERE EMPRESA = 1 .AND. ANO = 2017 .AND. LEGAJO = VarLegajo .AND. CONCEPTO = 602;
  INTO CURSOR ARET
  
  
@@ -38,9 +41,16 @@ FUNCTION SUMAR
 FUNCTION REMPLE
 ******************
 Vsaldo =0
-Vsaldo = ARET.ttaren - INFTOT.Totreten 
+IF aret.Ttaren < 0 
+   Vsaldo = aret.Ttaren + inftot.Totreten 
+ELSE
+   Vsaldo = inftot.Totreten - aret.Ttaren
+ENDIF
+tot = tot + Vsaldo
+linea = STR(lista.legajo,4) +" "+ lista.nombre + "  " + STR(Vsaldo,10,2)
+tf.WriteLine(linea)
 
-UPDATE NLEGAJO SET ABRIL = Vsaldo;
-WHERE EMPRESA = 1 .AND. ANO = 2017 .AND. LEGAJO = VarLegajo .AND. CONCEPTO = 602
+UPDATE NLEGAJO SET JULIO = Vsaldo;
+WHERE EMPRESA = 1 .AND. ANO = 2017 .AND. LEGAJO = VarLegajo .AND. CONCEPTO = 605
 RETURN .T.    
      

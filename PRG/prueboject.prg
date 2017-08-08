@@ -15,7 +15,7 @@ SET PATH TO F:\SUELDOS\EMPRE1;c:\cnwga\prg;c:\cnwga\forms
 *x.codigo = 600
 *x.agregar
 clear
-legajo = 419
+legajo = 713
 PUBLIC x
 x = CREATEOBJECT("liquianual",legajo,2016,1)
 
