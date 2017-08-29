@@ -9,8 +9,7 @@ WUNIDADES = 1
 linea = "actualizando esposa" + STR(wlegajo,4)
 tf.WriteLine(linea)
  
-UPDATE NLEGAJO SET JULIO     = ((WIMPORTE/12)*7),;
-                   AGOSTO    = ((WIMPORTE/12)*8),;
+UPDATE NLEGAJO SET AGOSTO    = ((WIMPORTE/12)*8),;
                    SETIEMBRE = ((WIMPORTE/12)*9),;
                    OCTUBRE   = ((WIMPORTE/12)*10),;
                    NOVIEMBRE = ((WIMPORTE/12)*11),;

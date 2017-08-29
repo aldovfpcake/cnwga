@@ -54,7 +54,7 @@ Cgastosmedicos = 3656
            INTO CURSOR verifi
             linea = STR(this.Clegajo,4)+" "+ STR(verifi.concepto,4)+ " "+ STR(verifi.julio,10,2)+ " "+ this.Ccuil+ " "+ this.Cnombre
             
-           
+           tf.WriteLine(linea)
             canth = 0
             canth = importac.hijos *14.252
             IF verifi.julio <> canth
@@ -80,6 +80,7 @@ Cgastosmedicos = 3656
            INTO CURSOR verifi
             linea = STR(this.Clegajo,4)+" "+ STR(verifi.concepto,4)+ " "+ STR(verifi.julio,10,2)+ " "+this.Ccuil + " " + this.cnombre
            ?linea
+           tf.WriteLine(linea)
            IF  verifi.julio = 0 
               WAIT WINDOW "Cta.Medica No Cargada" + STR(this.CLegajo,4)    
               tf.WriteLine(linea)

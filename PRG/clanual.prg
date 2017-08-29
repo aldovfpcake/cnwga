@@ -36,6 +36,7 @@ DEFINE CLASS liquianual as Custom
 	   This.Año = ParmAno   
 	   This.legajo = Parmlegajo
 	   This.Empresa = ParmEmpresa   
+	   this.creocursor
 	   this.busconombre
 	   this.TotalRemubruta  
 	   this.TotalObrasocial
@@ -73,7 +74,9 @@ DEFINE CLASS liquianual as Custom
              this.RemuBruta = informe.total
              SELECT informe
              use            
-             	 
+             
+             INSERT INTO repanual(legajo,nombre,cuil,año,remubruta,clase) VALUES (this.legajo,"Remun. Bruta" ,this.cuil,this.año,this.Remubruta,1)
+
 	 ENDPROC    
 	 
 	 
@@ -91,6 +94,7 @@ DEFINE CLASS liquianual as Custom
 	 		this.DeduObraSocial = informe.total
 			SELECT informe
             use 
+            INSERT INTO repanual(legajo,nombre,cuil,año,remubruta,clase) VALUES (this.legajo,this.nombre,this.cuil,this.año,this.DeduObraSocial,2)
 	 
 	ENDPROC 
 	 
@@ -108,7 +112,9 @@ DEFINE CLASS liquianual as Custom
    			this.DeduCtaSindical = informe.total
 			SELECT informe
             use 
-	 
+	        INSERT INTO repanual(legajo,nombre,cuil,año,remubruta,clase) VALUES (this.legajo,"Cta. Sindical",this.cuil,this.año,this.DeduCtaSindical,2)
+
+
 	ENDPROC  
 	
 	PROCEDURE TotalJubilatiorios 
@@ -125,6 +131,7 @@ DEFINE CLASS liquianual as Custom
    			this.DeduAporteJubilatorio = informe.total
 			SELECT informe
             use 
+            INSERT INTO repanual(legajo,nombre,cuil,año,remubruta,clase) VALUES (this.legajo,"Aporte Jubilatorio",this.cuil,this.año,this.DeduAporteJubilatorio,2)
 	 
 	ENDPROC
 	
@@ -142,7 +149,7 @@ DEFINE CLASS liquianual as Custom
    			this.DeduGastosSepelio = informe.total
 			SELECT informe
             use 
-	 
+	        INSERT INTO repanual(legajo,nombre,cuil,año,remubruta,clase) VALUES (this.legajo,"Gastos Sepelio",this.cuil,this.año,this.DeduGastosSepelio,2)   
 	ENDPROC
 	
 	PROCEDURE TotalDeduleyVeinteTreintaydos 
@@ -159,7 +166,7 @@ DEFINE CLASS liquianual as Custom
    			this.DeduLey19032 = informe.total
 			SELECT informe
             use 
-	 
+	           INSERT INTO repanual(legajo,nombre,cuil,año,remubruta,clase) VALUES (this.legajo,"ley 19032",this.cuil,this.año,this.Deduley19032,2)  
 	ENDPROC
 	
 	PROCEDURE CalculaRetencion
@@ -179,7 +186,7 @@ DEFINE CLASS liquianual as Custom
 	    
 	    ENDIF
 	    
-	    
+	     INSERT INTO repanual(legajo,nombre,cuil,año,remubruta,clase) VALUES (this.legajo,this.nombre,this.cuil,this.año,this.ImpDeterm,3) 
 	
 	ENDPROC
 	
@@ -204,7 +211,7 @@ DEFINE CLASS liquianual as Custom
    			this.DeduCtaMedicoAsistencial= informe.total
 			SELECT informe
             use 
-	 
+	        INSERT INTO repanual(legajo,nombre,cuil,año,remubruta,clase) VALUES (this.legajo,"Cta Medico Asist",this.cuil,this.año,this.DeduCtaMedicoAsistencial,2) 
 	ENDPROC
     PROCEDURE TotalDonaciones 
 			SELECT nlegajo.diciembre as total;
@@ -220,7 +227,8 @@ DEFINE CLASS liquianual as Custom
    			this.DeduDonaciones= informe.total
 			SELECT informe
             use 
-	 
+	        INSERT INTO repanual(legajo,nombre,cuil,año,remubruta,clase) VALUES (this.legajo,"Donaciones",this.cuil,this.año,this.DeduDonaciones,2) 
+
 	ENDPROC
 
     PROCEDURE TotalIntHipo
@@ -237,7 +245,7 @@ DEFINE CLASS liquianual as Custom
    			this.DeduInteresesHipotecarios= informe.total
 			SELECT informe
             use    
-
+            INSERT INTO repanual(legajo,nombre,cuil,año,remubruta,clase) VALUES (this.legajo,"Hijos",this.cuil,this.año,this.DeduInteresesHipotecarios,2)
      ENDPROC
 
     PROCEDURE TotalArt23
@@ -386,13 +394,17 @@ DEFINE CLASS liquianual as Custom
 	 return
 	ENDPROC 
 	 
+	PROCEDURE CREOCURSOR
+
+		CREATE CURSOR repanual( legajo n(4), nombre c(40), cuil c(14),año n(4),remubruta n(10,2),clase n(1))
+
+
+	ENDPROC 
 	 
 	 
 	 
 	 
-	 
-	 
-	 
+	  
 	 
 	 
 	

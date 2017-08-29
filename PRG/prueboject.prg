@@ -16,15 +16,9 @@ SET PATH TO F:\SUELDOS\EMPRE1;c:\cnwga\prg;c:\cnwga\forms
 *x.agregar
 clear
 legajo = 713
-PUBLIC x
+
 x = CREATEOBJECT("liquianual",legajo,2016,1)
 
-CREATE CURSOR repanual( legajo n(4), nombre c(40), cuil c(14),año n(4),remubruta n(10,2))
-INSERT INTO repanual(legajo,nombre,cuil,año,remubruta) VALUES (x.legajo,x.nombre,x.cuil,x.año,;
-x.remubruta)
-
-REPORT FORM declaraanual preview
-x = CREATEOBJECT("liquianual",legajo,2016,1)
 fso = CreateObject('Scripting.FileSystemObject')
 tf = fso.CreateTextFile('c:\testfile.txt', .t.)
 linea = "legajo....................................:" + STR(legajo,4)  
@@ -82,6 +76,7 @@ tf.WriteLine(linea)
 
 
 tf.Close
+
 
 *MODIFY FILE 'c:\testfile.txt'
 
