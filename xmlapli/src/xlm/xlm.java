@@ -103,6 +103,9 @@ public class xlm {
                            Creditohipo= Float.parseFloat(Credihip);
                         
                         }
+                        
+                                
+                        
                         GastosMedicos =0;
                         String Gastosmed = new String();
                         if(StrGastosMedicos.equalsIgnoreCase(Elem))
@@ -155,6 +158,13 @@ public class xlm {
          
         }
     
+        
+              
+        
+        
+        
+        
+        
      
     } catch (Exception e) {
 	e.printStackTrace();
@@ -163,6 +173,7 @@ public class xlm {
     System.out.println("Importe ="+ Float.toString( Canthijos*2036));
     System.out.println("----------------");
     System.out.println("Esposa  ="+EmpleadoEsposa+ " Importe="  + Float.toString(EmpleadoEsposa*4037));
+    
     CargaFamilia();
     fechap();
       escritura();
@@ -281,6 +292,16 @@ private static void CargaEmpleado(){
  
  
  }
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
  
  
  

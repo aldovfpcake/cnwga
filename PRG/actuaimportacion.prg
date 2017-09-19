@@ -9,7 +9,7 @@ X = CREATEOBJECT("actualizarleg")
 clear
 SELECT 0
 USE importac AGAIN
-SET FILTER TO MONTH(IMPORTAC.fechapresenta) =8
+SET FILTER TO importac.fechapresenta > CTOD('15-08-17')
 
 CLEAR
 
@@ -17,7 +17,7 @@ fso = CreateObject('Scripting.FileSystemObject')
 tf = fso.CreateTextFile('c:\testfile.txt', .t.)
 *SCAN 
  DO WHILE .NOT. EOF() 
-  IF  importac.hijos <> 0
+  IF  importac.gastosmed <> 0
       x.CLegajo = importac.legajo
       x.Ccuil   = importac.cuil
       x.ClcargaEsposa = 1
@@ -26,16 +26,16 @@ tf = fso.CreateTextFile('c:\testfile.txt', .t.)
      * x.Actgastosmedicos(tf,importac.gastosmed)
       * x.actctamed(tf)
      * x.actualizaresposa(tf) 
-       x.ActualizarHijo(tf)
+      * x.ActualizarHijo(tf)
       *x.ActDonacio(tf)
       *x.ActCreditohipo(tf,importac.credith)
      
-       DO actuhijo WITH importac.legajo,importac.hijos
-      * DO actamedico with importac.legajo,importac.ctamed 
-     *  DO actacredito with importac.legajo,importac.credith
-     *  DO actdonacio with importac.legajo,importac.donacio
-       *DO ACTUESPOSA WITH IMPORTAC.LEGAJO,tf 
-      * DO actgastosmedicos WITH importac.legajo,importac.gastosmed--
+      *  DO actuhijo WITH importac.legajo,importac.hijos
+      *  DO actamedico with importac.legajo,importac.ctamed 
+      *  DO actacredito with importac.legajo,importac.credith
+     *   DO actdonacio with importac.legajo,importac.donacio
+       * DO ACTUESPOSA WITH IMPORTAC.LEGAJO,tf 
+         DO actgastosmedicos WITH importac.legajo,importac.gastosmed
   ENDIF
    SELECT IMPORTAC
    SKIP 

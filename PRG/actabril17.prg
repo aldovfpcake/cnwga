@@ -23,13 +23,13 @@ tf.Close
 ***********************
 FUNCTION SUMAR
 **********************
- SELECT JULIO AS Totreten;
+ SELECT AGOSTO AS Totreten;
  FROM NLEGAJO WHERE EMPRESA = 1 .AND. ANO = 2017 .AND. LEGAJO = VarLegajo .AND. CONCEPTO = 600;
  INTO CURSOR INFTOT
  
- SELECT JULIO AS Ttaren;
- FROM NLEGAJO WHERE EMPRESA = 1 .AND. ANO = 2017 .AND. LEGAJO = VarLegajo .AND. CONCEPTO = 602;
- INTO CURSOR ARET
+ *SELECT JULIO AS Ttaren;
+ *FROM NLEGAJO WHERE EMPRESA = 1 .AND. ANO = 2017 .AND. LEGAJO = VarLegajo .AND. CONCEPTO = 602;
+ *INTO CURSOR ARET
  
  
  
@@ -41,16 +41,17 @@ FUNCTION SUMAR
 FUNCTION REMPLE
 ******************
 Vsaldo =0
-IF aret.Ttaren < 0 
-   Vsaldo = aret.Ttaren + inftot.Totreten 
-ELSE
-   Vsaldo = inftot.Totreten - aret.Ttaren
-ENDIF
-tot = tot + Vsaldo
-linea = STR(lista.legajo,4) +" "+ lista.nombre + "  " + STR(Vsaldo,10,2)
-tf.WriteLine(linea)
-
-UPDATE NLEGAJO SET JULIO = Vsaldo;
+*IF aret.Ttaren < 0 
+*   Vsaldo = aret.Ttaren + inftot.Totreten 
+*ELSE
+*   Vsaldo = inftot.Totreten - aret.Ttaren
+*ENDIF
+*tot = tot + Vsaldo
+*linea = STR(lista.legajo,4) +" "+ lista.nombre + "  " + STR(Vsaldo,10,2)
+*tf.WriteLine(linea)
+Vsaldo =inftot.Totreten
+tot = tot + inftot.Totreten
+UPDATE NLEGAJO SET AGOSTO = Vsaldo;
 WHERE EMPRESA = 1 .AND. ANO = 2017 .AND. LEGAJO = VarLegajo .AND. CONCEPTO = 605
 RETURN .T.    
      
