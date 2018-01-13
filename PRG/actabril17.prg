@@ -11,7 +11,7 @@ SCAN
  ?STR(lista.legajo,4) + " "+ lista.nombre 
  sumar()
  remple()
- SELECT personaL
+ SELECT lista
 
 ENDSCAN
 linea = "Total............:" + STR(tot,12,2)
@@ -23,7 +23,7 @@ tf.Close
 ***********************
 FUNCTION SUMAR
 **********************
- SELECT AGOSTO AS Totreten;
+ SELECT DICIEMBRE AS Totreten;
  FROM NLEGAJO WHERE EMPRESA = 1 .AND. ANO = 2017 .AND. LEGAJO = VarLegajo .AND. CONCEPTO = 600;
  INTO CURSOR INFTOT
  
@@ -51,7 +51,7 @@ Vsaldo =0
 *tf.WriteLine(linea)
 Vsaldo =inftot.Totreten
 tot = tot + inftot.Totreten
-UPDATE NLEGAJO SET AGOSTO = Vsaldo;
+UPDATE NLEGAJO SET DICIEMBRE = Vsaldo;
 WHERE EMPRESA = 1 .AND. ANO = 2017 .AND. LEGAJO = VarLegajo .AND. CONCEPTO = 605
 RETURN .T.    
      

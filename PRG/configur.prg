@@ -52,5 +52,10 @@ DO case
         
 
    CASE vvprocesos = 5
-      *  DO c:\cnwga\prg\acercade
+        DO C:\fwsu\PRG\lista
+        
+   CASE vvprocesos = 10
+        DO FORM fdeducciones
+        
+        
 ENDCASE 

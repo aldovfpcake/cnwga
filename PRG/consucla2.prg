@@ -21,16 +21,22 @@ ENDIF
 local mes as string
 LOCAL vempre as Integer
 LOCAL vvfecha as date 
- mes = "AGOSTO"
+ mes = "DICIEMBRE"
  vempre =1
-vvfecha = CTOD("28/08/2017")
+ CLEAR
+vvfecha = CTOD("29/12/2017")
 SELECT legajo,SUM(IIF(CLASE= 1 .OR. CLASE = 8,&MES,0))AS BASELQ,SUM(IIF(CONCEPTO = 500 ,&mes,0))as &mes ,SUM(IIF(CONCEPTO = 605 ,&mes,0)) as ret  FROM nlegajo;
 WHERE ano = 2017 .AND. EMPRESA = vempre  GROUP BY legajo INTO CURSOR RETCUA
  SUM RET TO VV
  ?"eS reT" + STR(VV,12,2)
  
+ SELECT legajo,&mes as reten from nlegajo WHERE ano =2017 .and. empresa = vempre .and. concepto =605 INTO cursor retmensual
+ SUM reten TO vv
+ ?"Suma de Retención :" + STR(vv,12,2)
+ WAIT WINDOW "Suma de Retención :" + STR(vv,12,2)
+ 
 SELECT R.LEGAJO,P.NOMBRE,P.CUIL,P.CALLE,;
-P.NRO,P.LOCALIDAD,P.PROVINCIA, R.BASELQ,R.RET FROM VPERSO AS P  INNER JOIN RETCUA  AS R ON p.legajo = r.legajo ORDER BY r.legajo INTO CURSOR INFR
+P.NRO,P.LOCALIDAD,P.PROVINCIA, R.BASELQ,M.reten FROM VPERSO AS P  INNER JOIN RETCUA  AS R ON p.legajo = r.legajo INNER JOIN retmensual AS M ON m.legajo = r.legajo  ORDER BY r.legajo INTO CURSOR INFR
  
  
 SELECT  n.legajo as legajo, n.concepto,&mes,c.clase,n.empresa  FROM nlegajo as n INNER JOIN nconceptos;
@@ -51,7 +57,7 @@ INTO CURSOR sueldo
 
 
 SELECT INFR.LEGAJO,INFR.NOMBRE,INFR.CUIL AS CUIL,INFR.CALLE,;
-INFR.NRO,INFR.LOCALIDAD,INFR.PROVINCIA, INFR.RET,SUELDO.HABER,SUELDO.VIATICO;
+INFR.NRO,INFR.LOCALIDAD,INFR.PROVINCIA, INFR.RETEN,SUELDO.HABER,SUELDO.VIATICO;
 FROM INFR INNER JOIN SUELDO  ON SUELDO.LEGAJO = INFR.LEGAJO INTO CURSOR INFOFIN READWRITE
 GO TOP
 *devolu()
@@ -83,10 +89,10 @@ SCAN
 ENDSCAN
 SELECT INFOFIN
 GO TOP
-SET FILTER TO ret <>0
-SUM RET TO VV
+SET FILTER TO reten <>0
+SUM RETEN TO VV
 WAIT WINDOW STR(VV,10,2)
-SET FILTER TO ret >0
+SET FILTER TO reten >0
 *TRY
 *      COPY TO GETFILE('XLS', 'Guardar archivo .XLS:',   'Guardar', 1, 'Guardar reporte en...') type XL5 *
 *CATCH TO excepc
@@ -121,17 +127,17 @@ SET DEVICE TO FILE "F:\DGIB.TXT"
 WCOMPRO = " "
 lin = 0
 SELECT INFOFIN
-SET FILTER TO RET <> 0 
+SET FILTER TO RETEN <> 0 
 GO TOP
 DO WHILE .NOT. EOF()
-   IF RET > 0
+   IF RETEN > 0
       @LIN,0  SAY "07" 
    ELSE
       @LIN,0  SAY "08"  
       LOCAL importe as Number
       importe = 0
-      importe = ABS(RET)
-      REPLACE RET WITH IMPORTE
+      importe = ABS(RETEN)
+      REPLACE RETEN WITH IMPORTE
     ENDIF
    
    @LIN,2  SAY vvfecha
@@ -151,11 +157,11 @@ DO WHILE .NOT. EOF()
    *BASE DE CALCULO
    *             123456789-1234    
    *@LIN,51  SAY "00000000000.00"
-   @LIN,51  SAY RET PICTURE "99999.99"
+   @LIN,51  SAY RETEN PICTURE "99999.99"
    @LIN,65  SAY vvfecha picture "!!/!!/!!!!"
    @LIN,75  SAY "01"
    @LIN,77  SAY "0"
-   @LIN,78  SAY RET PICTURE "99999.99"
+   @LIN,78  SAY RETEN PICTURE "99999.99"
    @LIN,92  SAY "000000"
    @LIN,98  SAY " "
    @LIN,108 SAY "86"
