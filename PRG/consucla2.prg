@@ -21,16 +21,16 @@ ENDIF
 local mes as string
 LOCAL vempre as Integer
 LOCAL vvfecha as date 
- mes = "DICIEMBRE"
+ mes = "ENERO"
  vempre =1
  CLEAR
-vvfecha = CTOD("29/12/2017")
+vvfecha = CTOD("29/01/2018")
 SELECT legajo,SUM(IIF(CLASE= 1 .OR. CLASE = 8,&MES,0))AS BASELQ,SUM(IIF(CONCEPTO = 500 ,&mes,0))as &mes ,SUM(IIF(CONCEPTO = 605 ,&mes,0)) as ret  FROM nlegajo;
-WHERE ano = 2017 .AND. EMPRESA = vempre  GROUP BY legajo INTO CURSOR RETCUA
+WHERE ano = 2018 .AND. EMPRESA = vempre  GROUP BY legajo INTO CURSOR RETCUA
  SUM RET TO VV
  ?"eS reT" + STR(VV,12,2)
  
- SELECT legajo,&mes as reten from nlegajo WHERE ano =2017 .and. empresa = vempre .and. concepto =605 INTO cursor retmensual
+ SELECT legajo,&mes as reten from nlegajo WHERE ano =2018 .and. empresa = vempre .and. concepto =605 INTO cursor retmensual
  SUM reten TO vv
  ?"Suma de Retención :" + STR(vv,12,2)
  WAIT WINDOW "Suma de Retención :" + STR(vv,12,2)
@@ -40,13 +40,13 @@ P.NRO,P.LOCALIDAD,P.PROVINCIA, R.BASELQ,M.reten FROM VPERSO AS P  INNER JOIN RET
  
  
 SELECT  n.legajo as legajo, n.concepto,&mes,c.clase,n.empresa  FROM nlegajo as n INNER JOIN nconceptos;
-as c ON c.concepto = n.concepto WHERE N.ANO = 2017 .AND. C.CLASE = 1 .AND. n.EMPRESA = vempre ORDER BY n.legajo INTO CURSOR HABER   
+as c ON c.concepto = n.concepto WHERE N.ANO = 2018 .AND. C.CLASE = 1 .AND. n.EMPRESA = vempre ORDER BY n.legajo INTO CURSOR HABER   
 
 SELECT legajo,SUM(&mes) AS HABER FROM HABER WHERE clase = 1 GROUP BY  legajo INTO CURSOR BASE 
 
 
 SELECT  n.legajo, n.concepto,&mes,c.clase,n.empresa  FROM nlegajo as n INNER JOIN nconceptos;
-as c ON c.concepto = n.concepto WHERE N.ANO = 2017 .AND. EMPRESA= vempre .AND. C.CLASE = 8 ORDER BY n.legajo INTO CURSOR SINAPORTE
+as c ON c.concepto = n.concepto WHERE N.ANO = 2018 .AND. EMPRESA= vempre .AND. C.CLASE = 8 ORDER BY n.legajo INTO CURSOR SINAPORTE
 
 
 SELECT legajo,SUM(&mes)AS HSAP FROM SINAPORTE WHERE clase = 8   GROUP BY  legajo INTO CURSOR SINAP 
@@ -65,7 +65,7 @@ GO TOP
 
 
 *SELECT legajo,concepto,&mes FROM nlegajo WHERE concepto = 605;
-AND ano = 2017 .and. empresa =1 ORDER BY legajo INTO CURSOR two
+AND ano = 2018 .and. empresa =1 ORDER BY legajo INTO CURSOR two
 *clear
 *SUM &mes TO vv
 *WAIT WINDOW "two " + STR(vv,12,2)

@@ -56,6 +56,8 @@ DO case
         
    CASE vvprocesos = 10
         DO FORM fdeducciones
-        
+   
+   CASE vvprocesos = 11
+        DO FORM formescala     
         
 ENDCASE 
