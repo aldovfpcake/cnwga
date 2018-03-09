@@ -25,6 +25,7 @@ public class xlm {
     public static float Creditohipo=0;
     public  static int EmpleadoEsposa=0; 
     public static float GastosMedicos =0;
+    public static float SeguroDeVida =0;
     public static String EmpleadoNombre = " ";
     public static String EmpleadoCuil = " ";
     public static short Nropre = 0;
@@ -69,21 +70,28 @@ public class xlm {
 		if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 
 			Element eElement = (Element) nNode;
-                        String CtaMedico,Donaciones,StrCreditohipo,StrGastosMedicos;
+                        String CtaMedico,Donaciones,StrCreditohipo,StrGastosMedicos,StrSeguroDeVida;
                         
                         CtaMedico = "1";
                         Donaciones = "3";
                         StrCreditohipo = "4";
                         StrGastosMedicos = "7";
+                        StrSeguroDeVida = "2";
                         String Elem = new String();
                         String Cta  = new String();
                         
                         Elem = eElement.getAttribute("tipo");
+                        if(StrSeguroDeVida.equalsIgnoreCase(Elem))
+                          {
+                            Cta =  eElement.getElementsByTagName("montoTotal").item(0).getTextContent(); 
+                            System.out.println("Seguro de Vida : " + Cta); ;
+                            SeguroDeVida = SeguroDeVida + Float.parseFloat(Cta);
+                           }
                         if(CtaMedico.equalsIgnoreCase(Elem))
                         {
-                         Cta =  eElement.getElementsByTagName("montoTotal").item(0).getTextContent();   
+                        Cta =  eElement.getElementsByTagName("montoTotal").item(0).getTextContent();   
                         System.out.println("cta medico : " + Cta) ;
-                        TctaMedico = Float.parseFloat(Cta);
+                        TctaMedico = TctaMedico+ Float.parseFloat(Cta);
                          
                         }
                         
@@ -92,7 +100,7 @@ public class xlm {
                         if(Donaciones.equalsIgnoreCase(Elem))
                         {
                             Donac = eElement.getElementsByTagName("montoTotal").item(0).getTextContent(); 
-                            Tdnaciones = Float.parseFloat(Donac);
+                            Tdnaciones = Tdnaciones +Float.parseFloat(Donac);
                         } 
 
                         String Credihip= new String();
@@ -111,7 +119,7 @@ public class xlm {
                         if(StrGastosMedicos.equalsIgnoreCase(Elem))
                         {
                          Gastosmed = eElement.getElementsByTagName("montoTotal").item(0).getTextContent();
-                         GastosMedicos = Float.parseFloat(Gastosmed);
+                         GastosMedicos = GastosMedicos +Float.parseFloat(Gastosmed);
                         }
 			System.out.println("tipodoc : " + eElement.getAttribute("tipo"));
 			

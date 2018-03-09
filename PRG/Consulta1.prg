@@ -1,4 +1,9 @@
-SET PATH TO F:\SUELDOS\EMPRE1
-SELECT p.legajo,p.nombre,n.abril FROM personal p INNER JOIN nlegajo n;
-on p.legajo = n.legajo WHERE n.concepto = 602 .and. ano = 2017 ORDER BY p.legajo
-browse
+             SELECT  Nconceptos.concepto,nlegajo.diciembre;
+			 FROM ;
+     		 ganancias!nlegajo ;
+    		 INNER JOIN ganancias!nconceptos ;
+   			 ON  Nlegajo.concepto = Nconceptos.concepto;
+ 			 WHERE  Nlegajo.legajo = 1;
+   			 AND  Nlegajo.empresa = 1;
+   			 AND  Nlegajo.ano = 2018;
+             AND  Nconceptos.clase=2;

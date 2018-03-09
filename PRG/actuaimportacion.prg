@@ -10,6 +10,7 @@ X = CREATEOBJECT("actualizarleg")
 clear
 SELECT 0
 USE importac AGAIN
+GO top
 *SET FILTER TO importac.fechapresenta >= CTOD('1-11-17')
 *BROWSE
 
@@ -18,7 +19,7 @@ CLEAR
 fso = CreateObject('Scripting.FileSystemObject')
 tf = fso.CreateTextFile('c:\testfile.txt', .t.)
 *SCAN 
- Varmes = 1
+ Varmes = 2
  CLEAR
  DO WHILE .NOT. EOF() 
  
@@ -55,15 +56,16 @@ tf = fso.CreateTextFile('c:\testfile.txt', .t.)
             ELSE    
                wimpohipo = importac.credith
             ENDIF
-            DO actgastosmedicos WITH importac.legajo,importac.credith,Varmes,xconcepto
+            DO actgastosmedicos WITH importac.legajo,wimpohipo,Varmes,xconcepto
          ENDIF 
          IF IMPORTAC.donacio <> 0
+            
            * concepto 363         
             xconcepto = 4
             DO actgastosmedicos WITH importac.legajo,importac.donacio,Varmes,xconcepto
          ENDIF
          IF IMPORTAC.ESPOSA <> 0
-           
+            
             xconcepto = 2
             * concepto 320
             DO actuhijo WITH importac.legajo,importac.esposa,Varmes,xconcepto
@@ -72,6 +74,12 @@ tf = fso.CreateTextFile('c:\testfile.txt', .t.)
             xconcepto = 6 
             DO actgastosmedicos WITH importac.legajo,importac.gastosmed,Varmes,xconcepto
          ENDIF
+   
+         IF IMPORTAC.segurodevida <> 0
+            xconcepto = 3 
+            DO actuhijo WITH importac.legajo,importac.hijos,Varmes,xconcepto
+         ENDIF
+
    SELECT IMPORTAC
    SKIP 
 *ENDSCAN
