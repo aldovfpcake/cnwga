@@ -19,7 +19,7 @@ CLEAR
 fso = CreateObject('Scripting.FileSystemObject')
 tf = fso.CreateTextFile('c:\testfile.txt', .t.)
 *SCAN 
- Varmes = 2
+ Varmes = 12
  CLEAR
  DO WHILE .NOT. EOF() 
  
@@ -39,7 +39,7 @@ tf = fso.CreateTextFile('c:\testfile.txt', .t.)
            * concepto 330
            
            xconcepto = 1
-           DO actuhijo WITH importac.legajo,importac.hijos,Varmes,xconcepto
+           DO actuhijo-17 WITH importac.legajo,importac.hijos,Varmes,xconcepto
          ENDIF  
          
          IF importac.ctamed <> 0
@@ -51,11 +51,11 @@ tf = fso.CreateTextFile('c:\testfile.txt', .t.)
             * concepto 360
             xconcepto = 3
             wimpohipo = 0
-            IF importac.credith > 1666.67
-               wimpohipo = 1666.67
-            ELSE    
+           * IF importac.credith > 1666.67
+             *  wimpohipo = 1666.67
+            *ELSE    
                wimpohipo = importac.credith
-            ENDIF
+            *ENDIF
             DO actgastosmedicos WITH importac.legajo,wimpohipo,Varmes,xconcepto
          ENDIF 
          IF IMPORTAC.donacio <> 0
@@ -68,7 +68,7 @@ tf = fso.CreateTextFile('c:\testfile.txt', .t.)
             
             xconcepto = 2
             * concepto 320
-            DO actuhijo WITH importac.legajo,importac.esposa,Varmes,xconcepto
+            DO actuhijo-17 WITH importac.legajo,importac.esposa,Varmes,xconcepto
          ENDIF
          IF IMPORTAC.gastosmed <> 0
             xconcepto = 6 
@@ -77,7 +77,7 @@ tf = fso.CreateTextFile('c:\testfile.txt', .t.)
    
          IF IMPORTAC.segurodevida <> 0
             xconcepto = 3 
-            DO actuhijo WITH importac.legajo,importac.hijos,Varmes,xconcepto
+            DO actuhijo-17 WITH importac.legajo,importac.hijos,Varmes,xconcepto
          ENDIF
 
    SELECT IMPORTAC

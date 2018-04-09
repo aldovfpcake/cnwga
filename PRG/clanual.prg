@@ -68,6 +68,7 @@ DEFINE CLASS liquianual as Custom
 	   this.CalculaRetencion
 	   this.CalculaImporteRetenido
   	   this.Saldo
+   	   this.grabar
    	 *  this.ImpDeterm = 0
 	 *  this.ImpRetenido = 0
 	 *  this.SaldoEmpleado = 0
@@ -105,7 +106,7 @@ DEFINE CLASS liquianual as Custom
 	 ENDPROC    
 	 
     PROCEDURE DetermRemBrutaSjta
-            SET STEP ON 
+            
             SELECT SUM(Nlegajo.enero+Nlegajo.febrero+ Nlegajo.marzo+ Nlegajo.abril+Nlegajo.mayo+Nlegajo.junio+Nlegajo.julio+Nlegajo.agosto+Nlegajo.setiembre+Nlegajo.octubre+Nlegajo.noviembre+Nlegajo.diciembre) as total;
 			FROM ;
      		ganancias!nlegajo ;
@@ -130,57 +131,26 @@ DEFINE CLASS liquianual as Custom
 
 	 
 	PROCEDURE TotalObraSocial 
-			SELECT SUM(Nlegajo.enero+Nlegajo.febrero+ Nlegajo.marzo+ Nlegajo.abril+Nlegajo.mayo+Nlegajo.junio+Nlegajo.julio+Nlegajo.agosto+Nlegajo.setiembre+Nlegajo.octubre+Nlegajo.noviembre+Nlegajo.diciembre) as total;
- 			FROM ;
-     		ganancias!nlegajo ;
-    		INNER JOIN ganancias!nconceptos ;
-   			ON  Nlegajo.concepto = Nconceptos.concepto;
- 			WHERE  Nlegajo.legajo = this.legajo;
-   			AND  Nlegajo.empresa = this.Empresa;
-   			AND  Nlegajo.ano = this.Año;
-   			AND  Nconceptos.concepto = 120;
-   			INTO CURSOR informe 
-	 		this.DeduObraSocial = informe.total
-			SELECT informe
-            use 
+			
+			this.DeduObraSocial = this.RemuBrutaSujetaAporte*0.03
+	        this.DeduLey19032   = this.RemuBrutaSujetaAporte*0.03 	 
             INSERT INTO repanual(legajo,nombre,cuil,Año,remubruta,clase) VALUES (this.legajo,this.nombre,this.cuil,this.Año,this.DeduObraSocial,2)
 	 
 	ENDPROC 
 	 
 	PROCEDURE TotalSindical 
-			SELECT SUM(Nlegajo.enero+Nlegajo.febrero+ Nlegajo.marzo+ Nlegajo.abril+Nlegajo.mayo+Nlegajo.junio+Nlegajo.julio+Nlegajo.agosto+Nlegajo.setiembre+Nlegajo.octubre+Nlegajo.noviembre+Nlegajo.diciembre) as total;
- 			FROM ;
-     		ganancias!nlegajo ;
-    		INNER JOIN ganancias!nconceptos ;
-   			ON  Nlegajo.concepto = Nconceptos.concepto;
- 			WHERE  Nlegajo.legajo = this.legajo;
-   			AND  Nlegajo.empresa = this.Empresa;
-   			AND  Nlegajo.ano = this.Año;
-   			AND  Nconceptos.concepto = 145;
-   			INTO CURSOR informe 
-   			this.DeduCtaSindical = informe.total
-			SELECT informe
-            use 
+			
+   			this.DeduCtaSindical = this.RemuBrutaSujetaAporte*0.03
+			
 	        INSERT INTO repanual(legajo,nombre,cuil,Año,remubruta,clase) VALUES (this.legajo,"Cta. Sindical",this.cuil,this.Año,this.DeduCtaSindical,2)
 
 
 	ENDPROC  
 	
 	PROCEDURE TotalJubilatiorios 
-			SELECT SUM(Nlegajo.enero+Nlegajo.febrero+ Nlegajo.marzo+ Nlegajo.abril+Nlegajo.mayo+Nlegajo.junio+Nlegajo.julio+Nlegajo.agosto+Nlegajo.setiembre+Nlegajo.octubre+Nlegajo.noviembre+Nlegajo.diciembre) as total;
- 			FROM ;
-     		ganancias!nlegajo ;
-    		INNER JOIN ganancias!nconceptos ;
-   			ON  Nlegajo.concepto = Nconceptos.concepto;
- 			WHERE  Nlegajo.legajo = this.legajo;
-   			AND  Nlegajo.empresa = this.Empresa;
-   			AND  Nlegajo.ano = this.Año;
-   			AND  Nconceptos.concepto = 100;
-   			INTO CURSOR informe 
-   			this.DeduAporteJubilatorio = informe.total
-			SELECT informe
-            use 
-            INSERT INTO repanual(legajo,nombre,cuil,Año,remubruta,clase) VALUES (this.legajo,"Aporte Jubilatorio",this.cuil,this.Año,this.DeduAporteJubilatorio,2)
+			
+   			this.DeduAporteJubilatorio = this.RemuBrutaSujetaAporte*0.11
+			INSERT INTO repanual(legajo,nombre,cuil,Año,remubruta,clase) VALUES (this.legajo,"Aporte Jubilatorio",this.cuil,this.Año,this.DeduAporteJubilatorio,2)
 	 
 	ENDPROC
 	
@@ -207,20 +177,8 @@ DEFINE CLASS liquianual as Custom
 	ENDPROC
 	
 	PROCEDURE TotalDeduleyVeinteTreintaydos 
-			SELECT SUM(Nlegajo.enero+Nlegajo.febrero+ Nlegajo.marzo+ Nlegajo.abril+Nlegajo.mayo+Nlegajo.junio+Nlegajo.julio+Nlegajo.agosto+Nlegajo.setiembre+Nlegajo.octubre+Nlegajo.noviembre+Nlegajo.diciembre) as total;
- 			FROM ;
-     		ganancias!nlegajo ;
-    		INNER JOIN ganancias!nconceptos ;
-   			ON  Nlegajo.concepto = Nconceptos.concepto;
- 			WHERE  Nlegajo.legajo = this.legajo;
-   			AND  Nlegajo.empresa = this.Empresa;
-   			AND  Nlegajo.ano = this.Año;
-   			AND  Nconceptos.concepto = 130;
-   			INTO CURSOR informe 
-   			this.DeduLey19032 = informe.total
-			SELECT informe
-            use 
-	           INSERT INTO repanual(legajo,nombre,cuil,Año,remubruta,clase) VALUES (this.legajo,"ley 19032",this.cuil,this.Año,this.Deduley19032,2)  
+			this.DeduLey19032 = this.RemuBrutaSujetaAporte*0.03
+			INSERT INTO repanual(legajo,nombre,cuil,Año,remubruta,clase) VALUES (this.legajo,"ley 19032",this.cuil,this.Año,this.Deduley19032,2)  
 	ENDPROC
 	
 	PROCEDURE CalculaRetencion
@@ -238,7 +196,7 @@ DEFINE CLASS liquianual as Custom
 	        Nsaldo =  this.RemuSujetaAImp - 320000
 	        Porc = 0
 	        Porc = (Nsaldo*35)/100
-	        this.ImpDeterm = Porc+ 28500
+	        this.ImpDeterm = Porc+ 71400
 	    
 	    ENDIF
          IF NOT ISNULL(this.ImpDeterm)	    
@@ -254,7 +212,7 @@ DEFINE CLASS liquianual as Custom
 	
 
     PROCEDURE TotalMedicoAsistencial 
-			SELECT SUM(Nlegajo.enero+Nlegajo.febrero+ Nlegajo.marzo+ Nlegajo.abril+Nlegajo.mayo+Nlegajo.junio+Nlegajo.julio+Nlegajo.agosto+Nlegajo.setiembre+Nlegajo.octubre+Nlegajo.noviembre+Nlegajo.diciembre) as total;
+			SELECT Nlegajo.diciembre as total;
  			FROM ;
      		ganancias!nlegajo ;
     		INNER JOIN ganancias!nconceptos ;
@@ -272,7 +230,7 @@ DEFINE CLASS liquianual as Custom
 	        INSERT INTO repanual(legajo,nombre,cuil,Año,remubruta,clase) VALUES (this.legajo,"Cta Medico Asist",this.cuil,this.Año,this.DeduCtaMedicoAsistencial,2) 
 	ENDPROC
     PROCEDURE TotalDonaciones 
-			SELECT SUM(Nlegajo.enero+Nlegajo.febrero+ Nlegajo.marzo+ Nlegajo.abril+Nlegajo.mayo+Nlegajo.junio+Nlegajo.julio+Nlegajo.agosto+Nlegajo.setiembre+Nlegajo.octubre+Nlegajo.noviembre+Nlegajo.diciembre) as total;
+			SELECT Nlegajo.diciembre as total;
  			FROM ;
      		ganancias!nlegajo ;
     		INNER JOIN ganancias!nconceptos ;
@@ -292,7 +250,7 @@ DEFINE CLASS liquianual as Custom
 	ENDPROC
 
     PROCEDURE TotalIntHipo
-            SELECT SUM(Nlegajo.enero+Nlegajo.febrero+ Nlegajo.marzo+ Nlegajo.abril+Nlegajo.mayo+Nlegajo.junio+Nlegajo.julio+Nlegajo.agosto+Nlegajo.setiembre+Nlegajo.octubre+Nlegajo.noviembre+Nlegajo.diciembre) as total;
+            SELECT Nlegajo.diciembre as total;
  			FROM ;
      		ganancias!nlegajo ;
     		INNER JOIN ganancias!nconceptos ;
@@ -411,22 +369,10 @@ DEFINE CLASS liquianual as Custom
 	ENDPROC		
     
 	PROCEDURE CALCULARNETA
-	         
-			 SELECT SUM(Nlegajo.enero+Nlegajo.febrero+ Nlegajo.marzo+ Nlegajo.abril+Nlegajo.mayo+Nlegajo.junio+Nlegajo.julio+Nlegajo.agosto+Nlegajo.setiembre+Nlegajo.octubre+Nlegajo.noviembre+Nlegajo.diciembre) as total;
-			 FROM ;
-     		 ganancias!nlegajo ;
-    		 INNER JOIN ganancias!nconceptos ;
-   			 ON  Nlegajo.concepto = Nconceptos.concepto;
- 			 WHERE  Nlegajo.legajo = this.legajo;
-   			 AND  Nlegajo.empresa = this.Empresa;
-   			 AND  Nlegajo.ano = this.Año;
-             AND  Nconceptos.clase=2;
-             INTO CURSOR informe
-             this.RemuNeta =  this.Remubruta - informe.total
+	        
+			 this.RemuNeta =  this.Remubruta - (this.DeduObrasocial + this.DeduCtaSindical+this.DeduAporteJubilatorio+ this.DeduLey19032)
              
-			 SELECT informe
-             use            
-             
+			 
              INSERT INTO repanual(legajo,nombre,cuil,Año,remubruta,clase) VALUES (this.legajo,"Remun Neta" ,this.cuil,this.Año,this.RemuNeta,1)
 	
 	
@@ -515,7 +461,7 @@ DEFINE CLASS liquianual as Custom
 	
 
     PROCEDURE TotalGastosMedicos 
-	        SELECT SUM(Nlegajo.enero+Nlegajo.febrero+ Nlegajo.marzo+ Nlegajo.abril+Nlegajo.mayo+Nlegajo.junio+Nlegajo.julio+Nlegajo.agosto+Nlegajo.setiembre+Nlegajo.octubre+Nlegajo.noviembre+Nlegajo.diciembre) as total;
+	        SELECT Nlegajo.diciembre as total;
  			FROM ;
      		ganancias!nlegajo ;
     		INNER JOIN ganancias!nconceptos ;
@@ -525,6 +471,7 @@ DEFINE CLASS liquianual as Custom
    			AND  Nlegajo.ano = this.Año;
    			AND  Nconceptos.concepto = 365;
    			INTO CURSOR informe 
+   			
    			IF NOT ISNULL(this.DeduGastosMedicos)
    			  this.DeduGastosMedicos = informe.total
 			ELSE
@@ -581,6 +528,30 @@ DEFINE CLASS liquianual as Custom
 			
 			
 	ENDPROC 
+	 
+	 
+	PROCEDURE GRABAR
+	
+            if this.SaldoEmpleado <> 0
+               Saldo = this.SaldoEmpleado - (this.SaldoEmpleado * 2)
+            else
+               Saldo = this.SaldoAfip
+            endif      
+
+			Select legajo from saldo2017 where legajo = this.legajo into cursor existe
+			if eof()
+               insert into saldo2017 (legajo,importe) values (this.legajo,Saldo)
+            else
+               update saldo2017 set importe = saldo where legajo = this.legajo 
+
+            endif      
+	                
+	        sele existe
+	        use  
+	
+	
+	ENDPROC 
+	 
 	 
 	  
 	 

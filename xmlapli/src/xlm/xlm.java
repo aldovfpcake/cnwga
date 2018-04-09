@@ -108,13 +108,13 @@ public class xlm {
                         if(StrCreditohipo.equalsIgnoreCase(Elem))
                         {
                            Credihip = eElement.getElementsByTagName("montoTotal").item(0).getTextContent();
-                           Creditohipo= Float.parseFloat(Credihip);
+                           Creditohipo= Creditohipo + Float.parseFloat(Credihip);
                         
                         }
                         
                                 
                         
-                        GastosMedicos =0;
+                     
                         String Gastosmed = new String();
                         if(StrGastosMedicos.equalsIgnoreCase(Elem))
                         {
@@ -136,19 +136,21 @@ public class xlm {
             System.out.println("\n Elementos :" + xNode.getNodeName());
             if (xNode.getNodeType() == xNode.ELEMENT_NODE){
                 	Element eElementos = (Element) xNode;
-                        String TipoDoc,TipoEsposa,Parentesco,Hijo,HijoDiscapacitado;
+                        String TipoDoc,TipoEsposa,Parentesco,Hijo,HijoDiscapacitado,Hijastro;
                         TipoDoc    ="86";
                         TipoEsposa ="80";
                         Parentesco = "1";
                         Hijo = "3";
                         HijoDiscapacitado ="31";
+                        Hijastro = "30";
                         
                         if(HijoDiscapacitado.equals(eElementos.getElementsByTagName("parentesco").item(0).getTextContent()))
                         {
                         System.out.println("Tipo Doc : " + eElementos.getElementsByTagName("tipoDoc").item(0).getTextContent());
                         Canthijos= Canthijos +1; 
                         }
-                        if(Hijo.equals(eElementos.getElementsByTagName("parentesco").item(0).getTextContent()))
+                        if(Hijo.equals(eElementos.getElementsByTagName("parentesco").item(0).getTextContent())
+                                || Hijastro.equals(eElementos.getElementsByTagName("parentesco").item(0).getTextContent()))
                         {
                         System.out.println("Tipo Doc : " + eElementos.getElementsByTagName("tipoDoc").item(0).getTextContent());
                         Canthijos= Canthijos +1; 

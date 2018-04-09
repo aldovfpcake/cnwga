@@ -3,12 +3,15 @@ PARAMETERS WLEGAJO,WUNIDADES,Varmes,WCOD
 
 DO CASE
    CASE WCOD = 1
-           WIMPORTE  = 31461.09
+           * 330 Hijo
+           WIMPORTE  = 24432
            WCONCEPTO = 330
    CASE WCOD = 2	
-           WIMPORTE  = 62385.20
+           * 320 Conyuge  
+           WIMPORTE  = 48447
            WCONCEPTO = 320
    CASE WCOD = 3
+           * Seguro de vida
            WUNIDADES = 1
            WIMPORTE  = 996.23
            WCONCEPTO = 361    
