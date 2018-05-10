@@ -18,8 +18,8 @@ SET DELETED ON
 clear
 *legajo = 422
 
-x = CREATEOBJECT("liquianual",legajo,2017,1)
-arch = "c:\SUERUT\LISTADOS\todos\"+STR(legajo,4)+" -"+ALLTRIM(x.nombre) + ".txt"
+x = CREATEOBJECT("liquianual",legajo,2018,1)
+arch = "c:\SUERUT\LISTADOS\SANMART\"+STR(legajo,4)+" -"+ALLTRIM(x.nombre) + ".txt"
 
 
 fso = CreateObject('Scripting.FileSystemObject')

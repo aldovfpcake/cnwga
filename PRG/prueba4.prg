@@ -3,8 +3,8 @@ SET DELETED ON
 SET PATH TO F:\SUELDOS\EMPRE1;c:\CNWGA\FORMS
 OPEN DATABASE f:\sueldos\nwga\datos\ganancias SHARED VALIDATE
 ***********************
-WNUMES = 3
-VVARCHIVO = "32018"    
+WNUMES = 4
+VVARCHIVO = "42018"    
 *************************
 CLEAR    
 WCAMP = RET(WNUMES)

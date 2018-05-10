@@ -21,17 +21,17 @@ ENDIF
 local mes as string
 LOCAL vempre as Integer
 LOCAL vvfecha as date 
- mes = "MARZO"
+ mes = "ABRIL"
  vempre =1
  CLEAR
-vvfecha = CTOD("28/03/2018")
+vvfecha = CTOD("28/04/2018")
 SELECT legajo,SUM(IIF(CLASE= 1 .OR. CLASE = 8,&MES,0))AS BASELQ,SUM(IIF(CONCEPTO = 500 ,&mes,0))as &mes ,SUM(IIF(CONCEPTO = 605 ,&mes,0)) as ret  FROM nlegajo;
 WHERE ano = 2018 .AND. EMPRESA = vempre  GROUP BY legajo INTO CURSOR RETCUA
  SUM RET TO VV
  *?"eS reT" + STR(VV,12,2)
  
  SELECT legajo,&mes as reten from nlegajo WHERE ano =2018 .and. empresa = vempre .and. concepto =605  INTO cursor retmensual READWRITE
- completar()
+ *completar()
  SELECT retmensual
  SUM reten TO vv
  ?"Suma de Retención :" + STR(vv,12,2)
@@ -253,7 +253,7 @@ SELECT RETMENSUAL
 CAMPO = FIELD(2)
 REPLACE ALL &CAMPO WITH 0
 BROWSE
-SELECT LEGAJO,DES FROM MARZO INTO CURSOR LI
+SELECT LEGAJO,DES FROM ABRIL INTO CURSOR LI
 SCAN
 
     UPDATE RETMENSUAL SET &CAMPO = LI.DES WHERE LEGAJO = LI.LEGAJO

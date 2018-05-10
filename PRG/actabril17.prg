@@ -23,7 +23,7 @@ tf.Close
 ***********************
 FUNCTION SUMAR
 **********************
- SELECT MARZO AS Totreten;
+ SELECT ABRIL AS Totreten;
  FROM NLEGAJO WHERE EMPRESA = 1 .AND. ANO = 2018 .AND. LEGAJO = VarLegajo .AND. CONCEPTO = 600;
  INTO CURSOR INFTOT
  
@@ -49,16 +49,16 @@ Vsaldo =0
 *tot = tot + Vsaldo
 *linea = STR(lista.legajo,4) +" "+ lista.nombre + "  " + STR(Vsaldo,10,2)
 *tf.WriteLine(linea)
-SELECT MARZO FROM NLEGAJO WHERE EMPRESA = 1 .AND. ANO = 2018 .AND. CONCEPTO = 605;
+SELECT ABRIL FROM NLEGAJO WHERE EMPRESA = 1 .AND. ANO = 2018 .AND. CONCEPTO = 605;
 INTO CURSOR EXISTE
 
-IF EXISTE.MARZO <> 0
+IF EXISTE.ABRIL <> 0
    RETURN .T.
 ENDIF
 
 Vsaldo =inftot.Totreten
 tot = tot + inftot.Totreten
-UPDATE NLEGAJO SET MARZO = Vsaldo;
+UPDATE NLEGAJO SET ABRIL = Vsaldo;
 WHERE EMPRESA = 1 .AND. ANO = 2018 .AND. LEGAJO = VarLegajo .AND. CONCEPTO = 605
 RETURN .T.    
      
