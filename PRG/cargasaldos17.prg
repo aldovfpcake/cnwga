@@ -4,7 +4,7 @@ SET PATH TO F:\SUELDOS\EMPRE1;c:\CNWGA\FORMS
 OPEN DATABASE f:\sueldos\nwga\datos\ganancias SHARED VALIDATE
 ***********************
 WNUMES = 3
-VVARCHIVO = "32018"    
+VVARCHIVO = "32019"    
 *************************
 USE saldo2017
 

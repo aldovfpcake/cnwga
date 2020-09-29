@@ -24,6 +24,10 @@ DO CASE
      CASE WCPTO  = 6
         WCONCEPTO = 365
         * donaciones
+
+     CASE WCPTO  = 7
+        WCONCEPTO = 366
+        * alquileres  
      
 ENDCASE        
 
@@ -42,7 +46,7 @@ IF WMES = 1
                                    OCTUBRE    = WIMPORTE,;
                                    NOVIEMBRE  = WIMPORTE,;
                                    DICIEMBRE  = WIMPORTE;
-                                   WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2018 AND CONCEPTO = WCONCEPTO
+                                   WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2020 AND CONCEPTO = WCONCEPTO
 ENDIF
 
 IF WMES = 2
@@ -57,7 +61,7 @@ IF WMES = 2
                                    OCTUBRE    = WIMPORTE,;
                                    NOVIEMBRE  = WIMPORTE,;
                                    DICIEMBRE  = WIMPORTE;
-                                   WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2018 AND CONCEPTO = WCONCEPTO
+                                   WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2020 AND CONCEPTO = WCONCEPTO
 ENDIF
 
 IF WMES = 3
@@ -71,7 +75,7 @@ IF WMES = 3
                                    OCTUBRE    = WIMPORTE,;
                                    NOVIEMBRE  = WIMPORTE,;
                                    DICIEMBRE  = WIMPORTE;
-                                   WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2018 AND CONCEPTO = WCONCEPTO
+                                   WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2020 AND CONCEPTO = WCONCEPTO
 ENDIF
 
 IF WMES = 4
@@ -84,7 +88,7 @@ IF WMES = 4
                                    OCTUBRE    = WIMPORTE,;
                                    NOVIEMBRE  = WIMPORTE,;
                                    DICIEMBRE  = WIMPORTE;
-                                   WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2018 AND CONCEPTO = WCONCEPTO
+                                   WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2020 AND CONCEPTO = WCONCEPTO
 ENDIF
 
 
@@ -98,7 +102,7 @@ IF WMES = 5
                                    OCTUBRE    = WIMPORTE,;
                                    NOVIEMBRE  = WIMPORTE,;
                                    DICIEMBRE  = WIMPORTE;
-                                   WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2018 AND CONCEPTO = WCONCEPTO
+                                   WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2020 AND CONCEPTO = WCONCEPTO
 ENDIF
 
 IF WMES = 6
@@ -109,7 +113,7 @@ IF WMES = 6
                                    OCTUBRE    = WIMPORTE,;
                                    NOVIEMBRE  = WIMPORTE,;
                                    DICIEMBRE  = WIMPORTE;
-                                   WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2018 AND CONCEPTO = WCONCEPTO
+                                   WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2020 AND CONCEPTO = WCONCEPTO
 ENDIF
 
 
@@ -120,7 +124,7 @@ IF WMES = 7
                                    OCTUBRE    = WIMPORTE,;
                                    NOVIEMBRE  = WIMPORTE,;
                                    DICIEMBRE  = WIMPORTE;
-                                   WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2018 AND CONCEPTO = WCONCEPTO
+                                   WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2020 AND CONCEPTO = WCONCEPTO
 ENDIF
 
 
@@ -130,7 +134,7 @@ IF WMES = 8
                                    OCTUBRE    = WIMPORTE,;
                                    NOVIEMBRE  = WIMPORTE,;
                                    DICIEMBRE  = WIMPORTE;
-                                   WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2018 AND CONCEPTO = WCONCEPTO
+                                   WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2020 AND CONCEPTO = WCONCEPTO
 ENDIF
 
 
@@ -139,7 +143,7 @@ IF WMES = 9
                                    OCTUBRE    = WIMPORTE,;
                                    NOVIEMBRE  = WIMPORTE,;
                                    DICIEMBRE  = WIMPORTE;
-                                   WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2018 AND CONCEPTO = WCONCEPTO
+                                   WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2020 AND CONCEPTO = WCONCEPTO
 ENDIF
 
 
@@ -150,19 +154,19 @@ IF WMES = 10
    UPDATE NLEGAJO SET OCTUBRE   = WIMPORTE,;
                                    NOVIEMBRE = WIMPORTE,;
                                    DICIEMBRE = WIMPORTE;
-                                   WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2018 AND CONCEPTO = WCONCEPTO
+                                   WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2020 AND CONCEPTO = WCONCEPTO
 ENDIF
 
 IF WMES = 11 
    UPDATE NLEGAJO SET  NOVIEMBRE = WIMPORTE,;
                                    DICIEMBRE = WIMPORTE;
-                                   WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2018 AND CONCEPTO = WCONCEPTO
+                                   WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2020 AND CONCEPTO = WCONCEPTO
 ENDIF 
  
 
 IF WMES = 12 
    UPDATE NLEGAJO SET  DICIEMBRE = WIMPORTE;
-                                   WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2018 AND CONCEPTO = WCONCEPTO
+                                   WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2020 AND CONCEPTO = WCONCEPTO
 ENDIF 
 
 

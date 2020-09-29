@@ -2,29 +2,42 @@ SET EXCLUSIVE OFF
 SET PATH TO F:\SUELDOS\EMPRE1
 
 SELECT LEGAJO,NOMBRE FROM PERSONAL WHERE ACTIVO = "A" ORDER BY LEGAJO INTO CURSOR LISTA 
-tot = 0
-fso = CreateObject('Scripting.FileSystemObject')
-tf = fso.CreateTextFile('c:\testfile.txt', .t.)
+*tot = 0
+*fso = CreateObject('Scripting.FileSystemObject')
+*tf = fso.CreateTextFile('c:\testfile.txt', .t.)
+
+
 SCAN
 
  VarLegajo = lista.legajo
  ?STR(lista.legajo,4) + " "+ lista.nombre 
+* devolucion()
  sumar()
  remple()
  SELECT lista
-
+ 
+ *Result = dosb.r2 - uno.r1
+ *Result =  Result - (Result*2)
+* IF Result < 0
+*    At = "**"
+* ELSE   
+*    At = " "
+* ENDIF   
+     
+* linea = STR(lista.legajo,4) + " "+ lista.nombre + " "+ STR(Result,12,2) + At 
+* tf.WriteLine(linea) 
 ENDSCAN
-linea = "Total............:" + STR(tot,12,2)
+*linea = "Total............:" + STR(tot,12,2)
+*tf.WriteLine(linea)
 
-tf.WriteLine(linea)
-tf.Close
+*tf.Close
 
 
 ***********************
 FUNCTION SUMAR
 **********************
- SELECT ABRIL AS Totreten;
- FROM NLEGAJO WHERE EMPRESA = 1 .AND. ANO = 2018 .AND. LEGAJO = VarLegajo .AND. CONCEPTO = 600;
+ SELECT FEBRERO AS Totreten;
+ FROM NLEGAJO WHERE EMPRESA = 1 .AND. ANO = 2020 .AND. LEGAJO = VarLegajo .AND. CONCEPTO = 600;
  INTO CURSOR INFTOT
  
  *SELECT JULIO AS Ttaren;
@@ -49,16 +62,45 @@ Vsaldo =0
 *tot = tot + Vsaldo
 *linea = STR(lista.legajo,4) +" "+ lista.nombre + "  " + STR(Vsaldo,10,2)
 *tf.WriteLine(linea)
-SELECT ABRIL FROM NLEGAJO WHERE EMPRESA = 1 .AND. ANO = 2018 .AND. CONCEPTO = 605;
+*SELECT MAYO FROM NLEGAJO WHERE EMPRESA = 1 .AND. ANO = 2018 .AND. CONCEPTO = 605;
 INTO CURSOR EXISTE
 
-IF EXISTE.ABRIL <> 0
-   RETURN .T.
-ENDIF
+*IF EXISTE.MAYO <> 0
+*   RETURN .T.
+*ENDIF
+
+
+*Resultado = 0
+*Resultado = dosb.r2 - uno.r1
+
+*IF Resultado > 0
+*   Vsaldo =  Resultado - (Resultado*2) 
+*ELSE
+*   Vsaldo = 0
+*ENDIF   
+
 
 Vsaldo =inftot.Totreten
-tot = tot + inftot.Totreten
-UPDATE NLEGAJO SET ABRIL = Vsaldo;
-WHERE EMPRESA = 1 .AND. ANO = 2018 .AND. LEGAJO = VarLegajo .AND. CONCEPTO = 605
+*tot = tot + inftot.Totreten
+UPDATE NLEGAJO SET FEBRERO = Vsaldo;
+WHERE EMPRESA = 1 .AND. ANO = 2020 .AND. LEGAJO = VarLegajo .AND. CONCEPTO = 605
 RETURN .T.    
      
+     
+     
+********************************************************
+FUNCTION DEVOLUCION
+***************************************************     
+
+select legajo,sum(enero+febrero+marzo+abril+mayo+junio+julio+agosto+setiembre) as r1;
+from nlegajo where empresa = 1 .and. ano = 2019 .and.legajo =Varlegajo .and. concepto = 600;
+group by legajo into cursor uno
+
+
+
+select legajo,sum(enero+febrero+marzo+abril+mayo+junio+julio+agosto) as r2;
+from nlegajo where empresa = 1 .and. ano = 2019 .and.legajo =VarLegajo .and. concepto = 605;
+group by legajo into cursor dosb
+
+RETURN .T.
+

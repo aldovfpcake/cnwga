@@ -21,34 +21,37 @@ ENDIF
 local mes as string
 LOCAL vempre as Integer
 LOCAL vvfecha as date 
- mes = "ABRIL"
+ mes = "AGOSTO"
  vempre =1
  CLEAR
-vvfecha = CTOD("28/04/2018")
-SELECT legajo,SUM(IIF(CLASE= 1 .OR. CLASE = 8,&MES,0))AS BASELQ,SUM(IIF(CONCEPTO = 500 ,&mes,0))as &mes ,SUM(IIF(CONCEPTO = 605 ,&mes,0)) as ret  FROM nlegajo;
-WHERE ano = 2018 .AND. EMPRESA = vempre  GROUP BY legajo INTO CURSOR RETCUA
+vvfecha = CTOD("28/08/2020")
+SELECT legajo,SUM(IIF(CLASE= 1 .OR. CLASE = 8,&MES,0))AS BASELQ,SUM(IIF(CONCEPTO = 500 ,&mes,0))as &mes ,SUM(IIF(CONCEPTO = 605,&mes,0)) as ret  FROM nlegajo;
+WHERE ano = 2020 .AND. EMPRESA = vempre  GROUP BY legajo INTO CURSOR RETCUA
  SUM RET TO VV
  *?"eS reT" + STR(VV,12,2)
  
- SELECT legajo,&mes as reten from nlegajo WHERE ano =2018 .and. empresa = vempre .and. concepto =605  INTO cursor retmensual READWRITE
+* SELECT legajo,concepto,&mes as reten from nlegajo WHERE ano =2020 .and. empresa = vempre .and. concepto =605 INTO cursor retmensual READWRITE
+
+ SELECT legajo,rt as reten FROM  f:\sueldos\retenciones INTO CURSOR retmensual
  *completar()
+ BROWSE
  SELECT retmensual
  SUM reten TO vv
  ?"Suma de Retención :" + STR(vv,12,2)
  WAIT WINDOW "Suma de Retención :" + STR(vv,12,2)
  
 SELECT R.LEGAJO,P.NOMBRE,P.CUIL,P.CALLE,;
-P.NRO,P.LOCALIDAD,P.PROVINCIA, R.BASELQ,M.reten FROM VPERSO AS P  INNER JOIN RETCUA  AS R ON p.legajo = r.legajo INNER JOIN retmensual AS M ON m.legajo = r.legajo  ORDER BY r.legajo INTO CURSOR INFR
+P.NRO,P.LOCALIDAD,P.PROVINCIA, R.BASELQ,M.reten FROM PERSONAL AS P  INNER JOIN RETCUA  AS R ON p.legajo = r.legajo INNER JOIN retmensual AS M ON m.legajo = r.legajo  ORDER BY r.legajo INTO CURSOR INFR
  
  
 SELECT  n.legajo as legajo, n.concepto,&mes,c.clase,n.empresa  FROM nlegajo as n INNER JOIN nconceptos;
-as c ON c.concepto = n.concepto WHERE N.ANO = 2018 .AND. C.CLASE = 1 .AND. n.EMPRESA = vempre ORDER BY n.legajo INTO CURSOR HABER   
+as c ON c.concepto = n.concepto WHERE N.ANO = 2020 .AND. C.CLASE = 1 .AND. n.EMPRESA = vempre ORDER BY n.legajo INTO CURSOR HABER   
 
 SELECT legajo,SUM(&mes) AS HABER FROM HABER WHERE clase = 1 GROUP BY  legajo INTO CURSOR BASE 
 
 
 SELECT  n.legajo, n.concepto,&mes,c.clase,n.empresa  FROM nlegajo as n INNER JOIN nconceptos;
-as c ON c.concepto = n.concepto WHERE N.ANO = 2018 .AND. EMPRESA= vempre .AND. C.CLASE = 8 ORDER BY n.legajo INTO CURSOR SINAPORTE
+as c ON c.concepto = n.concepto WHERE N.ANO = 2020 .AND. EMPRESA= vempre .AND. C.CLASE = 8 ORDER BY n.legajo INTO CURSOR SINAPORTE
 
 
 SELECT legajo,SUM(&mes)AS HSAP FROM SINAPORTE WHERE clase = 8   GROUP BY  legajo INTO CURSOR SINAP 
@@ -93,8 +96,10 @@ SELECT INFOFIN
 GO TOP
 SET FILTER TO reten <>0
 SUM RETEN TO VV
-WAIT WINDOW STR(VV,10,2)
-SET FILTER TO reten >0
+WAIT WINDOW "Retención General ..............:"+ STR(VV,10,2)
+BROWSE
+COPY TO "c:\suerut\listados\ganancias-marzo-2020.xls" TYPE XL5
+*SET FILTER TO reten >0
 *TRY
 *      COPY TO GETFILE('XLS', 'Guardar archivo .XLS:',   'Guardar', 1, 'Guardar reporte en...') type XL5 *
 *CATCH TO excepc
@@ -218,29 +223,30 @@ RETURN N
 *************************
 FUNCTION DEVOLU
 ************************
-SELECT LEGAJO,SINAPORTE AS D FROM 102015 WHERE CONCEPTO = 175;
+SELECT LEGAJO,DESCUENTO  AS D FROM  32020 WHERE CONCEPTO = 654;
 INTO CURSOR DESCU
 SCAN
-    SELECT NOMBRE,RET FROM INFOFIN WHERE LEGAJO = DESCU.LEGAJO;
+    SELECT NOMBRE,RETEN FROM INFOFIN WHERE LEGAJO = DESCU.LEGAJO;
     INTO CURSOR GAN
         
     VVIMPORTE = 0    
-    VVIMPORTE = GAN.RET  
-    IF VVIMPORTE  > 0
-        VVIMPORTE = GAN.RET - DESCU.D
-    ELSE
+    VVIMPORTE = GAN.RETEN + DESCU.D
+      
+   * IF VVIMPORTE  > 0
+   *     VVIMPORTE = GAN.RET - DESCU.D
+   * ELSE
         *SET STEP ON ON
-        IF VVIMPORTE < -1
-             VVIMPORTE = GAN.RET + DESCU.D - (DESCU.D*2)  
-        ELSE
-            VVIMPORTE = DESCU.D -(DESCU.D * 2)  
-        ENDIF
-    ENDIF
-    UPDATE INFOFIN SET RET = VVIMPORTE WHERE LEGAJO = DESCU.LEGAJO
+   *     IF VVIMPORTE < -1
+   *          VVIMPORTE = GAN.RET + DESCU.D - (DESCU.D*2)  
+   *     ELSE
+   *         VVIMPORTE = DESCU.D -(DESCU.D * 2)  
+   *    ENDIF
+   * ENDIF
+    UPDATE INFOFIN SET RETEN = VVIMPORTE WHERE LEGAJO = DESCU.LEGAJO
    
 ENDSCAN
 SELECT INFOFIN
-BROWSE FOR RET < 0
+*BROWSE FOR RET < 0
 
 
 

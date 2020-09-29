@@ -29,10 +29,10 @@ public class xlm {
     private String Snom;
     
     public static void main(String argv[]) {
-    String sDirectorio = "C:\\suerut\\listados\\resultadosXML";
+    String sDirectorio = "C:\\siradig-2019";
     File f = new File(sDirectorio);
     String RutaArch;    
-    RutaArch = "C:\\suerut\\listados\\resultadosXML";
+    RutaArch = "C:\\siradig-2018";
     String Arch; 
     File[] ficheros = f.listFiles();
           for (int x=0;x<ficheros.length;x++){

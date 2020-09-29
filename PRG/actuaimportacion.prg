@@ -1,4 +1,3 @@
-
 SET PATH TO c:\cnwga\prg 
 SET EXCLUSIVE OFF
 SET DATE ITALIAN
@@ -11,7 +10,7 @@ clear
 SELECT 0
 USE importac AGAIN
 GO top
-*SET FILTER TO importac.fechapresenta >= CTOD('1-11-17')
+*SET FILTER TO importac.fechapresenta >= CTOD('1-11-18')
 *BROWSE
 
 CLEAR
@@ -79,6 +78,11 @@ tf = fso.CreateTextFile('c:\testfile.txt', .t.)
             xconcepto = 3 
             DO actuhijo WITH importac.legajo,importac.hijos,Varmes,xconcepto
          ENDIF
+         
+          IF IMPORTAC.alquileres <> 0
+            xconcepto = 7 
+            DO actgastosmedicos WITH importac.legajo,importac.alquileres,Varmes,xconcepto
+         ENDI
 
    SELECT IMPORTAC
    SKIP 

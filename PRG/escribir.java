@@ -22,7 +22,7 @@ public class escribir {
            xlm datos = new xlm();
            FileWriter flwriter = null;
            try{
-               flwriter = new FileWriter("C:\\estudiantes.txt",true);
+               flwriter = new FileWriter("C:\\sueldos\\estudiantes.txt",true);
                BufferedWriter bfwriter = new BufferedWriter(flwriter);
                String S = new String();
                S= "SADASDF";

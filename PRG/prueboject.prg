@@ -1,4 +1,4 @@
-PARAMETERS legajo
+*PARAMETERS legajo
 OPEN DATABASE f:\sueldos\nwga\datos\GANANCIAS.DBC SHARED
 SET PROCEDURE TO c:\cnwga\PRG\clanual
 SET PATH TO F:\SUELDOS\EMPRE1;c:\cnwga\prg;c:\cnwga\forms
@@ -15,16 +15,17 @@ SET DELETED ON
 *x.ano = 2010
 *x.codigo = 600
 *x.agregar
-clear
-*legajo = 422
+*clear
+legajo = 724
 
-x = CREATEOBJECT("liquianual",legajo,2018,1)
-arch = "c:\SUERUT\LISTADOS\SANMART\"+STR(legajo,4)+" -"+ALLTRIM(x.nombre) + ".txt"
+
+x = CREATEOBJECT("liquianual",legajo,2019,1)
+arch = "c:\SUELDOS\SANMART\"+STR(legajo,4)+" -"+ALLTRIM(x.nombre) + ".txt"
 
 
 fso = CreateObject('Scripting.FileSystemObject')
 tf = fso.CreateTextFile((arch),.t.)
-linea = "Declaración Jurada Anual Impuesto A las Ganancias 4 Categoría Año 2017"
+linea = "Declaración Jurada Anual Impuesto A las Ganancias 4 Categoría Año 2019"
 ?linea
 tf.WriteLine(linea)
 linea = "---------------------------------------------------------------------"
@@ -40,10 +41,10 @@ tf.WriteLine(linea)
 linea = " Cuil......................................:"  + x.cuil
 ?linea
 tf.WriteLine(linea)
-linea = "  Remuneración Computable.................:"+" "+ STR(x.REMUBRUTA,8,2)
+linea = "  Remuneración Computable.................:"+" "+ STR(x.REMUBRUTA,12,2)
 ?linea
 tf.WriteLine(linea)
-linea = "  Remuneración Sujeta A Aportes...........:"+" "+ STR(x.RemuBrutaSujetaAporte,8,2)
+linea = "  Remuneración Sujeta A Aportes...........:"+" "+ STR(x.RemuBrutaSujetaAporte,12,2)
 ?linea
 tf.WriteLine(linea)
 linea ="  Aportes Obra Social......................:"+" "+ STR(x.DeduObraSocial,8,2)
@@ -77,6 +78,9 @@ linea ="  Gastos Médicos...........................:"+" "+ STR((IIF(ISNULL(x.Ded
 ?linea
 tf.WriteLine(linea)
 linea ="  Gastos de Sepelio........................:"+" "+ STR(x.DeduGastosSepelio ,8,2)
+?linea
+tf.WriteLine(linea)
+linea ="  Alquileres...............................:"+" "+ STR(x.Dedualquileres ,8,2)
 ?linea
 tf.WriteLine(linea)
 linea ="  Total Deducciones .....................:"+ " "+STR(x.TotalDeducciones,8,2)
@@ -157,7 +161,7 @@ if x.TopeCtaMedicoAsistencial = 1
    tf.WriteLine(linea)
 endif   
 EJECT
-
+?CHR(13)
 
 tf.Close
 

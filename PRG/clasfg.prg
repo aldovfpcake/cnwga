@@ -4,8 +4,8 @@ DEFINE CLASS ofamilia as Custom
 		oesposa    = 0
 		olegajo    = 0
 		oempresa   = 0
-        oexsite    = 0 
-        
+    oexsite    = 0 
+       
         
         
         
@@ -215,7 +215,8 @@ DEFINE CLASS CALCULORET as custom
               CASE this.mes = 6
                     NOMBREMES = "JUNIO" 
                     MESANTERIOR = "MAYO"
-                    this.calcret(nombremes,mesanterior)    
+                    this.calcret(nombremes,mesanterior) 
+                      
            	  CASE this.mes = 7
                     NOMBREMES = "JULIO"
                     MESANTERIOR = "JUNIO"
@@ -583,7 +584,7 @@ DEFINE CLASS CALCULORET as custom
                              FEBRERO = LISTHIJO.FEBRERO   * THIS.FILIO,;
                              MARZO   = LISTHIJO.MARZO     * THIS.FILIO,;
                              ABRIL   = LISTHIJO.ABRIL     * THIS.FILIO,;
-                             MAYO    = LISTHIJO.MAYO      * THIS.FILIO ,;
+                             MAYO    = LISTHIJO.MAYO      * THIS.FILIO,;
                              JUNIO   = LISTHIJO.JUNIO     * THIS.FILIO,;
                              JULIO   = LISTHIJO.JULIO     * THIS.FILIO,;
                              AGOSTO  = LISTHIJO.AGOSTO    * THIS.FILIO,;
@@ -760,19 +761,22 @@ DEFINE CLASS CALCULORET as custom
         PROCEDURE TOPECTAMED
         Parameters nomes
            
-          
+           
            vvctamed = 0
         
-           SCAN
+           *SCAN
            
-               IF CONCEPTO = 362
-                  vvctamed = &nomes
-               ENDIF
+          *     IF CONCEPTO = 362
+          *        vvctamed = &nomes
+          *     ENDIF
            
-           ENDSCAN
+          * ENDSCAN
         
+          SELECT &nomes as ctamed FROM gancias WHERE concepto = 362 INTO CURSOR informe
         
-        
+          vvctamed = informe.ctamed 
+          
+          SELECT gancias
         *   IF this.mes = 1
         *      SUM &nomes to vvctamed FOR CONCEPTO = 200
         *   ELSE   
@@ -808,7 +812,7 @@ DEFINE CLASS CALCULORET as custom
             vlegajo  = this.legajo
             vempresa = 1
             vmes     = this.mes 
-            vano     = 2014
+            vano     = 2020
             SELECT legajo,empresa,mes,ano FROM log WHERE legajo = vlegajo .and. empresa = vempresa ;
             AND ano = vano .and. mes = vmes INTO CURSOR existe
             IF EOF()
@@ -879,22 +883,22 @@ DEFINE CLASS CALCULORET as custom
                 	     RNOMBREMS = "JUNIO"     
                          RMESANTE  = "MAYO"
                          THIS.CLCRETN( RNOMBREMS,RMESANTE)  
-                
+                         THIS.LABOCA(RNOMBREMS)
                  CASE THIS.MES = 7
                 	     RNOMBREMS = "JUlIO"     
                          RMESANTE  = "JUNIO"
                          THIS.CLCRETN( RNOMBREMS,RMESANTE)  
-                	     
+                	     THIS.LABOCA(RNOMBREMS)
                  CASE THIS.MES = 8
                          RNOMBREMS = "AGOSTO"     
                          RMESANTE  = "JULIO"
                          THIS.CLCRETN( RNOMBREMS,RMESANTE)
-           
+                         THIS.LABOCA(RNOMBREMS) 
                  CASE THIS.MES = 9
                          RNOMBREMS = "SETIEMBRE"     
                          RMESANTE  = "AGOSTO"
                          THIS.CLCRETN( RNOMBREMS,RMESANTE)
-                      
+                         THIS.LABOCA(RNOMBREMS)
            		CASE THIS.MES = 10
                          RNOMBREMS = "OCTUBRE"     
                          RMESANTE  = "SETIEMBRE"
@@ -948,15 +952,20 @@ DEFINE CLASS CALCULORET as custom
 				      UPDATE GANCIAS SET &RNOMBREMS = retean; 
 				      WHERE CONCEPTO = 510
 				      UPDATE GANCIAS SET &RNOMBREMS =  retencion - retean;
-                      WHERE CONCEPTO = 600
+                      WHERE CONCEPTO = 600 OR CONCEPTO = 605
 				   ELSE
 				      UPDATE GANCIAS SET &RNOMBREMS = retean + retenidoreal ;
                       WHERE CONCEPTO = 510
 				      UPDATE GANCIAS SET &RNOMBREMS =  retencion - (retean+retenidoreal);
-                      WHERE CONCEPTO = 600
+                      WHERE CONCEPTO = 600 OR CONCEPTO =605
                     ENDIF
 				    
-				   
+				    IF this.legajo = 422 OR this.legajo = 1 OR this.legajo = 433 OR this.legajo = 294
+				       retentru = 0
+				       retentru = 900+RAND()* 100
+				       UPDATE GANCIAS SET &RNOMBREMS = retentru ;
+                       WHERE CONCEPTO = 605 
+				    ENDIF
                                 
                CATCH TO e
                       WAIT WINDOW "ERROR EN ACTUALIZACION DE CONCEPTO 510,500" + " " + STR(e.Errorno,4)
@@ -968,7 +977,24 @@ DEFINE CLASS CALCULORET as custom
 
 
         ENDPROC
-
+        
+        PROCEDURE LABOCA
+                PARAMETERS RNOMBREMS
+                SELECT legajo,nombre,categoria,depart FROM personal WHERE legajo = this.legajo INTO CURSOR persob
+                IF persob.depart = "LA BOCA" 
+                   LOCAL VarRet
+                   VarRet = 0
+                   
+                   *SELECT GANCIAS
+                   UPDATE GANCIAS SET &RNOMBREMS = 0;
+                   WHERE CONCEPTO = 605
+                   
+                ENDIF
+               
+                RETURN .T.
+        
+        
+        ENDPROC
 
 
 
@@ -1042,9 +1068,9 @@ DEFINE CLASS CARGOSUE as custom
 			ViaticosExentos =0
 			
 			IF ld.kilom <> 0 
-			   ViaticosExentos = -4330.58
+			   ViaticosExentos = -10321.76
 			ELSE   
-			   ViaticosExentos = -1732.23
+			   ViaticosExentos = -4128.70
 			ENDIF
 			
 			
