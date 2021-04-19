@@ -1,9 +1,9 @@
-SET PATH TO f:\sueldos\empre1
+SET PATH TO c:\suerut\empre1
 SET TALK OFF
 CLEAR
 SET DELETED ON
 SET EXCLUSIVE OFF
-USE importac2019 AGAIN
+USE importac AGAIN
 GO top
 clear
 scan
@@ -35,7 +35,7 @@ IF EOF()
    WAIT WINDOW "ERROR NO SE ENCUENTRA " + vcuil
 ENDIF
 ?perso.legajo
- replace importac2019.legajo WITH perso.legajo
+ replace importac.legajo WITH perso.legajo
 
 
 RETURN .t.

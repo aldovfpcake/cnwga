@@ -1,14 +1,14 @@
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package xlm;
+ *ackage xlm;
+
 
 /**
  *
  * @author aldo.valente
  */
+package xlm;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -22,12 +22,12 @@ public class escribir {
            xlm datos = new xlm();
            FileWriter flwriter = null;
            try{
-               flwriter = new FileWriter("C:\\estudiantes.txt",true);
+               flwriter = new FileWriter("C:\\sueldos\\estudiantes2.txt",true);
                BufferedWriter bfwriter = new BufferedWriter(flwriter);
                String S = new String();
                S= "SADASDF";
                System.out.println("hijos:::"+hijos);
-               bfwriter.write(xlm.EmpleadoCuil +','+xlm.EmpleadoNombre +','+datos.EmpleadoEsposa +','+hijos + ','+datos.TctaMedico +','+ datos.Tdnaciones + ','+datos.Creditohipo+','+datos.GastosMedicos+','+xlm.Nropre +","+xlm.SeguroDeVida+","+xlm.Fechapre+"\n");
+               bfwriter.write(xlm.EmpleadoCuil +','+xlm.EmpleadoNombre +','+datos.EmpleadoEsposa +','+hijos + ','+xlm.TctaMedico+','+ datos.Tdnaciones + ','+datos.Creditohipo+','+xlm.TotGastosmedicos+','+'0'+','+xlm.TotSeguroDeVida+','+xlm.FechaPresenta+','+xlm.TotAlquileres+','+xlm.TotSeguroRetiro +','+ xlm.TotDolar+"\n");
                bfwriter.close();
            }catch(IOException e) {
 			e.printStackTrace();
@@ -41,17 +41,21 @@ public class escribir {
 			}
 		}
            
-           
            System.out.println("Grabando a Disco");
            datos.Canthijos = 0;
            datos.TctaMedico=0;
            datos.Tdnaciones=0;
            datos.Creditohipo=0;
            datos.EmpleadoEsposa=0;
-           xlm.GastosMedicos =0;
-           xlm.Nropre =0;
-           xlm.Fechapre = " ";
-           xlm.SeguroDeVida =0;
-    }    
+           datos.Hijastroc = " ";
+           xlm.TctaMedico = 0;
+           xlm.TotSeguroDeVida =0;
+           xlm.TotAlquileres=0;
+           xlm.TotGastosmedicos =0;
+           xlm.TotSeguroRetiro =0;
+           xlm.TotDolar = 0;
+           xlm.Snom = " ";
+    }
     
 }
+

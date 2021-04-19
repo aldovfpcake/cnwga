@@ -16,7 +16,7 @@ RNOMBREMS = " "
             RMESANTE  = " "
             retencion = 0
             retean = 0          
-            SELECT * FROM NESCALA WHERE MES = 9 INTO CURSOR ESCALA
+            SELECT * FROM NESCALA WHERE MES = 11 INTO CURSOR ESCALA
             SELECT escala
       
             DO WHILE .not. EOF()  

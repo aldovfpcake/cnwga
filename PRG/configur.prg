@@ -1,35 +1,37 @@
 *PARAMETERS vvempresa,vvprocesos
-vvempresa = 1
+*vvempresa =  1 
 vvprocesos = 1
 *LOCAL vvempresa
 *SET STEP ON 
-*vvempresa = 1
+vvempresa = 1
 LOCAL unidad,ubiarch as Character 
  
-
 unidad= " "
-unidad = "f:\"
+unidad = "C:\"
 
 DO case
    CASE vvempresa = 1
-        SET PATH TO &unidad\sueldos\empre1;&unidad\nwga\forms;&unidad\nwga\datos;&unidad\nwga\prg;c:\cnwga\forms;c:\fwsu\prg
-        ubiarch =  unidad+ "sueldos\empre1;&unidad\nwga\forms;" + unidad +" nwga\datos;" + unidad + "nwga\prg;c:\cnwga\forms;c:\cnwga\prg"
-    CASE vvempresa = 2
-        SET PATH TO &unidad\sueldos\empre2;&unidad\nwga\forms;&unidad\nwga\datos;&unidad\nwga\prg;c:\cnwga\forms
+        SET PATH TO &unidad\empre1;&unidad\nwga\forms;&unidad\nwga\datos;&unidad\nwga\prg;c:\cnwga\forms;c:\fwsu\prg;c:\nwga\datos
+        *ubiarch =  unidad+ "sueldos\empre1;&unidad\nwga\forms;" + unidad +" nwga\datos;" + unidad + "nwga\prg;c:\cnwga\forms;c:\cnwga\prg,c:\nwga\datos"
+        ubiarch =  "c:\suerut\empre1"+unidad+"\nwga\forms;" + unidad +" nwga\datos;" + unidad + "nwga\prg;c:\cnwga\forms;c:\cnwga\prg,c:\nwga\datos"
+     
+   CASE vvempresa = 2
+        SET PATH TO &unidad\empre2;&unidad\nwga\forms;&unidad\nwga\datos;&unidad\nwga\prg;c:\cnwga\forms
         ubiarch =   unidad+ "sueldos\empre2;&unidad\nwga\forms;" + unidad +" nwga\datos;" + unidad + "nwga\prg;c:\cnwga\forms;c:\cnwga\prg"
-     CASE vvempresa = 3
-        SET PATH TO &unidad\sueldos\empresa-3;&unidad\nwga\forms;&unidad\nwga\datos;&unidad\nwga\prg;c:\cnwga\forms
+   CASE vvempresa = 3
+        SET PATH TO &unidad\empresa-3;&unidad\nwga\forms;&unidad\nwga\datos;&unidad\nwga\prg;c:\cnwga\forms
         ubiarch =   unidad+ "sueldos\empresa-3;&unidad\nwga\forms;" + unidad +" nwga\datos;" + unidad + "nwga\prg;c:\cnwga\forms;c:\cnwga\prg"
-
-
-
+    CASE vvempresa = 4
+         SET PATH TO C:\NWGA\DATOS;C:\SUERUT\EMPRE1;C:\NWGA\FORMS;C:\NWGA\PRG
+         ubiarch =  unidad+ "suerut\empre1;&unidad\nwga\forms;" + unidad +" nwga\datos;" + unidad + "nwga\prg;c:\cnwga\forms;c:\cnwga\prg,c:\nwga\datos"
 
 ENDCASE
 TRY
 	SET TALK OFF
 	SET EXCLUSIVE off
 	SET REPROCESS TO AUTOMATIC
-	OPEN DATABASE f:\sueldos\nwga\datos\ganancias SHARED VALIDATE
+	OPEN DATABASE C:\nwga\datos\ganancias SHARED 
+	*OPEN DATABASE f:\sueldos\nwga\datos\ganancias SHARED VALIDATE
 	SET PROCEDURE TO c:\cnwga\prg\clasfg
 CATCH TO E 
     WAIT WINDOW "No se Puede Abrir la base de datos"
@@ -38,7 +40,7 @@ CATCH TO E
 ENDTRY   
 
 
-SELECT LEGAJO,NOMBRE,PS261,NIVELGCIA,CUIL FROM PERSONAL WHERE ACTIVO = "A";
+SELECT LEGAJO,NOMBRE,PS261,NIVELGCIA,CUIL FROM C:\SUERUT\EMPRE1\PERSONAL WHERE ACTIVO = "A";
 ORDER BY NOMBRE INTO CURSOR LPERSONAL
 SELECT personal
 use
@@ -51,7 +53,7 @@ DO case
         DO FORM pp WITH vvempresa,vvlogin,ubiarch
       
    CASE vvprocesos = 3  
-        DO FORM pp WITH vvempresa,vvlogin,ubiarch
+        DO FORM calcugral
    
    CASE vvprocesos = 4
         USE vistaperso

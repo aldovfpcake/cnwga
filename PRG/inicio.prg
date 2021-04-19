@@ -9,5 +9,6 @@ unidad = ALLTRIM("c:")
 *WAIT WINDOW SYS(2003) +" " + CURDIR()
 SET SYSMENU TO
 SET PATH TO  c:\cnwga\prg;c:\cnwga\forms
-DO  form logun
+*DO  form logun
+DO configur4
 READ events

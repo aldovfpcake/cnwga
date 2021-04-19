@@ -17,12 +17,14 @@ DEFINE CLASS liquianual as Custom
 	 DeduDonaciones = 0
 	 DeduGastosMedicos = 0
 	 DeduAlquileres = 0
+	 DeduSeguroRetiro = 0
 	 TopeGastosMedicos = 0
 	 TopeDeduDonaciones = 0
 	 TotalRemuneta = 0
 	 DeduGastosSepelio = 0
 	 TopeGastosSepelio = 0
 	 DeduLey19032 =0
+	 DeduDolares=0
 	 DeduHonorariosMedicos = 0
 	 DeduInteresesHipotecarios = 0
 	 TopeInteresesHipotecarios =0
@@ -44,6 +46,7 @@ DEFINE CLASS liquianual as Custom
 	 Ano = 0 
 	 Empresa = 0
 	 PROCEDURE Init(ParmLegajo,ParmAno,ParmEmpresa)
+	    
 	   This.Ano = ParmAno   
 	   This.legajo = Parmlegajo
 	   This.Empresa = ParmEmpresa   
@@ -56,11 +59,13 @@ DEFINE CLASS liquianual as Custom
 	   this.TotalJubilatiorios
 	   this.CalcularNeta
 	   this.TotalMedicoAsistencial
+	   this.TotalRetDolares
 	   this.TotalGastosMedicos
 	   this.TotalDeduleyVeinteTreintaydos 
 	   this.TotalDonaciones
 	   this.TotalIntHipo
 	   this.TotalGastosSepelio 
+	   this.TotalSeguroRetiro
 	   this.TotalArt23
 	   this.Topecinco
 	   this.CalcularTotaldeducciones
@@ -191,7 +196,7 @@ DEFINE CLASS liquianual as Custom
 	
 	PROCEDURE CalculaRetencion
 	   
-	    SELECT * FROM escala2019 WHERE BETWEEN(this.RemuSujetaAImp,DE,A) INTO CURSOR GESCALA
+	    SELECT * FROM esca2020 WHERE BETWEEN(this.RemuSujetaAImp,DE,A) INTO CURSOR GESCALA
 	    
         Nsaldo = this.RemuSujetaAImp -GESCALA.excedente
         Porc = (Nsaldo*GESCALA.porcentaje/100)
@@ -199,12 +204,12 @@ DEFINE CLASS liquianual as Custom
         this.ImpDeterm = Porc + GESCAlA.suma 		
 	    select gescala
 		use
-	    IF this.RemuSujetaAImp > 528636.91
+	    IF this.RemuSujetaAImp > 762706.57
 	        Nsaldo = 0
-	        Nsaldo =  this.RemuSujetaAImp - 528636.91
+	        Nsaldo =  this.RemuSujetaAImp - 762706.57
 	        Porc = 0
 	        Porc = (Nsaldo*35)/100
-	        this.ImpDeterm = Porc+ 117952.11
+	        this.ImpDeterm = Porc+ 170178.90
 	    
 	    ENDIF
          IF NOT ISNULL(this.ImpDeterm)	    
@@ -213,7 +218,22 @@ DEFINE CLASS liquianual as Custom
 	ENDPROC
 	
 	
-	
+	PROCEDURE TotalRetDolares
+			SELECT SUM(Nlegajo.enero+Nlegajo.febrero+ Nlegajo.marzo+ Nlegajo.abril+Nlegajo.mayo+Nlegajo.junio+Nlegajo.julio+Nlegajo.agosto+Nlegajo.setiembre+Nlegajo.octubre+Nlegajo.noviembre+Nlegajo.diciembre) as total;
+ 			FROM ;
+     		        ganancias!nlegajo ;
+    		        INNER JOIN ganancias!nconceptos ;
+   			ON  Nlegajo.concepto = Nconceptos.concepto;
+ 			WHERE  Nlegajo.legajo = this.legajo;
+   			AND  Nlegajo.empresa = this.Empresa;
+   			AND  Nlegajo.ano = this.Ano;
+   			AND  Nconceptos.concepto = 368;
+   			INTO CURSOR informe 
+			this.DeduDolares = informe.total
+            SELECT informe
+            use 
+	        INSERT INTO repanual(legajo,nombre,cuil,Ano,remubruta,clase) VALUES (this.legajo,"Ret Dolares.",this.cuil,this.Ano,this.DeduDolares,2)   
+    ENDPRO
 	
 	
 	
@@ -324,8 +344,9 @@ DEFINE CLASS liquianual as Custom
    			AND  Nlegajo.ano = this.Ano;
    			AND  Nconceptos.concepto = 310;
    			INTO CURSOR informe 
-   			this.ArtDeduGananciaNoImpo= informe.total
-   			this.ArtDeduGananciaNoImpo = 103018.79
+   			*SET STEP ON 
+   			*this.ArtDeduGananciaNoImpo= informe.total
+   			this.ArtDeduGananciaNoImpo = 123861.17
 			SELECT informe
             use  
             SELECT nlegajo.diciembre as total;
@@ -339,7 +360,7 @@ DEFINE CLASS liquianual as Custom
    			AND  Nconceptos.concepto = 300;
    			INTO CURSOR informe 
    			*this.ArtDeduEspecial= informe.total
-   			this.ArtDeduEspecial= 494490.17
+   			this.ArtDeduEspecial= 594533.62
 			
 			SELECT informe
             use
@@ -410,6 +431,33 @@ DEFINE CLASS liquianual as Custom
             use 	
 	ENDPROC		
     
+	
+	
+	PROCEDURE TotalSeguroRetiro
+			SELECT SUM(Nlegajo.enero+Nlegajo.febrero+ Nlegajo.marzo+ Nlegajo.abril+Nlegajo.mayo+Nlegajo.junio+Nlegajo.julio+Nlegajo.agosto+Nlegajo.setiembre+Nlegajo.octubre+Nlegajo.noviembre+Nlegajo.diciembre) as total;
+ 			FROM ;
+     		ganancias!nlegajo ;
+    		INNER JOIN ganancias!nconceptos ;
+   			ON  Nlegajo.concepto = Nconceptos.concepto;
+ 			WHERE  Nlegajo.legajo = this.legajo;
+   			AND  Nlegajo.empresa = this.Empresa;
+   			AND  Nlegajo.ano = this.Ano;
+   			AND  Nconceptos.concepto = 367;
+   			INTO CURSOR informe 
+			if informe.total > 18000
+			   this.DeduSeguroRetiro = 18000
+               
+			else     			   
+			   this.DeduSeguroRetiro = informe.total
+			endif 
+			SELECT informe
+            use 
+	        INSERT INTO repanual(legajo,nombre,cuil,Ano,remubruta,clase) VALUES (this.legajo,"Seguro De Ret.",this.cuil,this.Ano,this.DeduSeguroRetiro,2)   
+    ENDPRO
+	
+	
+	
+	
 	PROCEDURE CALCULARNETA
 	        
 			 this.RemuNeta =  this.Remubruta - (this.DeduObrasocial + this.DeduCtaSindical+this.DeduAporteJubilatorio+ this.DeduLey19032)
@@ -423,9 +471,10 @@ DEFINE CLASS liquianual as Custom
 	
 	PROCEDURE CALCULARTOTALDEDUCCIONES
 	    this.VerificarNul 
+	 
 	     
 	    this.TotalDeducciones = this.DeduAporteJubilatorio + this.DeduCtaMedicoAsistencial+ this.DeduCtaSindical +this.DeduDonaciones + this.DeduGastosSepelio + this.DeduHonorariosMedicos + this.DeduInteresesHipotecarios + this.DeduObraSocial;
-	                        	+ this.DeduPrimaSeguroDeVida + this.DeduLey19032+ this.DeduGastosMedicos+this.DeduAlquileres
+	                        	+ this.DeduPrimaSeguroDeVida + this.DeduLey19032+ this.DeduGastosMedicos+this.DeduAlquileres+this.DeduSeguroRetiro + this.DeduDolares
 		
 	ENDPROC
 	

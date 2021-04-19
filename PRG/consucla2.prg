@@ -1,8 +1,10 @@
-OPEN DATABASE f:\sueldos\nwga\datos\ganancias.dbc SHARED
+*OPEN DATABASE f:\nwga\datos\ganancias.dbc SHARED
+OPEN DATABASE C:\nwga\datos\ganancias
 SET EXCLUSIVE OFF
 SET DATE BRITISH 
 SET CENTURY ON
-SET PATH TO f:\SUElDOS\EMPRE1
+*SET PATH TO f:\EMPRE1
+SET PATH TO C:\SUERUT\EMPRE1
 SELECT 0
 IF USED("VPERSO")
    SELECT VPERSO 
@@ -11,47 +13,44 @@ ELSE
       SELECT PERSONAL 
    ELSE
       SELECT 0
-      USE F:\SUELDOS\EMPRE1\PERSONAL ALIAS VPERSO
+      *USE F:\EMPRE1\PERSONAL ALIAS VPERSO
+       USE C:\SUERUT\EMPRE1\PERSONAL
   ENDIF 
 ENDIF   
  CLEAR
-*USE c:\suerut\empre1\personal ALIAS vperso
+*USE c:\suerut\empre1\personal ALIAS vperso*
 *SELECT personal
 *use
 local mes as string
 LOCAL vempre as Integer
 LOCAL vvfecha as date 
- mes = "AGOSTO"
+ mes = "MARZO"
  vempre =1
  CLEAR
-vvfecha = CTOD("28/08/2020")
+vvfecha = CTOD("28/03/2021")
 SELECT legajo,SUM(IIF(CLASE= 1 .OR. CLASE = 8,&MES,0))AS BASELQ,SUM(IIF(CONCEPTO = 500 ,&mes,0))as &mes ,SUM(IIF(CONCEPTO = 605,&mes,0)) as ret  FROM nlegajo;
-WHERE ano = 2020 .AND. EMPRESA = vempre  GROUP BY legajo INTO CURSOR RETCUA
+WHERE ano = 2021 .AND. EMPRESA = vempre  GROUP BY legajo INTO CURSOR RETCUA
  SUM RET TO VV
  *?"eS reT" + STR(VV,12,2)
  
-* SELECT legajo,concepto,&mes as reten from nlegajo WHERE ano =2020 .and. empresa = vempre .and. concepto =605 INTO cursor retmensual READWRITE
+ SELECT legajo,concepto,&mes as reten from nlegajo WHERE ano =2021 .and. empresa = vempre .and. concepto =605 INTO cursor retmensual READWRITE
 
- SELECT legajo,rt as reten FROM  f:\sueldos\retenciones INTO CURSOR retmensual
+ *SELECT legajo,rt as reten FROM  f:\sueldos\retenciones INTO CURSOR retmensual
  *completar()
- BROWSE
- SELECT retmensual
- SUM reten TO vv
- ?"Suma de Retención :" + STR(vv,12,2)
- WAIT WINDOW "Suma de Retención :" + STR(vv,12,2)
- 
+* jo  ORDER BY r.legajo INTO CURSOR INFR
 SELECT R.LEGAJO,P.NOMBRE,P.CUIL,P.CALLE,;
-P.NRO,P.LOCALIDAD,P.PROVINCIA, R.BASELQ,M.reten FROM PERSONAL AS P  INNER JOIN RETCUA  AS R ON p.legajo = r.legajo INNER JOIN retmensual AS M ON m.legajo = r.legajo  ORDER BY r.legajo INTO CURSOR INFR
+P.NRO,P.LOCALIDAD,P.PROVINCIA, R.BASELQ,M.reten FROM PERSONAL AS P  INNER JOIN RETCUA  AS R ON p.legajo = r.legajo INNER JOIN retmensual AS M ;
+ON m.legajo = r.legajo  ORDER BY r.legajo INTO CURSOR INFR
  
  
 SELECT  n.legajo as legajo, n.concepto,&mes,c.clase,n.empresa  FROM nlegajo as n INNER JOIN nconceptos;
-as c ON c.concepto = n.concepto WHERE N.ANO = 2020 .AND. C.CLASE = 1 .AND. n.EMPRESA = vempre ORDER BY n.legajo INTO CURSOR HABER   
+as c ON c.concepto = n.concepto WHERE N.ANO = 2021 .AND. C.CLASE = 1 .AND. n.EMPRESA = vempre ORDER BY n.legajo INTO CURSOR HABER   
 
 SELECT legajo,SUM(&mes) AS HABER FROM HABER WHERE clase = 1 GROUP BY  legajo INTO CURSOR BASE 
 
 
 SELECT  n.legajo, n.concepto,&mes,c.clase,n.empresa  FROM nlegajo as n INNER JOIN nconceptos;
-as c ON c.concepto = n.concepto WHERE N.ANO = 2020 .AND. EMPRESA= vempre .AND. C.CLASE = 8 ORDER BY n.legajo INTO CURSOR SINAPORTE
+as c ON c.concepto = n.concepto WHERE N.ANO = 2021 .AND. EMPRESA= vempre .AND. C.CLASE = 8 ORDER BY n.legajo INTO CURSOR SINAPORTE
 
 
 SELECT legajo,SUM(&mes)AS HSAP FROM SINAPORTE WHERE clase = 8   GROUP BY  legajo INTO CURSOR SINAP 
@@ -98,7 +97,7 @@ SET FILTER TO reten <>0
 SUM RETEN TO VV
 WAIT WINDOW "Retención General ..............:"+ STR(VV,10,2)
 BROWSE
-COPY TO "c:\suerut\listados\ganancias-marzo-2020.xls" TYPE XL5
+*COPY TO "c:\suerut\listados\ganancias-marzo-2021.xls" TYPE XL5
 *SET FILTER TO reten >0
 *TRY
 *      COPY TO GETFILE('XLS', 'Guardar archivo .XLS:',   'Guardar', 1, 'Guardar reporte en...') type XL5 *
@@ -107,7 +106,7 @@ COPY TO "c:\suerut\listados\ganancias-marzo-2020.xls" TYPE XL5
 
 *ENDTRY
 BROWSE TITLE "LISTO"
-exporta(vvfecha) 
+*exporta(vvfecha) 
 *CLOSE TABLES ALL
 RETURN
 
@@ -223,7 +222,7 @@ RETURN N
 *************************
 FUNCTION DEVOLU
 ************************
-SELECT LEGAJO,DESCUENTO  AS D FROM  32020 WHERE CONCEPTO = 654;
+SELECT LEGAJO,DESCUENTO  AS D FROM  32021 WHERE CONCEPTO = 654;
 INTO CURSOR DESCU
 SCAN
     SELECT NOMBRE,RETEN FROM INFOFIN WHERE LEGAJO = DESCU.LEGAJO;
@@ -267,4 +266,16 @@ SCAN
 
 
 ENDSCAN
+
+SELECT RETMENSUAL
+CAMPO = FIELD(2)
+REPLACE ALL &CAMPO WITH 0
 BROWSE
+SELECT LEGAJO,DES FROM ABRIL INTO CURSOR LI
+SCAN
+
+    UPDATE RETMENSUAL SET &CAMPO = LI.DES WHERE LEGAJO = LI.LEGAJO
+    SELECT RETMENSUAL
+
+
+ENDSCAN

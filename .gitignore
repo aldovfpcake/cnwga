@@ -6,3 +6,4 @@ $cat .gitignore
 *.encrypt
 /xlmjava/nbproject/private/
 /xlmjava/build/
+/xmlapli/dist/

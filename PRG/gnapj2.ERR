@@ -4,7 +4,7 @@ Programa c:\cnwga\prg\configur.prg tiene los siguientes errores:
 Formulario c:\cnwga\forms\calcugral.scx tiene los siguientes errores:
     Archivo LABELS.ICO - Indefinido
 
-Biblioteca de clases visuales f:\sueldos\nwga\datos\_base.vcx tiene los siguientes errores:
+Biblioteca de clases visuales c:\nwga\datos\_base.vcx tiene los siguientes errores:
     Programa SETOBJRF - Indefinido
 
 Formulario c:\cnwga\forms\legfm.scx tiene los siguientes errores:
@@ -22,5 +22,17 @@ Programa c:\fwsu\prg\liquidacion.prg tiene los siguientes errores:
     Formulario FORMERROR - Indefinido
 
 Programa c:\fwsu\prg\lista2.prg tiene los siguientes errores:
+    Formulario LISTAFM - Indefinido
+
+Programa c:\fwsu\prg\listado-de-sueldos-por-concepto.prg tiene los siguientes errores:
+    Biblioteca de clases visuales RH - Indefinido
+
+Programa c:\cnwga\prg\configur2.prg tiene los siguientes errores:
+    Formulario LISTAFM - Indefinido
+
+Formulario c:\cnwga\forms\formcargalegajos.scx tiene los siguientes errores:
+    Biblioteca de clases visuales CLASGA - Indefinido
+
+Programa c:\cnwga\prg\configur4.prg tiene los siguientes errores:
     Formulario LISTAFM - Indefinido
 

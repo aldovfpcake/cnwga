@@ -1,7 +1,7 @@
-*PARAMETERS legajo
-OPEN DATABASE f:\sueldos\nwga\datos\GANANCIAS.DBC SHARED
+PARAMETERS legajo
+OPEN DATABASE C:\nwga\datos\GANANCIAS.DBC SHARED
 SET PROCEDURE TO c:\cnwga\PRG\clanual
-SET PATH TO F:\SUELDOS\EMPRE1;c:\cnwga\prg;c:\cnwga\forms
+SET PATH TO C:\SUERUT\EMPRE1;c:\cnwga\prg;c:\cnwga\forms
 SET EXCLUSIVE OFF
 SET DELETED ON
 * e:\nwga\prg\crypta
@@ -16,16 +16,15 @@ SET DELETED ON
 *x.codigo = 600
 *x.agregar
 *clear
-legajo = 724
+*legajo = 795
 
-
-x = CREATEOBJECT("liquianual",legajo,2019,1)
-arch = "c:\SUELDOS\SANMART\"+STR(legajo,4)+" -"+ALLTRIM(x.nombre) + ".txt"
+x = CREATEOBJECT("liquianual",legajo,2020,1)
+arch = "c:\SUELDOS\REP.TELEF\"+STR(legajo,4)+" -"+ALLTRIM(x.nombre) + ".txt"
 
 
 fso = CreateObject('Scripting.FileSystemObject')
 tf = fso.CreateTextFile((arch),.t.)
-linea = "Declaración Jurada Anual Impuesto A las Ganancias 4 Categoría Año 2019"
+linea = "Declaración Jurada Anual Impuesto A las Ganancias 4 Categoría Año 2020"
 ?linea
 tf.WriteLine(linea)
 linea = "---------------------------------------------------------------------"
@@ -81,6 +80,12 @@ linea ="  Gastos de Sepelio........................:"+" "+ STR(x.DeduGastosSepel
 ?linea
 tf.WriteLine(linea)
 linea ="  Alquileres...............................:"+" "+ STR(x.Dedualquileres ,8,2)
+?linea
+tf.WriteLine(linea)
+linea ="  Seguro de Retiro..........................:"+" "+ STR(x.DeduSeguroRetiro ,8,2)
+?linea
+tf.WriteLine(linea)
+linea ="  Retencion Dolares..........................:"+" "+ STR(x.DeduDolares ,8,2)
 ?linea
 tf.WriteLine(linea)
 linea ="  Total Deducciones .....................:"+ " "+STR(x.TotalDeducciones,8,2)
@@ -167,7 +172,7 @@ tf.Close
 
 RELEASE x
 
-
+CLEAR MEMORY
 
 
 

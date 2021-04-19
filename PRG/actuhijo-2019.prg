@@ -3,13 +3,13 @@ PARAMETERS WLEGAJO,WUNIDADES,Varmes,WCOD
 
 DO CASE
    CASE WCOD = 1
-           WIMPORTE  = 40361.43
+           WIMPORTE  = 58232.65
            WCONCEPTO = 330
            *
            *HIJOS
            *
    CASE WCOD = 2	
-           WIMPORTE  = 80033.97
+           WIMPORTE  = 115471.38
            WCONCEPTO = 320
            *
            * CONYUGE
@@ -17,7 +17,7 @@ DO CASE
 
    CASE WCOD = 3
            WUNIDADES = 1
-           WIMPORTE  = 996.23
+           WIMPORTE  = 18000
            WCONCEPTO = 361    
            *
            * SEGURO DE VIDA
@@ -41,7 +41,7 @@ UPDATE NLEGAJO SET    ENERO      = ((66917.91/12)*1),;
                       OCTUBRE    = ((66917.91/12)*10),;
                       NOVIEMBRE  = ((66917.91/12)*11),;
                       DICIEMBRE  =  66917.91;
-                      WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2019 AND CONCEPTO = 310
+                      WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2020 AND CONCEPTO = 310
 
 
 UPDATE NLEGAJO SET    ENERO      = ((321205.97/12)*1),; 
@@ -56,7 +56,7 @@ UPDATE NLEGAJO SET    ENERO      = ((321205.97/12)*1),;
                       OCTUBRE    = ((321205.97/12)*10),;
                       NOVIEMBRE  = ((321205.97/12)*11),;
                       DICIEMBRE  =  321205.97;
-                      WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2019 AND CONCEPTO = 300
+                      WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2020 AND CONCEPTO = 300
 
 
 
@@ -74,7 +74,7 @@ IF Varmes = 1
                       OCTUBRE    = ((WIMPORTE/12)*10) *WUNIDADES,;
                       NOVIEMBRE  = ((WIMPORTE/12)*11) *WUNIDADES,;
                       DICIEMBRE  =  WIMPORTE*WUNIDADES;
-                      WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2019 AND CONCEPTO = WCONCEPTO
+                      WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2020 AND CONCEPTO = WCONCEPTO
  
 ENDIF
 
@@ -93,7 +93,7 @@ IF Varmes = 2
                       OCTUBRE    = ((WIMPORTE/12)*10) *WUNIDADES,;
                       NOVIEMBRE  = ((WIMPORTE/12)*11) *WUNIDADES,;
                       DICIEMBRE  =  WIMPORTE*WUNIDADES;
-                      WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2019 AND CONCEPTO = WCONCEPTO
+                      WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2020 AND CONCEPTO = WCONCEPTO
  
 ENDIF
 
@@ -109,7 +109,7 @@ IF Varmes = 3
                       OCTUBRE    = ((WIMPORTE/12)*10) *WUNIDADES,;
                       NOVIEMBRE  = ((WIMPORTE/12)*11) *WUNIDADES,;
                       DICIEMBRE  =  WIMPORTE*WUNIDADES;
-                      WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2019 AND CONCEPTO = WCONCEPTO
+                      WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2020 AND CONCEPTO = WCONCEPTO
  
 ENDIF
 
@@ -123,7 +123,7 @@ IF Varmes = 4
                       OCTUBRE    = ((WIMPORTE/12)*10) *WUNIDADES,;
                       NOVIEMBRE  = ((WIMPORTE/12)*11) *WUNIDADES,;
                       DICIEMBRE  =  WIMPORTE*WUNIDADES;
-                      WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2019 AND CONCEPTO = WCONCEPTO
+                      WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2020 AND CONCEPTO = WCONCEPTO
  
 ENDIF
 
@@ -137,7 +137,7 @@ IF Varmes = 5
                       OCTUBRE    = ((WIMPORTE/12)*10) *WUNIDADES,;
                       NOVIEMBRE  = ((WIMPORTE/12)*11) *WUNIDADES,;
                       DICIEMBRE  =  WIMPORTE*WUNIDADES;
-                      WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2019 AND CONCEPTO = WCONCEPTO
+                      WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2020 AND CONCEPTO = WCONCEPTO
  
 ENDIF
 
@@ -152,7 +152,7 @@ IF Varmes = 5
                       OCTUBRE    = ((WIMPORTE/12)*10) *WUNIDADES,;
                       NOVIEMBRE  = ((WIMPORTE/12)*11) *WUNIDADES,;
                       DICIEMBRE  =  WIMPORTE*WUNIDADES;
-                      WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2019 AND CONCEPTO = WCONCEPTO
+                      WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2020 AND CONCEPTO = WCONCEPTO
  
 ENDIF
 
@@ -166,7 +166,7 @@ IF Varmes = 6
                       OCTUBRE    = ((WIMPORTE/12)*10) *WUNIDADES,;
                       NOVIEMBRE  = ((WIMPORTE/12)*11) *WUNIDADES,;
                       DICIEMBRE  =  WIMPORTE*WUNIDADES;
-                      WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2019 AND CONCEPTO = WCONCEPTO
+                      WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2020 AND CONCEPTO = WCONCEPTO
  
 ENDIF
 
@@ -178,7 +178,7 @@ IF Varmes = 7
                       OCTUBRE    = ((WIMPORTE/12)*10) *WUNIDADES,;
                       NOVIEMBRE  = ((WIMPORTE/12)*11) *WUNIDADES,;
                       DICIEMBRE  =  WIMPORTE*WUNIDADES;
-                      WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2019 AND CONCEPTO = WCONCEPTO
+                      WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2020 AND CONCEPTO = WCONCEPTO
  
 ENDIF
 
@@ -190,7 +190,7 @@ IF Varmes = 8
                       OCTUBRE    = ((WIMPORTE/12)*10) *WUNIDADES,;
                       NOVIEMBRE  = ((WIMPORTE/12)*11) *WUNIDADES,;
                       DICIEMBRE  =  WIMPORTE*WUNIDADES;
-                      WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2019 AND CONCEPTO = WCONCEPTO
+                      WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2020 AND CONCEPTO = WCONCEPTO
  
 ENDIF
 
@@ -201,7 +201,7 @@ IF Varmes = 9
                       OCTUBRE   = ((WIMPORTE/12)*10) *WUNIDADES,;
                       NOVIEMBRE = ((WIMPORTE/12)*11) *WUNIDADES,;
                       DICIEMBRE =  WIMPORTE*WUNIDADES;
-                      WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2019 AND CONCEPTO = WCONCEPTO
+                      WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2020 AND CONCEPTO = WCONCEPTO
  
 ENDIF
 
@@ -210,21 +210,21 @@ IF Varmes = 10
    UPDATE NLEGAJO SET  OCTUBRE   = ((WIMPORTE/12)*10) *WUNIDADES,;
                    NOVIEMBRE = ((WIMPORTE/12)*11) *WUNIDADES,;
                    DICIEMBRE =  WIMPORTE*WUNIDADES;
-                   WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2019 AND CONCEPTO = WCONCEPTO
+                   WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2020 AND CONCEPTO = WCONCEPTO
  
 ENDIF
 
 IF Varmes = 11 
    UPDATE NLEGAJO SET NOVIEMBRE = ((WIMPORTE/12)*11) *WUNIDADES,;
                       DICIEMBRE =  WIMPORTE*WUNIDADES;
-                    WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2019 AND CONCEPTO = WCONCEPTO 
+                    WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2020 AND CONCEPTO = WCONCEPTO 
  
 
 ENDIF 
  
 IF Varmes = 12 
    UPDATE NLEGAJO SET  DICIEMBRE =  WIMPORTE*WUNIDADES;
-                      WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2019 AND CONCEPTO = WCONCEPTO 
+                      WHERE LEGAJO = WLEGAJO AND EMPRESA = 1 AND ANO = 2020 AND CONCEPTO = WCONCEPTO 
  
 
 ENDIF 

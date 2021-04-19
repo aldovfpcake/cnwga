@@ -1,0 +1,2 @@
+loForm.ADD OBJECT Label1 AS LABEL WITH  BackColor = RGB(0, 0, 255),  Caption   = "Esta es mi primera etiqueta",  ForeColor = RGB(255, 255, 255),  Left      = 100,  Top       =  30,  Width     = 160
+Error en la línea 10: Error de sintaxis.

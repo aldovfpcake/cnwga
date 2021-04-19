@@ -1,12 +1,19 @@
+
 SET PATH TO c:\cnwga\prg 
 SET EXCLUSIVE OFF
 SET DATE ITALIAN
 SET DELETED ON
-OPEN DATABASE f:\sueldos\nwga\datos\GANANCIAS.DBC SHARED
+*OPEN DATABASE f:\nwga\datos\GANANCIAS.DBC SHARED
+OPEN DATABASE C:\nwga\datos\ganancias
 SET PROCEDURE TO c:\cnwga\prg\actualizarleg
 X = CREATEOBJECT("actualizarleg")
 
-clear
+CLEAR
+IF USED("importac")
+   SELECT importac
+   USE
+ENDIF    
+
 SELECT 0
 USE importac AGAIN
 GO top
@@ -18,7 +25,7 @@ CLEAR
 fso = CreateObject('Scripting.FileSystemObject')
 tf = fso.CreateTextFile('c:\testfile.txt', .t.)
 *SCAN 
- Varmes = 4
+ Varmes = 3
  CLEAR
  DO WHILE .NOT. EOF() 
  
@@ -75,14 +82,28 @@ tf = fso.CreateTextFile('c:\testfile.txt', .t.)
          ENDIF
    
          IF IMPORTAC.segurodevida <> 0
-            xconcepto = 3 
-            DO actuhijo WITH importac.legajo,importac.hijos,Varmes,xconcepto
+            *valor 18.000 para año 2020
+            LOCAL FloatSeguro
+            FloatSeguro = 0
+            IF IMPORTAC.SeguroDeVida > 24000
+               FloatSeguro = 24000
+            ELSE
+               FloatSeguro = IMPORTAC.SeguroDeVida 
+            ENDIF    
+            xconcepto = 8
+            DO actgastosmedicos WITH importac.legajo,FloatSeguro,Varmes,xconcepto
          ENDIF
          
           IF IMPORTAC.alquileres <> 0
             xconcepto = 7 
             DO actgastosmedicos WITH importac.legajo,importac.alquileres,Varmes,xconcepto
-         ENDI
+         ENDIF
+
+         IF IMPORTAC.seguroretiro <> 0
+             xconcepto = 9   
+             DO actgastosmedicos WITH importac.legajo,importac.seguroretiro,Varmes,xconcepto
+         ENDIF
+
 
    SELECT IMPORTAC
    SKIP 

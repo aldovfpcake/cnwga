@@ -27,7 +27,7 @@ DEFINE CLASS ofamilia as Custom
             SET CENTURY ON
             SET DELETED ON
             IF this.olegajo = 0
-               WAIT WINDOW "Error Nº legajo en 0"
+               WAIT WINDOW "Error Nï¿½ legajo en 0"
             ELSE
               * WAIT WINDOW "LEGAJO:" + STR(THIS.OLEGAJO,4)
             ENDIF     
@@ -168,7 +168,7 @@ DEFINE CLASS CALCULORET as custom
        legajo   = 0
        cancelar = .f.
        nivel    =  1  
-         
+       empresa  =  0  
          
          
        * ORDEN DE LLAMADA
@@ -271,11 +271,12 @@ DEFINE CLASS CALCULORET as custom
                    WHERE CONCEPTO = 120                           
                    UPDATE GANCIAS SET &NOMBREMES = CALCULA.TREMU*3/100; 
                    WHERE CONCEPTO = 130    
-                   UPDATE GANCIAS SET &NOMBREMES = CALCULA.TREMU*3/100; 
-                   WHERE CONCEPTO = 145    
-                   UPDATE GANCIAS SET &NOMBREMES = CALCULA.TREMU*1.5/100; 
-                   WHERE CONCEPTO = 140    
-                   
+                   if this.empresa <> 5
+                      UPDATE GANCIAS SET &NOMBREMES = CALCULA.TREMU*3/100; 
+                      WHERE CONCEPTO = 145    
+                      UPDATE GANCIAS SET &NOMBREMES = CALCULA.TREMU*1.5/100; 
+                      WHERE CONCEPTO = 140    
+                   endif
                    
                    *IF NOMBREMES <> "ENERO"
                    *   SELECT SUM(&MESANTERIOR) AS RETAC FROM GANCIAS WHERE CLASE = 2;
@@ -763,7 +764,8 @@ DEFINE CLASS CALCULORET as custom
            
            
            vvctamed = 0
-        
+           vvdonaciones = 0
+           vvgastosmedicos = 0
            *SCAN
            
           *     IF CONCEPTO = 362
@@ -773,16 +775,19 @@ DEFINE CLASS CALCULORET as custom
           * ENDSCAN
         
           SELECT &nomes as ctamed FROM gancias WHERE concepto = 362 INTO CURSOR informe
-        
-          vvctamed = informe.ctamed 
+          SELECT &nomes as donacio FROM gancias WHERE concepto = 363 INTO CURSOR informe2
+          SELECT &nomes as gasmed  FROM gancias WHERE concepto = 365 INTO CURSOR informe3
           
+          vvctamed = informe.ctamed 
+          vvdonaciones = informe2.donacio
+          vvgastosmedicos = informe3.gasmed
           SELECT gancias
         *   IF this.mes = 1
         *      SUM &nomes to vvctamed FOR CONCEPTO = 200
         *   ELSE   
         *      SUM &nomes to vvctamed FOR CONCEPTO = 362
         *   ENDIF   
-           if vvctamed = 0    		   
+           if vvctamed = 0 .and. vvdonaciones = 0   		   
               RETURN  
            endif 
 		  
@@ -790,15 +795,36 @@ DEFINE CLASS CALCULORET as custom
            vvtope   = 0		
            vvneta   = 0  
          *  vvctamed = 0
-		   SUM &nomes to vvneta FOR CONCEPTO = 210 OR CONCEPTO = 200
-		   vvtope = vvneta * 0.05
+           IF THIS.mes > 1
+		      SUM &nomes to vvneta FOR CONCEPTO = 210 OR CONCEPTO = 200
+		      vvtope = vvneta * 0.05
+		   ELSE
+		      SUM &nomes to vvneta FOR CONCEPTO = 200
+		      vvtope = vvneta * 0.05
+		   
+		   ENDIF
 		   
            if vvctamed > vvtope
               UPDATE GANCIAS SET &nomes = vvtope ;
               WHERE CONCEPTO = 362			  
+              this.actulog  
            endif 
+		  
+		   IF vvdonaciones > vvtope
+		      UPDATE GANCIAS SET &nomes = vvtope ;
+              WHERE CONCEPTO = 363			  
+              this.actulog  
+           ENDIF   
+		  
+		   IF vvgastosmedicos > vvtope
+		      UPDATE GANCIAS SET &nomes = vvtope ;
+              WHERE CONCEPTO = 365			  
+              this.actulog  
+           ENDIF 
+		  
+		  
 		    
-		   this.actulog  
+		   
            SELECT GANCIAS  
 		        
              
@@ -810,9 +836,10 @@ DEFINE CLASS CALCULORET as custom
         PROCEDURE ACTULOG
            
             vlegajo  = this.legajo
-            vempresa = 1
+
+             vempresa = 1
             vmes     = this.mes 
-            vano     = 2020
+            vano     = 2021
             SELECT legajo,empresa,mes,ano FROM log WHERE legajo = vlegajo .and. empresa = vempresa ;
             AND ano = vano .and. mes = vmes INTO CURSOR existe
             IF EOF()
@@ -859,6 +886,9 @@ DEFINE CLASS CALCULORET as custom
 						 WHERE CONCEPTO = 500  
                          UPDATE GANCIAS SET ENERO = retencion ; 
 						 WHERE CONCEPTO = 600   
+                         UPDATE GANCIAS SET ENERO = retencion ; 
+						 WHERE CONCEPTO = 605   
+               
                
                CASE THIS.MES = 2
                 	     RNOMBREMS = "FEBRERO"     
@@ -883,37 +913,38 @@ DEFINE CLASS CALCULORET as custom
                 	     RNOMBREMS = "JUNIO"     
                          RMESANTE  = "MAYO"
                          THIS.CLCRETN( RNOMBREMS,RMESANTE)  
-                         THIS.LABOCA(RNOMBREMS)
+                         
                  CASE THIS.MES = 7
                 	     RNOMBREMS = "JUlIO"     
                          RMESANTE  = "JUNIO"
                          THIS.CLCRETN( RNOMBREMS,RMESANTE)  
-                	     THIS.LABOCA(RNOMBREMS)
+                	     
                  CASE THIS.MES = 8
                          RNOMBREMS = "AGOSTO"     
                          RMESANTE  = "JULIO"
                          THIS.CLCRETN( RNOMBREMS,RMESANTE)
-                         THIS.LABOCA(RNOMBREMS) 
+                         
                  CASE THIS.MES = 9
                          RNOMBREMS = "SETIEMBRE"     
                          RMESANTE  = "AGOSTO"
                          THIS.CLCRETN( RNOMBREMS,RMESANTE)
-                         THIS.LABOCA(RNOMBREMS)
+                         
            		CASE THIS.MES = 10
                          RNOMBREMS = "OCTUBRE"     
                          RMESANTE  = "SETIEMBRE"
                          THIS.CLCRETN( RNOMBREMS,RMESANTE)
-                 
+                         
                 CASE THIS.MES = 11
                          RNOMBREMS = "NOVIEMBRE"     
                          RMESANTE  = "OCTUBRE"
                          THIS.CLCRETN( RNOMBREMS,RMESANTE)
+                         
                 
                 CASE THIS.MES = 12
                          RNOMBREMS = "DICIEMBRE"     
                          RMESANTE  = "NOVIEMBRE"
                          THIS.CLCRETN( RNOMBREMS,RMESANTE)
-                  
+                        
                   
            
            
@@ -960,12 +991,8 @@ DEFINE CLASS CALCULORET as custom
                       WHERE CONCEPTO = 600 OR CONCEPTO =605
                     ENDIF
 				    
-				    IF this.legajo = 422 OR this.legajo = 1 OR this.legajo = 433 OR this.legajo = 294
-				       retentru = 0
-				       retentru = 900+RAND()* 100
-				       UPDATE GANCIAS SET &RNOMBREMS = retentru ;
-                       WHERE CONCEPTO = 605 
-				    ENDIF
+				  
+				  
                                 
                CATCH TO e
                       WAIT WINDOW "ERROR EN ACTUALIZACION DE CONCEPTO 510,500" + " " + STR(e.Errorno,4)
@@ -1017,8 +1044,8 @@ DEFINE CLASS CARGOSUE as custom
             existe = 0
             TRY
             	SELECT 0
-            	*USE "c:\suerut\empre1\" +(this.archivo) ALIAS liquida
-         	     USE (this.archivo) ALIAS liquida
+            	USE "c:\suerut\empre1\" +(this.archivo) ALIAS liquida
+         	    * USE (this.archivo) ALIAS liquida
          	CATCH TO oException
          	     IF oException.ErrorNo = 1
          	        MESSAGEBOX("ARCHIVO DE LIQUIDACION INEXSTENTE" ,0, "ERROR")   
@@ -1068,9 +1095,9 @@ DEFINE CLASS CARGOSUE as custom
 			ViaticosExentos =0
 			
 			IF ld.kilom <> 0 
-			   ViaticosExentos = -10321.76
+			   ViaticosExentos = -13973.20
 			ELSE   
-			   ViaticosExentos = -4128.70
+			   ViaticosExentos = -5589.28
 			ENDIF
 			
 			
@@ -1185,7 +1212,7 @@ DEFINE CLASS VISUREC AS Custom
          use
     CATCH TO e
          
-         MESSAGEBOX ("NO SE ENENCUENTRA EL ARCHIVO ERROR Nº" + " " + CURDIR()+ STR(ERROR(),4),0,"Error")
+         MESSAGEBOX ("NO SE ENENCUENTRA EL ARCHIVO ERROR Nï¿½" + " " + CURDIR()+ STR(ERROR(),4),0,"Error")
          this.cancelar = .f.
       
     ENDTRY
@@ -1264,7 +1291,7 @@ DEFINE CLASS CONCEPTOS as custom
                VALUES (this.legajo,this.codigo,this.ano,this.empresa,this.aid)  
             
           CATCH TO e
-             WAIT WINDOW "Error en Inserción de Concepto en legajo : " + STR(this.legajo,4) + " " + STR(this.codigo,4)
+             WAIT WINDOW "Error en Inserciï¿½n de Concepto en legajo : " + STR(this.legajo,4) + " " + STR(this.codigo,4)
    
           FINALLY
           ENDTRY
@@ -1341,7 +1368,7 @@ DEFINE CLASS ACTUCONP AS CONCEPTOS
    PROTECTED FUNCTION mes_Assign (vmes)
  
      IF vmes < 0 .or. vmes > 12
-        MESSAGEBOX("Asignación Errónea de mes" + STR(vmes,2),16,"Error")
+        MESSAGEBOX("Asignaciï¿½n Errï¿½nea de mes" + STR(vmes,2),16,"Error")
         this.error
      ELSE
         this.mes = vmes 
@@ -1582,7 +1609,7 @@ ENDDEFINE
 
 DEFINE CLASS CARGENERAL AS CARGOSUE
  empresa = 0
- año     = 0
+ aï¿½o     = 0
 
    PROCEDURE RECORRO
      SELECT LEGAJO,NOMBRE FROM PERSONAL WHERE ACTIVO = "A" INTO CURSOR PERSO
@@ -1592,7 +1619,7 @@ DEFINE CLASS CARGENERAL AS CARGOSUE
         SELECT GANCIAS
         parlegajo  = PERSO.LEGAJO
    		parempresa = this.empresa  
-   		parno     = this.año
+   		parno     = this.aï¿½o
         REQUERY()
         THIS.CRGOSUELDO
         WAIT WINDOW PERSO.NOMBRE NOWAIT
@@ -1615,7 +1642,7 @@ ENDDEFINE
 
 DEFINE CLASS DECLAJANUAL AS CALCULORET
    empresa      = 0 
-   año          = 0  
+   aï¿½o          = 0  
    impbruto     = 0
    aportejubila = 0
    segurodevida = 0
@@ -1653,7 +1680,7 @@ DEFINE CLASS DECLAJANUAL AS CALCULORET
       USE gancias
       this.legajo  = legajo
       this.empresa = empresa
-      this.año     = ano 
+      this.aï¿½o     = ano 
       this.importebruto
       this.impjub  
       this.impobsoc
@@ -1759,8 +1786,8 @@ DEFINE CLASS CARGOBASE AS Custom
 	wlegajo   = 0
 	wempresa  = 0
 	wconcepto = 0
-	waño	  = 0
-	wañoant   = 0
+	waï¿½o	  = 0
+	waï¿½oant   = 0
 	
 	PROCEDURE Carga
 	     
@@ -1778,7 +1805,7 @@ DEFINE CLASS CARGOBASE AS Custom
         
         FOR i = 1 TO 9
         	SELECT  diciembre FROM nlegajo WHERE legajo = this.wlegajo .and. empresa = this.wempresa .and. concepto = concep[i];
-        	.and. ano = this.wañoant INTO CURSOR ctabla
+        	.and. ano = this.waï¿½oant INTO CURSOR ctabla
             ?STR(concep[i],4) + " " + STR(ctabla.diciembre,12,2)
             
 	    NEXT
@@ -1789,10 +1816,10 @@ DEFINE CLASS CARGOBASE AS Custom
     PROCEDURE insertar
       PARAMETERS Parconcepto,Parimporte
       
-      SELECT legajo,diciembre FROM nlegajo WHERE ano =  this.waño .and. this.wempresa = empresa .and. concepto = Parconcepto;
+      SELECT legajo,diciembre FROM nlegajo WHERE ano =  this.waï¿½o .and. this.wempresa = empresa .and. concepto = Parconcepto;
       INTO CURSOR existe  
       IF EOF()  
-         INSERT INTO nlegajo(empresa,legajo,concepto,ano) VALUES (this.wempresa,this.wlegajo,parconcepto,this.waño)
+         INSERT INTO nlegajo(empresa,legajo,concepto,ano) VALUES (this.wempresa,this.wlegajo,parconcepto,this.waï¿½o)
       ENDIF
       UPDATE nlegajo SET enero     = (Parimporte)/12,;
                          febrero   = (Parimporte)/12,;     
@@ -1806,7 +1833,7 @@ DEFINE CLASS CARGOBASE AS Custom
                          octubre   = (Parimporte)/12,;     
                          noviembre = (Parimporte)/12,;  
                          diciembre = (Parimporte)/12;
-                         WHERE legajo = this.wlegajo .and. empresa = this.wempresa .and. concepto = parconcepto .and. ano = this.waño
+                         WHERE legajo = this.wlegajo .and. empresa = this.wempresa .and. concepto = parconcepto .and. ano = this.waï¿½o
                             
     
     ENDPROC

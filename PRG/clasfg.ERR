@@ -1,0 +1,20 @@
+aï¿½o     = 0
+Error en la línea 1612: No se reconoce el verbo de comando.
+parno     = this.aï¿½o
+Error en la línea 1622: Error de sintaxis.
+aï¿½o          = 0  
+Error en la línea 1645: No se reconoce el verbo de comando.
+this.aï¿½o     = ano 
+Error en la línea 1683: Error de sintaxis.
+waï¿½o	  = 0
+Error en la línea 1789: No se reconoce el verbo de comando.
+waï¿½oant   = 0
+Error en la línea 1790: No se reconoce el verbo de comando.
+SELECT  diciembre FROM nlegajo WHERE legajo = this.wlegajo .and. empresa = this.wempresa .and. concepto = concep[i] .and. ano = this.waï¿½oant INTO CURSOR ctabla
+Error en la línea 1808: El comando contiene una frase o palabra clave no reconocida.
+SELECT legajo,diciembre FROM nlegajo WHERE ano =  this.waï¿½o .and. this.wempresa = empresa .and. concepto = Parconcepto INTO CURSOR existe  
+Error en la línea 1820: El comando contiene una frase o palabra clave no reconocida.
+INSERT INTO nlegajo(empresa,legajo,concepto,ano) VALUES (this.wempresa,this.wlegajo,parconcepto,this.waï¿½o)
+Error en la línea 1822: Error de sintaxis.
+UPDATE nlegajo SET enero     = (Parimporte)/12, febrero   = (Parimporte)/12, marzo     = (Parimporte)/12, abril     = (Parimporte)/12, mayo      = (Parimporte)/12, junio     = (Parimporte)/12, julio     = (Parimporte)/12, agosto    = (Parimporte)/12, setiembre = (Parimporte)/12, octubre   = (Parimporte)/12, noviembre = (Parimporte)/12, diciembre = (Parimporte)/12 WHERE legajo = this.wlegajo .and. empresa = this.wempresa .and. concepto = parconcepto .and. ano = this.waï¿½o
+Error en la línea 1836: El comando contiene una frase o palabra clave no reconocida.
