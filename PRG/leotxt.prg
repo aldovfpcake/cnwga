@@ -3,7 +3,7 @@ SET TALK OFF
 CLEAR
 SET DELETED ON
 SET EXCLUSIVE OFF
-USE importac AGAIN
+USE importac2021 AGAIN
 GO top
 clear
 scan
@@ -35,7 +35,7 @@ IF EOF()
    WAIT WINDOW "ERROR NO SE ENCUENTRA " + vcuil
 ENDIF
 ?perso.legajo
- replace importac.legajo WITH perso.legajo
+ replace importac2021.legajo WITH perso.legajo
 
 
 RETURN .t.

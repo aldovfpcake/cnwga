@@ -169,7 +169,8 @@ DEFINE CLASS CALCULORET as custom
        cancelar = .f.
        nivel    =  1  
        empresa  =  0  
-         
+       remuneracion = 0  
+       viaticos     = 0
          
        * ORDEN DE LLAMADA
        * CALCURET -------->(CALCRET METODO PROTEGIDO) 
@@ -265,6 +266,7 @@ DEFINE CLASS CALCULORET as custom
         TRY 
                    SELECT SUM(&NOMBREMES)AS TREMU FROM GANCIAS WHERE CLASE = 1;    
                    INTO CURSOR CALCULA
+                   this.remuneracion = calcula.tremu
                    UPDATE GANCIAS SET &NOMBREMES = CALCULA.TREMU*11/100; 
                    WHERE CONCEPTO = 100                           
                    UPDATE GANCIAS SET &NOMBREMES = CALCULA.TREMU*3/100; 
@@ -725,6 +727,8 @@ DEFINE CLASS CALCULORET as custom
         STORE 0 TO vvbr,vvdesc,vvdedui,vvganacu
                         SELECT gancias
                         SUM &nomes  TO vbr FOR clase = 1 .or. clase = 8
+                        SUM &nomes  TO this.viaticos FOR clase = 8
+                        this.remuneracion = this.remuneracion +this.viaticos
 				    	SUM &nomes  TO vvdesc FOR clase = 2
 						SUM &nomes  TO vvdedui FOR clase = 3
 						UPDATE GANCIAS SET &nomes =  (vbr- vvdesc); 
@@ -739,7 +743,7 @@ DEFINE CLASS CALCULORET as custom
                            WHERE CONCEPTO = 400   						   
                        
 					   ELSE
-                           this.sjtoaret = (vbr- vvdesc)-vvdedui 
+					       this.sjtoaret = (vbr- vvdesc)-vvdedui 
                            UPDATE GANCIAS SET &nomes = this.sjtoaret ; 
 						   WHERE CONCEPTO = 400 
                        ENDIF
@@ -863,7 +867,8 @@ DEFINE CLASS CALCULORET as custom
             RNOMBREMS = " "
             RMESANTE  = " "
             retencion = 0
-            retean = 0          
+            retean = 0 
+                     
             SELECT * FROM NESCALA WHERE MES = THIS.MES INTO CURSOR ESCALA
             SELECT escala
       
@@ -903,7 +908,7 @@ DEFINE CLASS CALCULORET as custom
                 	     RNOMBREMS = "ABRIL"     
                          RMESANTE  = "MARZO"
                          THIS.CLCRETN( RNOMBREMS,RMESANTE) 
-                	       
+                	     THIS.REFORMALEY(RNOMBREMS)       
                 CASE THIS.MES = 5
                 	     RNOMBREMS = "MAYO"     
                          RMESANTE  = "ABRIL"
@@ -1024,6 +1029,25 @@ DEFINE CLASS CALCULORET as custom
         ENDPROC
 
 
+        PROCEDURE REFORMALEY  
+                PARAMETERS RNOMBREMS
+                IF this.remuneracion < 150000
+                   UPDATE GANCIAS SET &RNOMBREMS = 0;
+                   WHERE CONCEPTO = 605
+                ENDIF
+
+
+
+        ENDPROC  
+
+
+
+
+
+
+
+
+
 
 
 ENDDEFINE
@@ -1065,6 +1089,7 @@ DEFINE CLASS CARGOSUE as custom
          	fcampo = 0
         	SELECT SUM(APORTE) AS SU FROM liquida WHERE LEGAJO = THIS.LEGAJO  INTO CURSOR SUELDO
         	SELECT SUM(SINAPORTE) AS VIAT FROM liquida WHERE LEGAJO = THIS.LEGAJO INTO CURSOR VIATICOS
+        
             select legajo,sum(aporte) AS APORTE,sum(iif(CONCEPTO=18,aporte,0)) AS SAC from liquida where legajo = this.legajo GROUP BY legajo;
             INTO CURSOR SAC
             SELECT SAC
@@ -1112,7 +1137,7 @@ DEFINE CLASS CARGOSUE as custom
             	SELECT GANCIAS   
             	TRY
                 	UPDATE GANCIAS   SET &campo2 = THIS.SUELDO        WHERE CONCEPTO = 1   .AND. ISNULL(DIRLEG)
-               		UPDATE GANCIAS   SET &campo2 = (THIS.SUELDO/12)   WHERE CONCEPTO = 6   .AND. ISNULL(DIRLEG)
+               		*UPDATE GANCIAS   SET &campo2 = (THIS.SUELDO/12)   WHERE CONCEPTO = 6   .AND. ISNULL(DIRLEG)
 					UPDATE GANCIAS   SET &campo2 =  horasfe           WHERE CONCEPTO = 7   .AND. ISNULL(DIRLEG)        
                 	UPDATE GANCIAS   SET &campo2 =  VIATICOS.VIAT     WHERE CONCEPTO = 40  .AND. ISNULL(DIRLEG)  
                     UPDATE GANCIAS   SET &campo2 = THIS.SUELDO        WHERE CONCEPTO = 3   .AND.  .NOT.ISNULL(DIRLEG) 

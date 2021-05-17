@@ -25,7 +25,7 @@ CLEAR
 fso = CreateObject('Scripting.FileSystemObject')
 tf = fso.CreateTextFile('c:\testfile.txt', .t.)
 *SCAN 
- Varmes = 3
+ Varmes = 4
  CLEAR
  DO WHILE .NOT. EOF() 
  
@@ -81,14 +81,14 @@ tf = fso.CreateTextFile('c:\testfile.txt', .t.)
             DO actgastosmedicos WITH importac.legajo,importac.gastosmed,Varmes,xconcepto
          ENDIF
    
-         IF IMPORTAC.segurodevida <> 0
+         IF IMPORTAC.segurodevi <> 0
             *valor 18.000 para año 2020
             LOCAL FloatSeguro
             FloatSeguro = 0
-            IF IMPORTAC.SeguroDeVida > 24000
+            IF IMPORTAC.SeguroDeVi > 24000
                FloatSeguro = 24000
             ELSE
-               FloatSeguro = IMPORTAC.SeguroDeVida 
+               FloatSeguro = IMPORTAC.SeguroDeVi
             ENDIF    
             xconcepto = 8
             DO actgastosmedicos WITH importac.legajo,FloatSeguro,Varmes,xconcepto
@@ -99,9 +99,9 @@ tf = fso.CreateTextFile('c:\testfile.txt', .t.)
             DO actgastosmedicos WITH importac.legajo,importac.alquileres,Varmes,xconcepto
          ENDIF
 
-         IF IMPORTAC.seguroretiro <> 0
+         IF IMPORTAC.seguroreti <> 0
              xconcepto = 9   
-             DO actgastosmedicos WITH importac.legajo,importac.seguroretiro,Varmes,xconcepto
+             DO actgastosmedicos WITH importac.legajo,importac.seguroreti,Varmes,xconcepto
          ENDIF
 
 

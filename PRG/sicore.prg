@@ -4,7 +4,7 @@ LOCAL codigComp,fecha,numercomp,importecomp,Varcuil
 
 numercomp = " "
 imporetcomp = " "
-fecha="29/03/2021"
+fecha="28/04/2021"
 scan
  IF reten > 0
     CodigComp = "07"

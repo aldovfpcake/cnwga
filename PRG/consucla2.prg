@@ -24,10 +24,10 @@ ENDIF
 local mes as string
 LOCAL vempre as Integer
 LOCAL vvfecha as date 
- mes = "MARZO"
+ mes = "ABRIL"
  vempre =1
  CLEAR
-vvfecha = CTOD("28/03/2021")
+vvfecha = CTOD("28/04/2021")
 SELECT legajo,SUM(IIF(CLASE= 1 .OR. CLASE = 8,&MES,0))AS BASELQ,SUM(IIF(CONCEPTO = 500 ,&mes,0))as &mes ,SUM(IIF(CONCEPTO = 605,&mes,0)) as ret  FROM nlegajo;
 WHERE ano = 2021 .AND. EMPRESA = vempre  GROUP BY legajo INTO CURSOR RETCUA
  SUM RET TO VV
